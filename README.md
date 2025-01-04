@@ -1,2 +1,2 @@
-# dockdeck
-Docker monitoring and management platform (diploma work, AHE Lodz)
+# website-docker-gui
+Example static HTML5 website with simple docker containers monitoring GUI made with Bootstrap5
