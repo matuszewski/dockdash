@@ -1,0 +1,36 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "Dockdash API Server - Krzysztof Matuszewski, AHE 2024/2025",
+  "main": "server.ts",
+  "scripts": {
+    "test": "server.js --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matuszewski/dockdeck.git"
+  },
+  "keywords": [
+    "docker",
+    "node",
+    "api",
+    "dashboard",
+    "express",
+    "api-server",
+    "web-server"
+  ],
+  "author": "Krzysztof Matuszewski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matuszewski/dockdeck/issues"
+  },
+  "homepage": "https://github.com/matuszewski/dockdeck#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "request": "^2.88.2",
+    "requests": "^0.3.0"
+  }
+}
