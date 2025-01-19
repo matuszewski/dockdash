@@ -2,7 +2,7 @@
   "name": "api-server",
   "version": "1.0.0",
   "description": "Dockdash API Server - Krzysztof Matuszewski, AHE 2024/2025",
-  "main": "server.ts",
+  "main": "server.js",
   "scripts": {
     "test": "server.js --test"
   },

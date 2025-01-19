@@ -1,203 +1,102 @@
 import express from 'express';
 import cors from 'cors';
-import request from 'requests';
-import colors from 'colors'; // TODO: add colors and debugging to outputs
+import colors from 'colors'; // For colored logs
+import axios from 'axios'; // Import axios properly
 
 // create express app object
 const app = express();
 
-// make the object use the cors module
+// use the CORS middleware
 app.use(cors());
 
-// set api server port
-const api_server_port = 4000
+// API server port
+const api_server_port = 4000;
 
-let instances = [
-	'127.0.0.1',
-	'10.20.0.102'
-]
 
-// TODO: use full configuration
-let instance_configuration = {
-	'local': {
-		"ip": "127.0.0.1",
-		"port": "2375",
-		"api_version": '1.47'
-	},
-	'wyse': {
-		"ip": "10.20.0.102",
-		"port": "2375",
-		"api_version": '1.47'
-	},
-	'rpi': {
-		"ip": "10.20.0.105",
-		"port": "2375",
-		"api_version": '1.47'
-	}
-}
+// logging rules
+const logging_name = 'api-server'
+const success = `${logging_name} `.gray + '['.white + 'SUCCESS'.green + ']'.white + ' '
+const info = `${logging_name} `.gray + '['.white + 'INFO'.blue + ']'.white + ' '
+const error = `${logging_name} `.gray + '['.white + 'ERROR'.red + ']'.white + ' '
+const debug = `${logging_name} `.gray + '['.white + 'DEBUG'.yellow + ']'.white + ' '
 
+// instances configuration
+const instance_configuration = {
+  local: {
+    ip: "127.0.0.1",
+    port: "2375",
+    api_version: "1.47",
+  },
+  wyse: {
+    ip: "10.20.0.102",
+    port: "2375",
+    api_version: "1.47",
+  },
+  rpi: {
+    ip: "10.20.0.105",
+    port: "2375",
+    api_version: "1.47",
+  },
+};
 
 // handle GET /
-app.get('/', (req, res) => {
-  return res.send('<pre><b>dockdash api server</b><br>status: working<br>received a GET HTTP request</pre>')
+app.get("/", (req, res) => {
+  return res.send(
+    `<pre><b>dockdash api server</b><br>status: working<br>received a GET HTTP request</pre>`
+  );
 });
 
+app.get("/api/instances", (req, res) => {
+	return res.send(instance_configuration);
+  });
 
-// handle getting docker instances
-app.get('/api/instances', (req, res) => {
-	console.info(`[api-server] received /api/instances HTTP GET request`)
+// handle GET /api/:instance/containers
+app.get("/api/:instance/containers", async (req, res) => {
+  const instance = req.params.instance;
 
-  	// set content type header to be in json format
-	res.setHeader('Content-Type', 'application/json');
+  console.info(
+    `${info}received /api/${instance}/containers/ HTTP GET request from ${req.socket.remoteAddress.replace(/^.*:/, "").cyan}`
+  );
 
-	// send json response
-	return res.send(JSON.stringify(instances, null, 3));
+  // resolve instance configuration
+  const instanceConfig = instance_configuration[instance];
+  if (!instanceConfig) {
+    console.error(`[ERROR] Instance '${instance}' not found`.red);
+    return res.status(404).send("Instance not found");
+  }
+
+  const { ip, port, api_version } = instanceConfig;
+  const url = `http://${ip}:${port}/v${api_version}/containers/json`;
+
+  try {
+    console.info(`${info}fetching containers from ${url.cyan}`);
+    const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
+    console.info(`${success}Docker API responded successfully`);
+    return res.json(response.data); // Respond with the Docker API data
+  } catch (error) {
+    if (error.response) {
+      // server responded with a status code other than 2xx
+      console.error(
+        `${error}Docker API returned error: ${error.response.status} ${error.response.statusText}`.red
+      );
+      return res
+        .status(error.response.status)
+        .send(error.response.statusText || "Error from Docker API");
+    } else if (error.request) {
+      // no response received
+      console.error(`${error}no response from Docker API`.red);
+      return res.status(503).send("No response from Docker API");
+    } else {
+      // other errors
+      console.error(`${error}could not connect to Docker API: ${error.message}`.red);
+      return res.status(500).send("Error connecting to Docker API");
+    }
+  }
 });
 
-
-// handle getting info about specific docker instance
-app.get('/api/:instance/info', (req, res) => {
-	
-	let instance = req.params.instance
-	
-	console.info(`[api-server] received /api/${instance}/info HTTP GET request from ${req.socket.remoteAddress.replace(/^.*:/, '')}`)
-
-	let found_instance = false
-
-	instances.forEach(inst => {
-		if (inst == instance) {
-			found_instance = true
-			return res.send(JSON.stringify(instance, null, 3));
-		}
-	});
-
-	if (!found_instance) {
-		return res.send('no information object found');
-	}
-
+// start the api server
+app.listen(api_server_port, () => {
+  console.info(
+    `${success}DockDash API server is running on port ${api_server_port}`.blue.bold
+  );
 });
-
-
-// handle getting containers from a given instance
-app.get('/api/:instance/containers', (req, res) => {
-	// define parameters
-	let instance = req.params.instance
-
-	console.info(`[api-server] received /api/${instance}/containers/ HTTP GET request from ${req.socket.remoteAddress.replace(/^.*:/, '')}`)
-
-	// // CALL DOCKER API:::::
-	// // http://127.0.0.1:2375/v1.41/containers/json
-	// request(`http://10.20.0.102:2375/v1.41/containers/json`, { json: true }, (err, resp, body) => {
-		
-	// 	if (err) {
-	// 		console.error(err)
-	// 		return res.send('error')
-
-	// 	} else if (resp) {
-	// 		console.info(resp)
-	// 		console.info(body)
-	// 		return res.send('good')
-
-	// 	}
-		
-	// 	//console.log(`[api-server] asked [${instance}] for /containers/json`)
-	// 	//console.log(`[api-server] got /containers/json from [${instance}]: ${body}`)
-		
-	// 	return res.send('da')
-	// 	// set response to be in json format and return the answer
-	// 	//res.setHeader('Content-Type', 'application/json');
-	// 	//return res.send(JSON.stringify(body, null, 3));
-	// });
-
-
-	request(
-		{
-			url: `http://10.20.0.102:2375/v1.41/containers/json`,
-			json: true,
-			timeout: 5000
-		},
-		(err, resp, body) => {
-		
-			if (err) {
-				console.error(`[ERROR] Failed to connect to Docker API: ${err.message}`);
-				return res.status(500).send('Error connecting to Docker API');
-			}
-	  
-			if (resp && resp.statusCode === 200) {
-				console.info(`[SUCCESS] Docker API responded with containers:`, body);
-				return res.json(body);
-				
-			} else {
-				console.warn(`[WARNING] Unexpected response from Docker API:`, resp.statusCode, body);
-				return res.status(resp.statusCode || 500).send('Unexpected response from Docker API');
-			}
-		}
-	  ); // end of request
-	  
-}); // end of function
-
-//		 handle getting images from a given instance
-//		 GET:
-//		 /api/:instance/images
-
-//		 PUT etc: actions related to specific container in specific docker instance
-//		 /api/:instance/container/:container/:action
-//											  stop
-//											  start
-//											  restart
-// 											  remove
-
-// handle actions related to specific container in specific docker instance
-app.get('/api/:instance/containers/:container/:action', (req, res) => {
-	// define parameters
-	let instance = req.params.instance			// docker instance name
-	let container = req.params.container		// container name
-	let action = req.params.action				// action to take on container (stop/start/restart/remove)
-
-	console.info(`[api-server] received /api/${instance}/container/${container}/${action} HTTP GET request from ${req.socket.remoteAddress.replace(/^.*:/, '')}`)
-
-	// validate request
-	if(instance == '' || container == '' || action == '') {
-		console.error(`[api-server] did not got docker instance name, container name or action to perform`.red)
-		return res.send('not found!')
-	}
-
-	// validate action name
-	if (!['start', 'stop', 'restart', 'remove'].includes(action)) {
-		return res.send('[api-server] wrong action choosen!')
-	}
-	// TODO: fix below
-	// // call docker api
-	// request(`http://help`, { json: true }, (err, resp, body) => {
-	// 	// print error if exists
-	// 	if (err) { return console.log(err); }
-	// 	console.log(`[api-server] -> [${instance}] ????`)
-	// 	console.log(body.url); // TODO: check if needed
-	// 	console.log(body.explanation);
-	//   });
-	//   // TODO: check and maybe change to json object
-	//   return res.send(`${instance.toString()}<br>${action}<br>`);
-});
-
-// handle POST method // TODO: develop
-app.post('/', (req, res) => {
-	console.info("[api-server] received / HTTP POST request")
-	return res.send('<pre>dockdash API-SERVER\nReceived a POST HTTP method</pre>');
-});
-
-// handle PUT method // TODO: develop
-app.put('/', (req, res) => {
-	console.info("[api-server] received / HTTP PUT request")
-	return res.send('Received a PUT HTTP method');
-});
-
-// handle DELETE method // TODO: develop
-app.delete('/', (req, res) => {
-	console.info("[api-server] received / HTTP DELETE request")
-	return res.send('Received a DELETE HTTP method');
-});
-
-// start api server listening on port
-app.listen(api_server_port, () =>
-	console.log(`[api-server] is listening on port ${api_server_port}`)
-);
