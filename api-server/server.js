@@ -36,6 +36,7 @@ let instance_configuration = {
 	}
 }
 
+
 // handle GET /
 app.get('/', (req, res) => {
   return res.send('<pre><b>dockdash api server</b><br>status: working<br>received a GET HTTP request</pre>')
@@ -84,18 +85,56 @@ app.get('/api/:instance/containers', (req, res) => {
 
 	console.info(`[api-server] received /api/${instance}/containers/ HTTP GET request from ${req.socket.remoteAddress.replace(/^.*:/, '')}`)
 
-	// CALL DOCKER API:::::
-	// http://127.0.0.1:2375/v1.41/containers/json
-	request(`http://10.20.0.102:2375/v1.41/containers/json`, { json: true }, (err, resb, body) => {
-		console.log(`[api-server] asked [${instance}] for /containers/json`.green)
-		console.log(`[api-server] got /containers/json from [${instance}]: ${body}`.green)
+	// // CALL DOCKER API:::::
+	// // http://127.0.0.1:2375/v1.41/containers/json
+	// request(`http://10.20.0.102:2375/v1.41/containers/json`, { json: true }, (err, resp, body) => {
 		
-		// set response to be in json format and return the answer
-		res.setHeader('Content-Type', 'application/json');
-		return res.send(JSON.stringify(body, null, 3));
-	});
+	// 	if (err) {
+	// 		console.error(err)
+	// 		return res.send('error')
 
-});
+	// 	} else if (resp) {
+	// 		console.info(resp)
+	// 		console.info(body)
+	// 		return res.send('good')
+
+	// 	}
+		
+	// 	//console.log(`[api-server] asked [${instance}] for /containers/json`)
+	// 	//console.log(`[api-server] got /containers/json from [${instance}]: ${body}`)
+		
+	// 	return res.send('da')
+	// 	// set response to be in json format and return the answer
+	// 	//res.setHeader('Content-Type', 'application/json');
+	// 	//return res.send(JSON.stringify(body, null, 3));
+	// });
+
+
+	request(
+		{
+			url: `http://10.20.0.102:2375/v1.41/containers/json`,
+			json: true,
+			timeout: 5000
+		},
+		(err, resp, body) => {
+		
+			if (err) {
+				console.error(`[ERROR] Failed to connect to Docker API: ${err.message}`);
+				return res.status(500).send('Error connecting to Docker API');
+			}
+	  
+			if (resp && resp.statusCode === 200) {
+				console.info(`[SUCCESS] Docker API responded with containers:`, body);
+				return res.json(body);
+				
+			} else {
+				console.warn(`[WARNING] Unexpected response from Docker API:`, resp.statusCode, body);
+				return res.status(resp.statusCode || 500).send('Unexpected response from Docker API');
+			}
+		}
+	  ); // end of request
+	  
+}); // end of function
 
 //		 handle getting images from a given instance
 //		 GET:
@@ -127,17 +166,17 @@ app.get('/api/:instance/containers/:container/:action', (req, res) => {
 	if (!['start', 'stop', 'restart', 'remove'].includes(action)) {
 		return res.send('[api-server] wrong action choosen!')
 	}
-
-	// call docker api
-	request(`http://????????`, { json: true }, (err, res, body) => {
-		// print error if exists
-		if (err) { return console.log(err); }
-		console.log(`[api-server] -> [${instance}] ????`.green)
-		console.log(body.url); // TODO: check if needed
-		console.log(body.explanation);
-	  });
-	  // TODO: check and maybe change to json object
-	  return res.send(`${instance.toString()}<br>${action}<br>`);
+	// TODO: fix below
+	// // call docker api
+	// request(`http://help`, { json: true }, (err, resp, body) => {
+	// 	// print error if exists
+	// 	if (err) { return console.log(err); }
+	// 	console.log(`[api-server] -> [${instance}] ????`)
+	// 	console.log(body.url); // TODO: check if needed
+	// 	console.log(body.explanation);
+	//   });
+	//   // TODO: check and maybe change to json object
+	//   return res.send(`${instance.toString()}<br>${action}<br>`);
 });
 
 // handle POST method // TODO: develop

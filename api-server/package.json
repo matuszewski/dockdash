@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/matuszewski/dockdeck#readme",
   "dependencies": {
+    "axios": "^1.7.9",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
