@@ -9,6 +9,18 @@
 ### dockdash-web-server
 Single-site HTML 5 website serving dozen of Docker instances, containers and images data monitoring GUI made with Bootstrap5
 
+```bash
+npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/icons-material
+```
+
+```bash
+export NODE_OPTIONS=--openssl-legacy-provider 
+npm start
+```
+
+
+
 ## Configuration
 Currently, the whole project is designed to run out-of-the-box without any need of configuration by default.
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App';
 
 // load custom CSS
-import './styles/main.css';
+//TODO: check if needed: import './styles/main.css';
 
 // load Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
