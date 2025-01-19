@@ -5,9 +5,7 @@ function Images() {
       <section className='Images'>
          <div class="row m-3">
             <div class="col p-5 bg-info text-light rounded-3">
-
                <h1>Obrazy</h1>
-
                <div class="row mt-4">
                   <table class="table table-hover">
                      <thead class="thead-light">
