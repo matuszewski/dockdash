@@ -3,12 +3,12 @@ import React from 'react'
 function Images() {
    return (
       <section className='Images'>
-         <div class="row m-3">
-            <div class="col p-5 bg-info text-light rounded-3">
+         <div className="row m-3">
+            <div className="col p-5 bg-info text-light rounded-3">
                <h1>Obrazy</h1>
-               <div class="row mt-4">
-                  <table class="table table-hover">
-                     <thead class="thead-light">
+               <div className="row mt-4">
+                  <table className="table table-hover">
+                     <thead className="thead-light">
                         <tr>
                            <th scope="col">Repository</th>
                            <th scope="col">Tag</th>

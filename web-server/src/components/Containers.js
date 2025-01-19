@@ -6,9 +6,9 @@ function Containers() {
          <div className="row m-3">
             <div className='col p-5 bg-warning text-light rounded-3'>
                <h1>Kontenery</h1>
-               <div class="row mt-4">
-            <table class="table table-hover">
-               <thead class="thead-light">
+               <div className="row mt-4">
+            <table className="table table-hover">
+               <thead className="thead-light">
                <tr>
                   <th scope="col">Container ID</th>
                   <th scope="col">Image</th>
