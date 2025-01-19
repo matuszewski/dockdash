@@ -4,7 +4,7 @@ function Containers() {
    return (
       <section id="containers" className='Containers'>
          <div className="row m-3">
-            <div className='col p-5 bg-warning text-light rounded-3'>
+            <div className='col p-5 bg-warning rounded-3'>
                <h1>Kontenery</h1>
                <div className="row mt-4">
                   <table className="table table-hover">

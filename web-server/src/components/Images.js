@@ -4,7 +4,7 @@ function Images() {
    return (
       <section className='Images'>
          <div className="row m-3">
-            <div className="col p-5 bg-info text-light rounded-3">
+            <div className="col p-5 bg-info rounded-3">
                <h1>Obrazy</h1>
                <div className="row mt-4">
                   <table className="table table-hover">
