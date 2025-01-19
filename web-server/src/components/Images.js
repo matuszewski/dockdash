@@ -18,14 +18,14 @@ function Images() {
                         </tr>
                      </thead>
                      <tbody>
-                        <tr><td scope="row">docker101tutorial                 </td><td>latest</td>    <td>17759a2d875c</td>   <td>3 weeks ago </td>   <td>28.3MB</td></tr>
-                        <tr><td scope="row">mysql                             </td><td>latest</td>    <td>ecac195d15af</td>   <td>3 weeks ago </td>   <td>516MB</td></tr>
-                        <tr><td scope="row">node                              </td><td>latest</td>    <td>c4fbd6393264</td>   <td>4 weeks ago </td>   <td>905MB</td></tr>
-                        <tr><td scope="row">alpine/git                        </td><td>latest</td>    <td>612b988140be</td>   <td>5 weeks ago </td>   <td>27.4MB</td></tr>
-                        <tr><td scope="row">docker.elastic.co/kibana/kibana   </td><td>7.15.1</td>    <td>9871707dda25</td>   <td>5 weeks ago </td>   <td>1.19GB</td></tr>
-                        <tr><td scope="row">elasticsearch                     </td><td>7.14.2</td>    <td>2abd5342ace0</td>   <td>2 months ago</td>   <td>1.04GB</td></tr>
-                        <tr><td scope="row">docker.elastic.co/kibana/kibana   </td><td>7.14.2</td>    <td>750d302f8aff</td>   <td>2 months ago</td>   <td>1.29GB</td></tr>
-                        <tr><td scope="row">kibana                            </td><td>7.14.2</td>    <td>750d302f8aff</td>   <td>2 months ago</td>   <td>1.29GB</td></tr>
+                        <tr><td>docker101tutorial                 </td><td>latest</td>    <td>17759a2d875c</td>   <td>3 weeks ago </td>   <td>28.3MB</td></tr>
+                        <tr><td>mysql                             </td><td>latest</td>    <td>ecac195d15af</td>   <td>3 weeks ago </td>   <td>516MB</td></tr>
+                        <tr><td>node                              </td><td>latest</td>    <td>c4fbd6393264</td>   <td>4 weeks ago </td>   <td>905MB</td></tr>
+                        <tr><td>alpine/git                        </td><td>latest</td>    <td>612b988140be</td>   <td>5 weeks ago </td>   <td>27.4MB</td></tr>
+                        <tr><td>docker.elastic.co/kibana/kibana   </td><td>7.15.1</td>    <td>9871707dda25</td>   <td>5 weeks ago </td>   <td>1.19GB</td></tr>
+                        <tr><td>elasticsearch                     </td><td>7.14.2</td>    <td>2abd5342ace0</td>   <td>2 months ago</td>   <td>1.04GB</td></tr>
+                        <tr><td>docker.elastic.co/kibana/kibana   </td><td>7.14.2</td>    <td>750d302f8aff</td>   <td>2 months ago</td>   <td>1.29GB</td></tr>
+                        <tr><td>kibana                            </td><td>7.14.2</td>    <td>750d302f8aff</td>   <td>2 months ago</td>   <td>1.29GB</td></tr>
                      </tbody>
                   </table>
                </div>

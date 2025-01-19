@@ -1,20 +1,15 @@
 import React from 'react'
 
 function Footer() {
-  return (
-    <div className='Footer'>
-      <div class="row m-0 m-sm-5">
-        {/* footer */}
-        <section id="footer">
-         <div class="container-fluid bg-white p-5">
-           <div class="container pb-5">
-             <p>wykonanie: Krzysztof Matuszewski</p>
-           </div>
+   return (
+      <section className='Footer'>
+         <div className="row m-3">
+            <div className='col p-5 bg-danger text-light rounded-3'>
+               <h1>Footer Component</h1>
+            </div>
          </div>
-        </section>
-      </div>
-    </div>
-  );
+      </section>
+   );
 }
 
 export default Footer;
