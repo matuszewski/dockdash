@@ -12,8 +12,7 @@ export default function App() {
    return (
       <div className="App">
          <BrowserRouter>
-            <main id="main" className="bg-light text-dark">
-               {/* content */}
+            <main id="main" className="bg-warning m-0 p-0 text-dark">
                <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/author" element={<Author />} />
