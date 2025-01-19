@@ -14,13 +14,13 @@ import config from "../config.json";
 
 export default function Devices() {
     return (
-      <div className="Dashboard" class="row m-0 m-sm-5">
+      <section className="Dashboard p-5 m-5">
          <Navigation/>
          <Banner/>
          <Instances/>
          <Images/>
          <Containers/>
          <Footer/>
-      </div>
+      </section>
    );
 }
