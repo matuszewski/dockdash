@@ -17,7 +17,7 @@ const api_server_port = 4000;
 const logging_name = 'api-server'
 const success = `${logging_name} `.gray + '['.white + 'SUCCESS'.green + ']'.white + ' '
 const info = `${logging_name} `.gray + '['.white + 'INFO'.blue + ']'.white + ' '
-const error = `${logging_name} `.gray + '['.white + 'ERROR'.red + ']'.white + ' '
+const failure = `${logging_name} `.gray + '['.white + 'ERROR'.red + ']'.white + ' '
 const debug = `${logging_name} `.gray + '['.white + 'DEBUG'.yellow + ']'.white + ' '
 
 // instances configuration
@@ -46,6 +46,7 @@ app.get("/", (req, res) => {
   );
 });
 
+// handle GET request /api/instances
 app.get("/api/instances", (req, res) => {
 	return res.send(instance_configuration);
   });
@@ -77,18 +78,18 @@ app.get("/api/:instance/containers", async (req, res) => {
     if (error.response) {
       // server responded with a status code other than 2xx
       console.error(
-        `${error}Docker API returned error: ${error.response.status} ${error.response.statusText}`.red
+        `${failure}Docker API returned error: ${error.response.status} ${error.response.statusText}`.red
       );
       return res
         .status(error.response.status)
         .send(error.response.statusText || "Error from Docker API");
     } else if (error.request) {
       // no response received
-      console.error(`${error}no response from Docker API`.red);
+      console.error(`${failure}no response from Docker API`.red);
       return res.status(503).send("No response from Docker API");
     } else {
       // other errors
-      console.error(`${error}could not connect to Docker API: ${error.message}`.red);
+      console.error(`${failure}could not connect to Docker API: ${error.message}`.red);
       return res.status(500).send("Error connecting to Docker API");
     }
   }

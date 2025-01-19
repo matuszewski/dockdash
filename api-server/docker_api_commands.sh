@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# direct docker commands:
+
 # get containers details
 curl -X GET http://127.0.0.1:2375/v1.41/containers/json | jq
 
