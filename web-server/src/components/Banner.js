@@ -8,11 +8,11 @@ function Banner() {
    const [results, setResults] = useState('');
 
    useEffect(() => {
-     const dataFetch = async () => {
-       const response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`)).json();
-       console.log(response.local.ip)  
-       setResults(JSON.stringify(response, null, 2)); // Convert to JSON string with formatting
-       setLoaded(true);
+      const dataFetch = async () => {
+         const response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`)).json();
+         //console.log(response.local.ip)  
+         setResults(JSON.stringify(response, null, 2)); // Convert to JSON string with formatting
+         setLoaded(true);
      };
      dataFetch();
    }, [])
