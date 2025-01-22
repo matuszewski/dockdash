@@ -3,8 +3,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Route, Routes, Link} from "react-router-dom"
 
 // import custom components
-import Author from "./components/Author.js"
-import Dashboard from "./components/Dashboard.js"
+import Author from "./pages/Author.js"
+import Dashboard from "./pages/Dashboard.js"
+import Raw from "./pages/Raw.js"
 
 export default function App() {
    const [activePane, setActivePane] = useState('dashboard');
@@ -16,6 +17,8 @@ export default function App() {
                <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/author" element={<Author />} />
+                  <Route path="/raw" element={<Raw />} />
+
                </Routes>
             </main>
          </BrowserRouter>

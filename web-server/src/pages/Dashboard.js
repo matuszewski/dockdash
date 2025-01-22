@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 // import custom components
-import Navigation from "./Navigation.js"
-import Footer from "./Footer.js"
+import Navigation from "../components/Navigation.js"
+import Footer from "../components/Footer.js"
 
-import Banner from "./Banner.js"
-import Instances from "./Instances.js"
-import Images from "./Images.js"
-import Containers from "./Containers.js"
+import Banner from "../components/Banner.js"
+import Instances from "../components/Instances.js"
+import Images from "../components/Images.js"
+import Containers from "../components/Containers.js"
 
 // import config file for getting API server settings
 import config from "../config.json";
