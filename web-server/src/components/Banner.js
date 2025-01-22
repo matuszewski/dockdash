@@ -71,7 +71,7 @@ function Banner() {
 
             <div className='col my-5 rounded-3'>
                <div class="row">
-                  <div class="col-md-6 p-5 bg-secondary rounded-3">
+                  <div class="col-md-6 p-5 bg-secondary rounded-3 text-light">
                      <h1>Status API</h1>
                      <pre>
                         <code>
