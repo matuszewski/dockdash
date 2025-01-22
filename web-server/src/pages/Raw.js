@@ -16,6 +16,14 @@ function Raw() {
       const dataFetch = async () => {
          const instances_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`)).json();
          const instance_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers`)).json();
+         
+         // TODO: flow:
+         // for instance
+            // check if is accessible
+               // if yes
+                  // get instace data and append to object array
+               // if not
+                  // continue
 
          setInstances(JSON.stringify(instances_response, null, 2));
          setSingle(JSON.stringify(instance_response, null, 2));
