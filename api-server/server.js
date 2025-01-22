@@ -23,7 +23,7 @@ const debug = `${logging_name} `.gray + '['.white + 'DEBUG'.yellow + ']'.white +
 // instances configuration
 const instance_configuration = {
   local: {
-    ip: "127.0.0.1",
+    ip: "10.20.0.104",
     port: "2375",
     api_version: "1.47",
   },

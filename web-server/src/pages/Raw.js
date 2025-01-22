@@ -9,13 +9,17 @@ import Footer from "../components/Footer.js"
 
 function Raw() {
    const [loaded, setLoaded] = useState(false)
-   const [results, setResults] = useState('');
+   const [instances, setInstances] = useState('');
+   const [single, setSingle] = useState(''); // TODO: change, single instace of docker data is added here
 
    useEffect(() => {
       const dataFetch = async () => {
-         const response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`)).json();
-         //console.log(response.local.ip)
-         setResults(JSON.stringify(response, null, 2)); // convert to JSON string with formatting
+         const instances_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`)).json();
+         const instance_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers`)).json();
+
+         setInstances(JSON.stringify(instances_response, null, 2));
+         setSingle(JSON.stringify(instance_response, null, 2));
+
          setLoaded(true);
      };
      dataFetch();
@@ -82,7 +86,20 @@ function Raw() {
                      <h1>Status API</h1>
                      <pre>
                         <code>
-                           {results}
+                           {instances}
+                        </code>
+                     </pre>
+                  </div>
+               </div>
+            </div>
+
+            <div className='col my-5 rounded-3'>
+               <div class="row">
+                  <div class="col-md-6 p-5 bg-secondary rounded-3 text-light">
+                     <h1>Kontenery</h1>
+                     <pre>
+                        <code>
+                           {single}
                         </code>
                      </pre>
                   </div>
