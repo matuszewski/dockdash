@@ -26,19 +26,19 @@ function Navigation() {
                <div className="collapse navbar-collapse" id="navbarResponsive">
                   <ul className="navbar-nav ml-auto">
                      <li className="nav-item active">
-                        <a className="nav-link text-light" href="#">Kokpit</a>
+                        <a className="nav-link text-light" href="/">Kokpit</a>
                      </li>
                      <li className="nav-item">
-                        <a className="nav-link text-light" href="#">Instancje</a>
+                        <a className="nav-link text-light" href="/instances">Instancje</a>
                      </li>
                      <li className="nav-item">
-                        <a className="nav-link text-light" href="#">Obrazy</a>
+                        <a className="nav-link text-light" href="/images">Obrazy</a>
                      </li>
                      <li className="nav-item">
-                        <a className="nav-link text-light" href="#">Kontenery</a>
+                        <a className="nav-link text-light" href="/containers">Kontenery</a>
                      </li>
                      <li className="nav-item">
-                        <a className="nav-link text-light" href="#">API</a>
+                        <a className="nav-link text-light" href="/raw">API</a>
                      </li>
                   </ul>
                </div>

@@ -18,7 +18,6 @@ export default function App() {
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/author" element={<Author />} />
                   <Route path="/raw" element={<Raw />} />
-
                </Routes>
             </main>
          </BrowserRouter>

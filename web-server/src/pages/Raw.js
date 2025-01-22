@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react';
 // import config file
 import config from "../config.json";
 
+// import custom components
+import Navigation from "../components/Navigation.js"
+import Footer from "../components/Footer.js"
+
 function Raw() {
    const [loaded, setLoaded] = useState(false)
    const [results, setResults] = useState('');
@@ -36,6 +40,9 @@ function Raw() {
 
    return (
       <section className='Raw'>
+         
+         <Navigation/>
+
          <div className="row m-3 mt-5">
             <div className='col my-5 rounded-3'>
 
@@ -83,6 +90,8 @@ function Raw() {
             </div>
 
          </div>
+
+         <Footer />
       </section>
    );
 }
