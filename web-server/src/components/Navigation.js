@@ -22,7 +22,7 @@ function Navigation() {
                   </div>
                </div>
 
-               {/* navigation links */}
+               {/* navigation */}
                <div className="collapse navbar-collapse" id="navbarResponsive">
                   <ul className="navbar-nav ml-auto">
                      <li className="nav-item active">
