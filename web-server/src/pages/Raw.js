@@ -54,69 +54,34 @@ function Raw() {
       <section className='Raw'>
          
          <Navigation/>
+         
+         <div className="row m-5 p-5" />
+         
+         <div className="row m-5">
+           
 
-         <div className="row m-3 mt-5">
-            <div className='col my-5 rounded-3'>
-
-               <div class="row">
-                  <div class="col-md-10 p-5 bg-secondary rounded-3">
-                     <h1><b>: :</b> dock<b>dash</b></h1>
-                     <p>Część projektowa pracy magisterskiej</p>
-                     <table class="table">
-                        <tbody>
-                           <tr>
-                              <td>autor</td>
-                              <td>Krzysztof Matuszewski</td>
-                           </tr>
-                           <tr>
-                              <td>indeks</td>
-                              <td>160802</td>
-                           </tr>
-                           <tr>
-                              <td>email</td>
-                              <td>krzysiekmatuszewski@outlook.com</td>
-                           </tr>
-                           <tr>
-                              <td>github</td>
-                              <td>@matuszewski</td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </div>
-               </div>
-
+            <div className='col-md-3 m-1 p-5 bg-dark rounded-3 text-light'>
+               <h1>Status API</h1>
+               <pre>
+                  <code>
+                     {instances}
+                  </code>
+               </pre>
             </div>
 
-
-            <div className='col my-5 rounded-3'>
-               <div class="row">
-                  <div class="col-md-6 p-5 bg-secondary rounded-3 text-light">
-                     <h1>Status API</h1>
-                     <pre>
-                        <code>
-                           {instances}
-                        </code>
-                     </pre>
-                  </div>
-               </div>
-            </div>
-
-            <div className='col my-5 rounded-3'>
-               <div class="row">
-                  <div class="col-md-6 p-5 bg-secondary rounded-3 text-light">
-                     <h1>Kontenery</h1>
-                     <pre>
-                        <code>
-                           {single}
-                        </code>
-                     </pre>
-                  </div>
-               </div>
+            <div className='col-md-8 m-1 p-5 bg-success rounded-3 text-light'>
+               <h1>Kontenery</h1>
+               <pre>
+                  <code>
+                     {single}
+                  </code>
+               </pre>
             </div>
 
          </div>
 
          <Footer />
+
       </section>
    );
 }
