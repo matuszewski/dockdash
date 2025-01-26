@@ -73,7 +73,17 @@ app.get("/api/:instance/containers", async (req, res) => {
     console.info(`${info}fetching containers from ${url.cyan}`);
     const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
     console.info(`${success}Docker API responded successfully`);
-    return res.json(response.data); // Respond with the Docker API data
+    
+    // TODO: add if statement and parametrize
+    // return recevied data in unchanged format
+    console.info(`${info}reuturning response in unchanged format`);
+    return res.json(response.data);
+
+
+    // TODO: return received data in correct format
+    console.info(`${info}parsing response`);
+
+
   } catch (error) {
     if (error.response) {
       // server responded with a status code other than 2xx
