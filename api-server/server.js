@@ -79,7 +79,7 @@ app.get("/api/:instance/containers", async (req, res) => {
     console.info(`${info}reuturning response in unchanged format`);
     return res.json(response.data);
 
-
+    
     // TODO: return received data in correct format
     console.info(`${info}parsing response`);
 
