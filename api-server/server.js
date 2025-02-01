@@ -42,6 +42,42 @@ const instance_configuration = {
    },
 };
 
+function loadInstancesConfig(config_file_path='./config/instances.json') {
+   // TODO: add loading instances from separate json file
+}
+
+function saveInstancesConfig(config_file_path='./config/instances.json') {
+   // TODO: add saving instances into the same json file
+}
+
+function loadServerConfig(config_file_path='./config/settings.json') {
+   // TODO: add loading server config from separate json file
+}
+
+
+async function checkInstanceAvailablity(instance_id) {
+
+   // get instance config based on instance_id
+   const instance_onfig = instance_configuration[instance_id];
+   if (!instance_config) {
+      console.error(`${failure}Instance '${instance}' not found`);
+      return 1 // TODO: check return codes
+   }
+
+   const { ip, port, api_version } = instance_configuration[instance_id];
+   const url = `http://${ip}:${port}/v${api_version}/info`; // TODO: check default docker url for checking if the api works / status
+
+   try {
+      console.debug(`${debug}trying to check ${instance_id} Docker instance availabilty by calling URL: ${url.cyan}`);
+      const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
+      console.debug(`${debug}Docker API responded successfully`);
+   } catch (error) {
+      console.error(`${failure}Docker API responded successfully`);
+
+   }
+
+}
+
 // handle GET /
 app.get("/", (req, res) => {
    return res.send(

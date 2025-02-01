@@ -10,13 +10,13 @@ function Containers() {
                   <table className="table table-hover">
                      <thead className="thead-light">
                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Obraz</th>
-                        <th scope="col">Komenda</th>
-                        <th scope="col">Stworzony</th>
+                        <th scope="col">Container ID</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Command</th>
+                        <th scope="col">Created</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Porty</th>
-                        <th scope="col">Nazwa</th>
+                        <th scope="col">Ports</th>
+                        <th scope="col">Name</th>
                      </tr>
                      </thead>
                      <tbody>
