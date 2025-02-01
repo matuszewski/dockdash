@@ -9,7 +9,7 @@ const app = express();
 // use the CORS middleware
 app.use(cors());
 
-// API server port
+// api server port
 const api_server_port = 4000;
 
 // logging rules
@@ -43,15 +43,20 @@ const instance_configuration = {
 };
 
 function loadInstancesConfig(config_file_path = "./config/instances.json") {
+   let instances = {}
+   let available_instances = {}
    // TODO: add loading instances from separate json file
+   return 0
 }
 
 function saveInstancesConfig(config_file_path = "./config/instances.json") {
    // TODO: add saving instances into the same json file
+   return 0
 }
 
 function loadServerConfig(config_file_path = "./config/settings.json") {
    // TODO: add loading server config from separate json file
+   return 0
 }
 
 async function checkInstanceAvailablity(instance_id) {
@@ -65,16 +70,37 @@ async function checkInstanceAvailablity(instance_id) {
    const { ip, port, api_version } = instance_configuration[instance_id];
    const url = `http://${ip}:${port}/v${api_version}/info`; // TODO: check default docker url for checking if the api works / status
 
+   // TODO: add running that only in debug/verbose mode
+   console.debug(`${debug} checking ${instance_id} instance availabilty via URL: ${url.cyan}`);
+
    try {
-      console.debug(
-         `${debug}trying to check ${instance_id} Docker instance availabilty by calling URL: ${url.cyan}`
-      );
-      const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
-      console.debug(`${debug}Docker API responded successfully`);
+      const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout // TODO: pick timeout from config/settings.json
+      console.success(`${success} instance ${instance_id} is available`);
+      return true
+
    } catch (error) {
-      console.error(`${failure}Docker API responded successfully`);
+      console.error(`${failure} instance ${instance_id} is not available`);
+      return false
    }
 }
+
+
+function checkInstancesAvaiabilty(instance_ids) {
+   /* Function for checking many Docker instances availabilty based on provided instances ID's */
+   let availability_array = []
+   try {
+      instances_ids.forEach(instance_id => {
+         availability_array.append(checkInstanceAvailablity(instance_id))
+      });
+      
+      return availability_array
+
+   } catch (error) {
+      console.error(`${failure} a problem occured in checkInstancesAvaiabilty() function. error: ${error}`);
+      return 1
+   }
+}
+
 
 // handle GET /
 app.get("/", (req, res) => {
@@ -85,6 +111,7 @@ app.get("/", (req, res) => {
 
 // handle GET request /api/instances
 app.get("/api/instances", (req, res) => {
+   let k = checkInstanceAvailablity()
    return res.send(instance_configuration);
 });
 
