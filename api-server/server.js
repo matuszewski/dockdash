@@ -61,7 +61,7 @@ function loadServerConfig(config_file_path = "./config/settings.json") {
 
 async function checkInstanceAvailablity(instance_id) {
    // get instance config based on instance_id
-   const instance_onfig = instance_configuration[instance_id];
+   const instance_config = instance_configuration[instance_id];
    if (!instance_config) {
       console.error(`${failure}Instance '${instance}' not found`);
       return 1; // TODO: check return codes
