@@ -75,3 +75,7 @@ In case of any problems not described or linked in this readme please contact pr
 - timeouts settings picked individualy for each docker api action to take, taken from settings JSON config file
 - API created in REST type
 - using Axios as a new, secure and better alternative to popular Request module using in REST API
+
+## TODO
+- [ ] make it work with Docker instance hosted on macOS
+- [ ] split the api-server to many files, OOP or single scope of responsibilty per file
