@@ -63,7 +63,7 @@ async function checkInstanceAvailablity(instance_id) {
    // get instance config based on instance_id
    const instance_config = instance_configuration[instance_id];
    if (!instance_config) {
-      console.error(`${failure}Instance '${instance}' not found`);
+      console.error(`${failure}Instance '${instance_id}' not found`);
       return 1; // TODO: check return codes
    }
 
@@ -111,7 +111,7 @@ app.get("/", (req, res) => {
 
 // handle GET request /api/instances
 app.get("/api/instances", (req, res) => {
-   let k = checkInstanceAvailablity()
+   let k = checkInstanceAvailablity('wyse')
    return res.send(instance_configuration);
 });
 
@@ -128,7 +128,7 @@ app.get("/api/:instance/containers", async (req, res) => {
    // resolve instance configuration
    const instanceConfig = instance_configuration[instance];
    if (!instanceConfig) {
-      console.error(`[ERROR] Instance '${instance}' not found`.red);
+      console.error(`${error}instance '${instance}' not found`.red);
       return res.status(404).send("Instance not found");
    }
 
