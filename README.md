@@ -79,3 +79,4 @@ In case of any problems not described or linked in this readme please contact pr
 ## TODO
 - [ ] make it work with Docker instance hosted on macOS
 - [ ] split the api-server to many files, OOP or single scope of responsibilty per file
+- [ ] add prettierrc and format all
