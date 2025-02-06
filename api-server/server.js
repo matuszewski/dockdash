@@ -109,11 +109,15 @@ app.get("/", (req, res) => {
    );
 });
 
+
+
 // handle GET request /api/instances
 app.get("/api/instances", (req, res) => {
    let k = checkInstanceAvailablity('wyse')
    return res.send(instance_configuration);
 });
+
+
 
 // handle GET /api/:instance/containers
 app.get("/api/:instance/containers", async (req, res) => {
@@ -173,6 +177,7 @@ app.get("/api/:instance/containers", async (req, res) => {
 });
 
 
+// handle GET /api/:instance/images
 app.get("/api/:instance/images", async (req, res) => {
    const instance = req.params.instance;
 
@@ -188,6 +193,7 @@ app.get("/api/:instance/images", async (req, res) => {
 });
 
 
+// handle GET /api/:instance/resources
 app.get("/api/:instance/resources", async (req, res) => {
    const instance = req.params.instance;
 
@@ -199,8 +205,10 @@ app.get("/api/:instance/resources", async (req, res) => {
    );
 
    // TODO: implement functionalities
+   return res.json({"total": {"cpu": 0, "ram": 0, "disk": 0}});
 
 });
+
 
 
 // start the api server
