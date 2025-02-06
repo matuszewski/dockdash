@@ -172,6 +172,37 @@ app.get("/api/:instance/containers", async (req, res) => {
    }
 });
 
+
+app.get("/api/:instance/images", async (req, res) => {
+   const instance = req.params.instance;
+
+   // print info about a new request
+   console.info(
+      `${info}received /api/${instance}/images/ HTTP GET request from ${
+         req.socket.remoteAddress.replace(/^.*:/, "").cyan
+      }`
+   );
+
+   // TODO: implement functionalities
+
+});
+
+
+app.get("/api/:instance/resources", async (req, res) => {
+   const instance = req.params.instance;
+
+   // print info about a new request
+   console.info(
+      `${info}received /api/${instance}/resources/ HTTP GET request from ${
+         req.socket.remoteAddress.replace(/^.*:/, "").cyan
+      }`
+   );
+
+   // TODO: implement functionalities
+
+});
+
+
 // start the api server
 app.listen(api_server_port, () => {
    console.info(
