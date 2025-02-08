@@ -14,6 +14,8 @@ import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import GridViewIcon from '@mui/icons-material/GridView';
 import DnsOutlinedIcon from '@mui/icons-material/DnsOutlined';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function Raw() {
    const [loaded, setLoaded] = useState(false);
@@ -158,15 +160,24 @@ function Raw() {
                         <tr>
                            <th scope="col">Nazwa</th>
                            <th scope="col">IP</th>
+                           <th scope="col">Port</th>
+                           <th scope="col" className="text-end">Wersja API</th>
+                           <th scope="col" className="text-end">Status</th>
                         </tr>
                      </thead>
                      <tbody>
-                        {images.map((image, index) => (
-                           <tr key={index}>
-                              <td className="text-end">{image.size}</td>
-                              <td className="text-end">{image.created}</td>
-                           </tr>
-                        ))}
+                        {Object.keys(instances).map((key, index) => {
+                           const instance = instances[key];
+                           return (
+                              <tr key={index}>
+                                 <td>{key}</td>
+                                 <td>{instance.ip}</td>
+                                 <td>{instance.port}</td>
+                                 <td className="text-end">{instance.api_version}</td>
+                                 <td className="text-end">OK <CheckCircleIcon className="text-success"/></td>
+                              </tr>
+                           );
+                        })}
                      </tbody>
                   </table>
                </div>
