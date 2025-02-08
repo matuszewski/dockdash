@@ -9,14 +9,17 @@ import Footer from "../components/Footer.js"
 
 function Raw() {
    const [loaded, setLoaded] = useState(false)
+
    const [instances, setInstances] = useState('');
-   const [single, setSingle] = useState(''); // TODO: change, single instace of docker data is added here
+   const [images, setImages] = useState({});
+   const [containers, setContainers] = useState({}); // TODO: change as now only single instace of docker data is added here
 
    useEffect(() => {
       const dataFetch = async () => {
          const instances_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`)).json();
          const instance_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers`)).json();
-         
+         const instance_images_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/images`)).json();
+
          // TODO: flow:
          // for instance
             // check if is accessible
@@ -26,7 +29,9 @@ function Raw() {
                   // continue
 
          setInstances(JSON.stringify(instances_response, null, 2));
-         setSingle(JSON.stringify(instance_response, null, 2));
+         setContainers(JSON.stringify(instance_response, null, 2));
+
+         setImages(JSON.stringify(instance_images_response, null, 2));
 
          setLoaded(true);
      };
@@ -73,7 +78,17 @@ function Raw() {
                <h1>Kontenery</h1>
                <pre>
                   <code>
-                     {single}
+                     {containers}
+                  </code>
+               </pre>
+            </div>
+
+
+            <div className='col-md-8 m-1 p-5 bg-success rounded-3 text-light'>
+               <h1>Obrazy</h1>
+               <pre>
+                  <code>
+                     {images}
                   </code>
                </pre>
             </div>

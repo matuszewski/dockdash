@@ -56,6 +56,8 @@ function saveInstancesConfig(config_file_path = "./config/instances.json") {
 
 // TODO: get from config and make global
 const VERBOSE_MODE = true
+const RAW_MODE = false
+
 //const config = ?
 function loadServerConfig(config_file_path = "./config/settings.json") {
    // TODO: add loading server config from separate json file
@@ -209,79 +211,83 @@ app.get("/api/:instance/images", async (req, res) => {
    const { ip, port, api_version } = instanceConfig;
    const url = `http://${ip}:${port}/v${api_version}/images/json`;
    
-   // TODO: implement functionalities
    try {
+      // call docker instance
       console.info(`${info}fetching containers from ${url.cyan}`);
       const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
       const images = response.data;
       console.info(`${success}Docker API responded successfully`);
 
-      // TODO: add if statement and parametrize
-      // return recevied data in unchanged format
-      console.info(`${info}returning response in unchanged format`);
+      // use raw data or not
+      if (RAW_MODE) {
+         // return recevied data in unchanged JSON format
+         console.info(`${info}returning response in unchanged format`);
+         return res.json(response.data);
+
+      } else {
+         // parse and prepare data to return in desired JSON format
+         console.info(`${info}parsing response`);
+
+         const return_structure = [];
+
+         images.forEach(image => {
+            const repoTags = image.RepoTags || []; // default to an empty array if RepoTags is undefined
       
-      // parse and prepare data to return
-      const return_structure = [];
-      images.forEach(image => {
-         const repoTags = image.RepoTags || []; // default to an empty array if RepoTags is undefined
-     
-         // extract the image name safely
-         const imageName = repoTags[0] ? repoTags[0].split(':')[0] : 'No name';
-     
-         // extract the first tag or default to 'latest' if no tag is available
-         const firstTag = repoTags[0] ? repoTags[0].split(':')[1] || 'latest' : 'latest';
-     
-         // get the number of tags
-         const numTags = repoTags.length;
-     
-         // get the image size in MB
-         const imageSize = formatBytesToMB(image.Size); // convert image size to MB
-     
-         // get image ID
-         const imageId = image.Id || 'Unknown ID';
-         const imageShortId = imageId.startsWith("sha256:") ? imageId.substring(7, 19) : imageId.substring(0, 12);
+            // extract the image name safely
+            const imageName = repoTags[0] ? repoTags[0].split(':')[0] : 'No name';
+      
+            // extract the first tag or default to 'latest' if no tag is available
+            const firstTag = repoTags[0] ? repoTags[0].split(':')[1] || 'latest' : 'latest';
+      
+            // get the number of tags
+            const numTags = repoTags.length;
+      
+            // get the image size in MB
+            const imageSize = formatBytesToMB(image.Size); // convert image size to MB
+      
+            // get image ID
+            const imageId = image.Id || 'Unknown ID';
+            const imageShortId = imageId.startsWith("sha256:") ? imageId.substring(7, 19) : imageId.substring(0, 12);
 
-         // get created date in a friendly format
-         const createdDate = image.Created ? new Date(image.Created * 1000).toLocaleString() : 'Unknown date';
-     
-         // prepare the parsed data
-         const imageData = {
-             "id": imageId,          // image ID
-             "id_short": imageShortId,          // image ID
-             "name": imageName,      // image name
-             "tag": firstTag,        // first tag
-             "tags": repoTags.map(tag => tag.split(':')[1] || 'latest'), // extract all tags
-             "tags_number": numTags, // number of tags
-             "size": imageSize,      // image size in MB
-             "created": createdDate  // human-readable created date
-         };
-     
-         // append the parsed data to the return structure
-         return_structure.push(imageData);
-     
-         // print parsed data (for debugging)
-         console.log(`image ID: ${imageId}`);
-         console.log(`image short ID: ${imageShortId}`);
+            // get created date in a friendly format
+            const createdDate = image.Created ? new Date(image.Created * 1000).toLocaleString() : 'Unknown date';
+      
+            // prepare the parsed data
+            const imageData = {
+               "id": imageId,          // image ID
+               "id_short": imageShortId,          // image ID
+               "name": imageName,      // image name
+               "tag": firstTag,        // first tag
+               "tags": repoTags.map(tag => tag.split(':')[1] || 'latest'), // extract all tags
+               "tags_number": numTags, // number of tags
+               "size": imageSize,      // image size in MB
+               "created": createdDate  // human-readable created date
+            };
+      
+            // append the parsed data to the return structure
+            return_structure.push(imageData);
+      
+            // print parsed data (for debugging)
+            console.log(`image ID: ${imageId}`);
+            console.log(`image short ID: ${imageShortId}`);
 
-         console.log(`image name: ${imageName.blue}`);
-         repoTags.forEach(tag => {
-             const imageTag = tag.split(':')[1] || 'latest'; // get only the tag (second part)
-             console.log(`tag: ${imageTag.blue}`);
+            console.log(`image name: ${imageName.blue}`);
+            repoTags.forEach(tag => {
+               const imageTag = tag.split(':')[1] || 'latest'; // get only the tag (second part)
+               console.log(`tag: ${imageTag.blue}`);
+            });
+            console.log(`tags: ${numTags}`);
+            console.log(`size: ${imageSize.red} MB`);
+            console.log(`created: ${createdDate}`);
+            console.log('----'.blue);
          });
-         console.log(`tags: ${numTags}`);
-         console.log(`size: ${imageSize.red} MB`);
-         console.log(`created: ${createdDate}`);
-         console.log('----'.blue);
-     });
 
 
-      // print return structure
-      console.info(`${info}prepared return structure:\n${JSON.stringify(return_structure, null, 2)}`);
+         // print return structure
+         //console.debug(`${debug}prepared return structure:\n${JSON.stringify(return_structure, null, 2)}`);
 
-      // TODO: return received data in correct format
-      console.info(`${info}parsing response`);
-      return res.json(response.data);
-
+         return res.json(return_structure);
+      }
 
    } catch (error) {
       if (error.response) {
