@@ -47,7 +47,7 @@ function Raw() {
          }
 
 
-         
+
 
          //setImages(JSON.stringify(instance_images_response, null, 2));
          //setImages(instance_images_response);
@@ -76,10 +76,10 @@ function Raw() {
 
    return (
       <section className='Raw'>
-         
+
 
          <Navigation/>
-         
+
 
          <div className="row m-5 p-5" />
 
@@ -121,7 +121,7 @@ function Raw() {
 
 
          <div className="row m-5">
-           
+
             <div className='col-md-3 m-1 p-5 bg-dark rounded-3 text-light'>
                <h1>Status API</h1>
                <pre>
