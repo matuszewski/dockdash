@@ -100,8 +100,8 @@ function Raw() {
    return (
       <section className="Raw">
          <Navigation />
-
-         <div className="row m-5 p-5" />
+         
+         <div className="row m-5 p-5" /> {/* empty row just for margin */}
 
          <div className="row m-5">
 
