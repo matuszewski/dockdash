@@ -10,9 +10,9 @@ import Footer from "../components/Footer.js";
 function Raw() {
    const [loaded, setLoaded] = useState(false);
 
-   const [instances, setInstances] = useState("");
+   const [instances, setInstances] = useState([]);
    const [images, setImages] = useState([]);
-   const [containers, setContainers] = useState({}); // TODO: change as now only single instace of docker data is added here
+   const [containers, setContainers] = useState([]); // TODO: change as now only single instace of docker data is added here
 
    useEffect(() => {
       const dataFetch = async () => {
@@ -21,7 +21,7 @@ function Raw() {
                `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`
             )
          ).json();
-         const instance_response = await (
+         const containers_response = await (
             await fetch(
                `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers`
             )
@@ -41,14 +41,15 @@ function Raw() {
          // continue
 
          // SETUP INSTANCES
-         setInstances(JSON.stringify(instances_response, null, 2));
+         setInstances(instances_response);
 
          // SETUP CONTAINERS
-         setContainers(JSON.stringify(instance_response, null, 2));
+         setContainers(containers_response);
 
          // SETUP IMAGES
          if (Array.isArray(data)) {
-            setImages(data); // set data only if array format
+            setImages(data); // set data as array
+            //setImages(JSON.stringify(instance_response, null, 2)); // set data as string
          } else {
             console.error("array was expected, got:", data);
             setImages([]); // preventing rendering issues, setting empty array
@@ -92,7 +93,11 @@ function Raw() {
          <div className="row m-5 p-5" />
 
          <div className="row m-5">
+
+            {/* empty */}
             <div className="col-md-2 m-1 p-5 bg-dark rounded-3 text-light"></div>
+
+            {/* images */}
             <div className="col-md-9 m-1 p-5 bg-dark rounded-3 text-light">
                <table class="table table-dark table-hover">
                   <thead>
@@ -125,29 +130,72 @@ function Raw() {
                   </tbody>
                </table>
             </div>
+            
+            {/* containers */}
+            <div className="col-md-9 m-1 p-5 bg-dark rounded-3 text-light">
+               <table class="table table-dark table-hover">
+                  <thead>
+                     <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nazwa</th>
+                        <th scope="col">Tag</th>
+                        <th scope="col">Rozmiar</th>
+                        <th scope="col">Utworzony</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {images.map((image, index) => (
+                        <tr key={index}>
+                           <td>{image.id_short}</td>
+                           <td>{image.name}</td>
+                           <td>
+                              <a
+                                 href={image.tag}
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                              >
+                                 {image.tag}
+                              </a>
+                           </td>
+                           <td>{image.size} MB</td>
+                           <td>{image.created}</td>
+                        </tr>
+                     ))}
+                  </tbody>
+               </table>
+            </div>
+
          </div>
 
          <div className="row m-5">
-            <div className="col-md-3 m-1 p-5 bg-dark rounded-3 text-light">
-               <h1>Status API</h1>
-               <pre>
-                  <code>{instances}</code>
-               </pre>
+            <div className="col-lg-4 col-md-6 col-12">
+               <div className="p-5 bg-dark rounded-3 text-light">
+                  <h1>Instancje</h1>
+                  <pre>
+                     <code>{JSON.stringify(instances, null, 2)}</code>
+                  </pre>
+               </div>
             </div>
 
-            <div className="col-md-8 m-1 p-5 bg-success rounded-3 text-light">
-               <h1>Kontenery</h1>
-               <pre>
-                  <code>{containers}</code>
-               </pre>
+            <div className="col-lg-4 col-md-6 col-12">
+               <div className="p-5 bg-dark rounded-3 text-light">
+                  <h1>Kontenery</h1>
+                  <pre>
+                     <code>{JSON.stringify(containers, null, 2)}</code>
+                  </pre>
+               </div>
             </div>
 
-            <div className="col-md-8 m-1 p-5 bg-success rounded-3 text-light">
-               <h1>Obrazy</h1>
-               <pre>
-                  <code></code>
-               </pre>
+
+            <div className="col-lg-4 col-md-6 col-12">
+               <div className="p-5 bg-dark rounded-3 text-light">
+                  <h1>Obrazy</h1>
+                  <pre>
+                     <code>{JSON.stringify(images, null, 2)}</code>
+                  </pre>
+               </div>
             </div>
+
          </div>
 
          <Footer />
