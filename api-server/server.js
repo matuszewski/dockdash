@@ -249,9 +249,22 @@ app.get("/api/:instance/images", async (req, res) => {
             const imageId = image.Id || 'Unknown ID';
             const imageShortId = imageId.startsWith("sha256:") ? imageId.substring(7, 19) : imageId.substring(0, 12);
 
-            // get created date in a friendly format
-            const createdDate = image.Created ? new Date(image.Created * 1000).toLocaleString() : 'Unknown date';
-      
+            // get created date in a global, friendly format
+            const createdDate = image.Created ? new Date(image.Created * 1000).toLocaleString() : 'unknown date';
+            
+            // get created date in local, friendly format
+            const formatedCreatedDate = image.Created 
+            ? new Date(image.Created * 1000).toLocaleString('pl-PL', {
+               day: '2-digit',
+               month: '2-digit',
+               year: 'numeric',
+               hour: '2-digit',
+               minute: '2-digit',
+               second: '2-digit',
+               hour12: false // 24-hour format
+            })
+            : 'nieznana data';
+
             // prepare the parsed data
             const imageData = {
                "id": imageId,          // image ID
@@ -261,7 +274,7 @@ app.get("/api/:instance/images", async (req, res) => {
                "tags": repoTags.map(tag => tag.split(':')[1] || 'latest'), // extract all tags
                "tags_number": numTags, // number of tags
                "size": imageSize,      // image size in MB
-               "created": createdDate  // human-readable created date
+               "created": formatedCreatedDate  // human-readable created date
             };
       
             // append the parsed data to the return structure
@@ -278,7 +291,7 @@ app.get("/api/:instance/images", async (req, res) => {
             });
             console.log(`tags: ${numTags}`);
             console.log(`size: ${imageSize.red} MB`);
-            console.log(`created: ${createdDate}`);
+            console.log(`created: ${formatedCreatedDate}`);
             console.log('----'.blue);
          });
 
