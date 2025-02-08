@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 // import config file
 import config from "../config.json";
@@ -7,8 +8,13 @@ import config from "../config.json";
 import Navigation from "../components/Navigation.js";
 import Footer from "../components/Footer.js";
 
+// import icons
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+
 function Raw() {
    const [loaded, setLoaded] = useState(false);
+   const [copied, setCopied] = useState(false);
 
    const [instances, setInstances] = useState([]);
    const [images, setImages] = useState([]);
@@ -94,75 +100,89 @@ function Raw() {
 
          <div className="row m-5">
 
-            {/* empty */}
-            <div className="col-md-2 m-1 p-5 bg-dark rounded-3 text-light"></div>
 
             {/* images */}
-            <div className="col-md-9 m-1 p-5 bg-dark rounded-3 text-light">
-               <table class="table table-dark table-hover">
-                  <thead>
-                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nazwa</th>
-                        <th scope="col">Tag</th>
-                        <th scope="col">Rozmiar</th>
-                        <th scope="col">Utworzony</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {images.map((image, index) => (
-                        <tr key={index}>
-                           <td>{image.id_short}</td>
-                           <td>{image.name}</td>
-                           <td>
-                              <a
-                                 href={image.tag}
-                                 target="_blank"
-                                 rel="noopener noreferrer"
-                              >
-                                 {image.tag}
-                              </a>
-                           </td>
-                           <td>{image.size} MB</td>
-                           <td>{image.created}</td>
+            <div className="col-lg-8 col-md-7 col-12">
+
+               <div className="p-5 my-3 bg-dark rounded-3 text-light">
+                  <h1>Obrazy</h1>
+               </div>
+
+               <div className="p-5 bg-dark rounded-3 text-light">
+                  <table class="table table-dark table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">ID</th>
+                           <th scope="col">Nazwa</th>
+                           <th scope="col">Tag</th>
+                           <th scope="col" className="text-end">Rozmiar</th>
+                           <th scope="col" className="text-end">Utworzony</th>
                         </tr>
-                     ))}
-                  </tbody>
-               </table>
+                     </thead>
+                     <tbody>
+                        {images.map((image, index) => (
+                           <tr key={index}>
+                              <td>{image.id_short}</td>
+                              <td>{image.name}</td>
+                              <td>
+                                 <a
+                                    href={image.tag}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                 >
+                                    {image.tag}
+                                 </a>
+                              </td>
+                              <td className="text-end">{image.size} MB</td>
+                              <td className="text-end">{image.created}</td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  </table>
+               </div>
             </div>
             
+ 
+
             {/* containers */}
-            <div className="col-md-9 m-1 p-5 bg-dark rounded-3 text-light">
-               <table class="table table-dark table-hover">
-                  <thead>
-                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nazwa</th>
-                        <th scope="col">Tag</th>
-                        <th scope="col">Rozmiar</th>
-                        <th scope="col">Utworzony</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {images.map((image, index) => (
-                        <tr key={index}>
-                           <td>{image.id_short}</td>
-                           <td>{image.name}</td>
-                           <td>
-                              <a
-                                 href={image.tag}
-                                 target="_blank"
-                                 rel="noopener noreferrer"
-                              >
-                                 {image.tag}
-                              </a>
-                           </td>
-                           <td>{image.size} MB</td>
-                           <td>{image.created}</td>
+            <div className="col-lg-8 col-md-7 col-12">
+
+               <div className="p-5  my-3 bg-dark rounded-3 text-light">
+                  <h1>Kontenery</h1>
+               </div>
+
+               <div className="p-5 bg-dark rounded-3 text-light">
+                  <table class="table table-dark table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">ID</th>
+                           <th scope="col">Nazwa</th>
+                           <th scope="col">Tag</th>
+                           <th scope="col" className="text-end">Rozmiar</th>
+                           <th scope="col" className="text-end">Utworzony</th>
                         </tr>
-                     ))}
-                  </tbody>
-               </table>
+                     </thead>
+                     <tbody>
+                        {images.map((image, index) => (
+                           <tr key={index}>
+                              <td>{image.id_short}</td>
+                              <td>{image.name}</td>
+                              <td>
+                                 <a
+                                    href={image.tag}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                 >
+                                    {image.tag}
+                                 </a>
+                              </td>
+                              <td className="text-end">{image.size} MB</td>
+                              <td className="text-end">{image.created}</td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  </table>
+               </div>
             </div>
 
          </div>
@@ -170,7 +190,14 @@ function Raw() {
          <div className="row m-5">
             <div className="col-lg-4 col-md-6 col-12">
                <div className="p-5 bg-dark rounded-3 text-light">
-                  <h1>Instancje</h1>
+                  <h1 className="d-flex justify-content-between align-items-center">Instancje&nbsp;<span className="badge bg-success">JSON</span>
+                     <CopyToClipboard text={JSON.stringify(instances, null, 2)} onCopy={() => setCopied(true)}>
+                        <button className="btn btn-sm btn-secondary ms-auto p-3">
+                           {copied ? <span>Skopiowano <ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
+                        </button>
+                     </CopyToClipboard>
+                  </h1>
+
                   <pre>
                      <code>{JSON.stringify(instances, null, 2)}</code>
                   </pre>
@@ -179,7 +206,14 @@ function Raw() {
 
             <div className="col-lg-4 col-md-6 col-12">
                <div className="p-5 bg-dark rounded-3 text-light">
-                  <h1>Kontenery</h1>
+                  <h1 className="d-flex justify-content-between align-items-center">Kontenery&nbsp;<span className="badge bg-success">JSON</span>
+                     <CopyToClipboard text={JSON.stringify(containers, null, 2)} onCopy={() => setCopied(true)}>
+                        <button className="btn btn-sm btn-secondary ms-auto p-3">
+                           {copied ? <span>Skopiowano <ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
+                        </button>
+                     </CopyToClipboard>
+                  </h1>
+                        
                   <pre>
                      <code>{JSON.stringify(containers, null, 2)}</code>
                   </pre>
@@ -189,7 +223,14 @@ function Raw() {
 
             <div className="col-lg-4 col-md-6 col-12">
                <div className="p-5 bg-dark rounded-3 text-light">
-                  <h1>Obrazy</h1>
+                  <h1 className="d-flex justify-content-between align-items-center">Obrazy&nbsp;<span className="badge bg-success">JSON</span>
+                     <CopyToClipboard text={JSON.stringify(images, null, 2)} onCopy={() => setCopied(true)}>
+                        <button className="btn btn-sm btn-secondary ms-auto p-3">
+                           {copied ? <span>Skopiowano <ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
+                        </button>
+                     </CopyToClipboard>
+                  </h1>
+                        
                   <pre>
                      <code>{JSON.stringify(images, null, 2)}</code>
                   </pre>
