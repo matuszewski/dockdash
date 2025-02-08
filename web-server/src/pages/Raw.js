@@ -13,6 +13,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import GridViewIcon from '@mui/icons-material/GridView';
+import DnsOutlinedIcon from '@mui/icons-material/DnsOutlined';
 
 function Raw() {
    const [loaded, setLoaded] = useState(false);
@@ -146,10 +147,33 @@ function Raw() {
                </div>
             </div>
             
- 
+            {/* instances */}
+            <div className="col-lg-4 col-md-7 col-12">
+               <div className="p-5 my-3 bg-success rounded-3 text-light">
+                  <h1 className="d-flex align-items-center"><DnsOutlinedIcon />&nbsp;Instancje</h1>
+               </div>
+               <div className="p-5 bg-dark rounded-3 text-light">
+                  <table class="table table-dark table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">Nazwa</th>
+                           <th scope="col">IP</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {images.map((image, index) => (
+                           <tr key={index}>
+                              <td className="text-end">{image.size}</td>
+                              <td className="text-end">{image.created}</td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
 
             {/* containers */}
-            <div className="col-lg-8 col-md-7 col-12">
+            <div className="col-lg-12 col-md-7 col-12">
 
                <div className="p-5  my-3 bg-dark rounded-3 text-light">
                   <h1 className="d-flex align-items-center"><ViewInArIcon />&nbsp;Kontenery</h1>
