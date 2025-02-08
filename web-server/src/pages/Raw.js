@@ -11,10 +11,14 @@ import Footer from "../components/Footer.js";
 // import icons
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import GridViewIcon from '@mui/icons-material/GridView';
 
 function Raw() {
    const [loaded, setLoaded] = useState(false);
-   const [copied, setCopied] = useState(false);
+   const [copiedInstancesJSON, setCopiedInstancesJSON] = useState(false);
+   const [copiedContainersJSON, setCopiedContainersJSON] = useState(false);
+   const [copiedImagesJSON, setCopiedImagesJSON] = useState(false);
 
    const [instances, setInstances] = useState([]);
    const [images, setImages] = useState([]);
@@ -105,7 +109,7 @@ function Raw() {
             <div className="col-lg-8 col-md-7 col-12">
 
                <div className="p-5 my-3 bg-dark rounded-3 text-light">
-                  <h1>Obrazy</h1>
+                  <h1 className="d-flex align-items-center"><GridViewIcon />&nbsp;Obrazy</h1>
                </div>
 
                <div className="p-5 bg-dark rounded-3 text-light">
@@ -148,7 +152,7 @@ function Raw() {
             <div className="col-lg-8 col-md-7 col-12">
 
                <div className="p-5  my-3 bg-dark rounded-3 text-light">
-                  <h1>Kontenery</h1>
+                  <h1 className="d-flex align-items-center"><ViewInArIcon />&nbsp;Kontenery</h1>
                </div>
 
                <div className="p-5 bg-dark rounded-3 text-light">
@@ -188,49 +192,49 @@ function Raw() {
          </div>
 
          <div className="row m-5">
+
+            {/* instances JSON */}
             <div className="col-lg-4 col-md-6 col-12">
                <div className="p-5 bg-dark rounded-3 text-light">
                   <h1 className="d-flex justify-content-between align-items-center">Instancje&nbsp;<span className="badge bg-success">JSON</span>
-                     <CopyToClipboard text={JSON.stringify(instances, null, 2)} onCopy={() => setCopied(true)}>
+                     <CopyToClipboard text={JSON.stringify(instances, null, 2)} onCopy={() => setCopiedInstancesJSON(true)}>
                         <button className="btn btn-sm btn-secondary ms-auto p-3">
-                           {copied ? <span>Skopiowano <ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
+                           {copiedInstancesJSON ? <span>Skopiowano listę instancji<ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
                         </button>
                      </CopyToClipboard>
                   </h1>
-
                   <pre>
                      <code>{JSON.stringify(instances, null, 2)}</code>
                   </pre>
                </div>
             </div>
 
+            {/* instances JSON */}
             <div className="col-lg-4 col-md-6 col-12">
                <div className="p-5 bg-dark rounded-3 text-light">
                   <h1 className="d-flex justify-content-between align-items-center">Kontenery&nbsp;<span className="badge bg-success">JSON</span>
-                     <CopyToClipboard text={JSON.stringify(containers, null, 2)} onCopy={() => setCopied(true)}>
+                     <CopyToClipboard text={JSON.stringify(containers, null, 2)} onCopy={() => setCopiedContainersJSON(true)}>
                         <button className="btn btn-sm btn-secondary ms-auto p-3">
-                           {copied ? <span>Skopiowano <ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
+                           {copiedContainersJSON ? <span>Skopiowano listę kontenerów<ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
                         </button>
                      </CopyToClipboard>
                   </h1>
-                        
                   <pre>
                      <code>{JSON.stringify(containers, null, 2)}</code>
                   </pre>
                </div>
             </div>
 
-
+            {/* images JSON */}
             <div className="col-lg-4 col-md-6 col-12">
                <div className="p-5 bg-dark rounded-3 text-light">
                   <h1 className="d-flex justify-content-between align-items-center">Obrazy&nbsp;<span className="badge bg-success">JSON</span>
-                     <CopyToClipboard text={JSON.stringify(images, null, 2)} onCopy={() => setCopied(true)}>
+                     <CopyToClipboard text={JSON.stringify(images, null, 2)} onCopy={() => setCopiedImagesJSON(true)}>
                         <button className="btn btn-sm btn-secondary ms-auto p-3">
-                           {copied ? <span>Skopiowano <ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
+                           {copiedImagesJSON ? <span>Skopiowano listę obrazów <ContentCopyRoundedIcon /></span> : <ContentCopyIcon />}
                         </button>
                      </CopyToClipboard>
                   </h1>
-                        
                   <pre>
                      <code>{JSON.stringify(images, null, 2)}</code>
                   </pre>
@@ -240,6 +244,7 @@ function Raw() {
          </div>
 
          <Footer />
+
       </section>
    );
 }
