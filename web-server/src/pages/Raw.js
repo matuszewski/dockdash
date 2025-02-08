@@ -11,14 +11,16 @@ function Raw() {
    const [loaded, setLoaded] = useState(false)
 
    const [instances, setInstances] = useState('');
-   const [images, setImages] = useState({});
+   const [images, setImages] = useState([]);
    const [containers, setContainers] = useState({}); // TODO: change as now only single instace of docker data is added here
 
    useEffect(() => {
       const dataFetch = async () => {
          const instances_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`)).json();
          const instance_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers`)).json();
-         const instance_images_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/images`)).json();
+         const instance_images_response = await(await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/images`));
+         const data = await instance_images_response.json();
+         console.log("Dane zwrócone przez API:", data);
 
          // TODO: flow:
          // for instance
@@ -28,10 +30,27 @@ function Raw() {
                // if not
                   // continue
 
+         // SETUP INSTANCES
          setInstances(JSON.stringify(instances_response, null, 2));
+
+
+         // SETUP CONTAINERS
          setContainers(JSON.stringify(instance_response, null, 2));
 
-         setImages(JSON.stringify(instance_images_response, null, 2));
+
+         // SETUP IMAGES
+         if (Array.isArray(data)) {
+            setImages(data); // set data only if array format
+         } else {
+            console.error("array was expected, got:", data);
+            setImages([]); // preventing rendering issues, setting empty array
+         }
+
+
+         
+
+         //setImages(JSON.stringify(instance_images_response, null, 2));
+         //setImages(instance_images_response);
 
          setLoaded(true);
      };
@@ -58,13 +77,51 @@ function Raw() {
    return (
       <section className='Raw'>
          
+
          <Navigation/>
          
+
          <div className="row m-5 p-5" />
-         
+
+
+         <div className="row m-5">
+            <div className='col-md-2 m-1 p-5 bg-dark rounded-3 text-light'>
+
+            </div>
+            <div className='col-md-9 m-1 p-5 bg-dark rounded-3 text-light'>
+            <table class="table table-dark table-hover">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nazwa</th>
+      <th scope="col">Tag</th>
+      <th scope="col">Rozmiar</th>
+      <th scope="col">Utworzony</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {images.map((image, index) => (
+                  <tr key={index}>
+                     <td>{image.id_short}</td>
+                     <td>{image.name}</td>
+                     <td>
+                        <a href={image.tag} target="_blank" rel="noopener noreferrer">
+                           {image.tag}
+                        </a>
+                     </td>
+                     <td>{image.size} MB</td>
+                     <td>{image.created}</td>
+                  </tr>
+               ))}
+  </tbody>
+</table>
+            </div>
+         </div>
+
+
          <div className="row m-5">
            
-
             <div className='col-md-3 m-1 p-5 bg-dark rounded-3 text-light'>
                <h1>Status API</h1>
                <pre>
@@ -88,7 +145,6 @@ function Raw() {
                <h1>Obrazy</h1>
                <pre>
                   <code>
-                     {images}
                   </code>
                </pre>
             </div>
