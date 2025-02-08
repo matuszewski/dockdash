@@ -29,21 +29,28 @@ function Raw() {
 
    useEffect(() => {
       const dataFetch = async () => {
+
          const instances_response = await (
             await fetch(
                `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/instances`
             )
          ).json();
+
          const containers_response = await (
             await fetch(
                `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers`
             )
-         ).json();
-         const instance_images_response = await await fetch(
+         );
+
+         const images_response = await await fetch(
             `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/images`
          );
-         const data = await instance_images_response.json();
-         console.log("Dane zwrócone przez API:", data);
+
+         const fetched_images = await images_response.json();
+         const fetched_containers = await containers_response.json();
+
+         console.log("fetched images data:", fetched_images);
+         console.log("fetched containers data:", fetched_containers);
 
          // TODO: flow:
          // for instance
@@ -56,20 +63,25 @@ function Raw() {
          // SETUP INSTANCES
          setInstances(instances_response);
 
-         // SETUP CONTAINERS
-         setContainers(containers_response);
+ 
 
          // SETUP IMAGES
-         if (Array.isArray(data)) {
-            setImages(data); // set data as array
-            //setImages(JSON.stringify(instance_response, null, 2)); // set data as string
+         if (Array.isArray(fetched_images)) {
+            setImages(fetched_images); // set fetched_images as array
+            //setImages(JSON.stringify(instance_response, null, 2)); // set fetched_images as string
          } else {
-            console.error("array was expected, got:", data);
+            console.error("fetching images from API failed, array was expected but got:", fetched_images);
             setImages([]); // preventing rendering issues, setting empty array
          }
 
-         //setImages(JSON.stringify(instance_images_response, null, 2));
-         //setImages(instance_images_response);
+         // SETUP CONTAINERS
+         if (Array.isArray(fetched_containers)) {
+            setContainers(fetched_containers); // set fetched_containers as array
+            //setImages(JSON.stringify(instance_response, null, 2)); // set fetched_containers as string
+         } else {
+            console.error("fetching containers from API failed, array was expected but got:", fetched_containers);
+            setContainers([]); // preventing rendering issues, setting empty array
+         }
 
          setLoaded(true);
       };
@@ -196,27 +208,13 @@ function Raw() {
                         <tr>
                            <th scope="col">ID</th>
                            <th scope="col">Nazwa</th>
-                           <th scope="col">Tag</th>
-                           <th scope="col" className="text-end">Rozmiar</th>
-                           <th scope="col" className="text-end">Utworzony</th>
                         </tr>
                      </thead>
                      <tbody>
-                        {images.map((image, index) => (
+                        {containers.map((image, index) => (
                            <tr key={index}>
-                              <td>{image.id_short}</td>
+                              <td>{image.id}</td>
                               <td>{image.name}</td>
-                              <td>
-                                 <a
-                                    href={image.tag}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                 >
-                                    {image.tag}
-                                 </a>
-                              </td>
-                              <td className="text-end">{image.size} MB</td>
-                              <td className="text-end">{image.created}</td>
                            </tr>
                         ))}
                      </tbody>

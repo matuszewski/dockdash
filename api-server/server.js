@@ -131,6 +131,14 @@ app.get("/api/instances", (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
 // handle GET /api/:instance/containers
 app.get("/api/:instance/containers", async (req, res) => {
    const instance = req.params.instance;
@@ -152,18 +160,45 @@ app.get("/api/:instance/containers", async (req, res) => {
    const url = `http://${ip}:${port}/v${api_version}/containers/json`;
 
    try {
+      // call docker instance
       console.info(`${info}fetching containers from ${url.cyan}`);
       const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
+      const containers = response.data;
       console.info(`${success}Docker API responded successfully`);
 
-      // TODO: add if statement and parametrize
-      // return recevied data in unchanged format
-      console.info(`${info}reuturning response in unchanged format`);
+      // use raw data or not
+      if (RAW_MODE) {
+         // return recevied data in unchanged JSON format
+         console.info(`${info}returning response in unchanged format`);
+         return res.json(response.data);
 
-      return res.json(response.data);
+      } else {
+         // parse and prepare data to return in desired JSON format
+         console.info(`${info}parsing response`);
 
-      // TODO: return received data in correct format
-      console.info(`${info}parsing response`);
+         const return_structure = [];
+
+         containers.forEach(container => { // TODO: finish this part up
+
+            const conatiner_id = container.Id;
+            const container_name = 'testName';
+
+            // prepare the parsed data
+            const container_data = {
+               "id": conatiner_id,
+               "name": container_name
+            };
+      
+            // append the parsed data to the return structure
+            return_structure.push(container_data);
+         });
+
+         // print return structure
+         console.debug(`${debug}prepared return structure:\n${JSON.stringify(return_structure, null, 2)}`);
+
+         return res.json(return_structure);
+      }
+
    } catch (error) {
       if (error.response) {
          // server responded with a status code other than 2xx
@@ -187,6 +222,14 @@ app.get("/api/:instance/containers", async (req, res) => {
       }
    }
 });
+
+
+
+
+
+
+
+
 
 
 // handle GET /api/:instance/images
@@ -213,7 +256,7 @@ app.get("/api/:instance/images", async (req, res) => {
    
    try {
       // call docker instance
-      console.info(`${info}fetching containers from ${url.cyan}`);
+      console.info(`${info}fetching images from ${url.cyan}`);
       const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
       const images = response.data;
       console.info(`${success}Docker API responded successfully`);
@@ -324,7 +367,6 @@ app.get("/api/:instance/images", async (req, res) => {
          return res.status(500).send("Error connecting to Docker API");
       }
    }
-
 });
 
 
