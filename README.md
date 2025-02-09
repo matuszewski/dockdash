@@ -85,3 +85,4 @@ In case of any problems not described or linked in this readme please contact pr
 
 
 npm install react-copy-to-clipboard
+npm install recharts

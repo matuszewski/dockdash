@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 
 // import MUI icons
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -7,6 +8,8 @@ import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotion
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 function Navigation() {
+   const location = useLocation(); // getting current path
+
    return (
       <section id="navigation" className='Navigation'>
          <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top m-5 mt-5 rounded">
@@ -26,19 +29,25 @@ function Navigation() {
                <div className="collapse navbar-collapse" id="navbarResponsive">
                   <ul className="navbar-nav ml-auto">
                      <li className="nav-item active">
-                        <a className="nav-link text-light" href="/">Kokpit</a>
+                        <NavLink className="nav-link text-light" to="/" activeClassName="active">Kokpit</NavLink>
                      </li>
                      <li className="nav-item">
-                        <a className="nav-link text-light" href="/instances">Instancje</a>
+                     <NavLink className="nav-link text-light" to="/instances" activeClassName="active">Instancje</NavLink>
                      </li>
                      <li className="nav-item">
-                        <a className="nav-link text-light" href="/images">Obrazy</a>
+                     <NavLink className="nav-link text-light" to="/images" activeClassName="active">Obrazy</NavLink>
                      </li>
                      <li className="nav-item">
-                        <a className="nav-link text-light" href="/containers">Kontenery</a>
+                     <NavLink className="nav-link text-light" to="/containers" activeClassName="active">Kontenery</NavLink>
                      </li>
                      <li className="nav-item">
-                        <a className="nav-link text-light" href="/raw">API</a>
+                        <NavLink className="nav-link text-light" to="/resources" activeClassName="active">Zasoby</NavLink>
+                     </li>
+                     <li className="nav-item">
+                        <NavLink className="nav-link text-light" to="/author" activeClassName="active">Autor</NavLink>
+                     </li>
+                     <li className="nav-item">
+                        <NavLink className="nav-link text-light" to="/raw" activeClassName="active">Podsumowanie</NavLink>
                      </li>
                   </ul>
                </div>
