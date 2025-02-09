@@ -441,11 +441,19 @@ app.get("/api/:instance/resources", async (req, res) => {
          try {
             const statsResponse = await axios.get(statsUrl, { timeout: 5000 });
             const stats = statsResponse.data;
+            
 
             const container_data = {
-               id: container.Id,
-               name: container.Names.join(", "),
-               cpu_usage: stats.cpu_stats.cpu_usage.total_usage || "Unknown",
+
+               id: container.Id.startsWith("sha256:") // convert full container.Id
+               ? container.Id.substring(7, 19)
+               : container.Id.substring(0, 12),
+               
+               name: container.Names.join(", ").substring(1),
+
+               //cpu_usage: stats.cpu_stats.cpu_usage.total_usage || "Unknown",
+               cpu_usage: (stats.cpu_stats.cpu_usage.total_usage / 1_000_000_000).toFixed(2) || "Unknown",
+
                memory_usage: stats.memory_stats.usage
                   ? formatBytesToMB(stats.memory_stats.usage)
                   : "Unknown",
