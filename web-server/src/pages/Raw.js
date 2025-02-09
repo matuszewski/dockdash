@@ -19,6 +19,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 function Raw() {
    const [loaded, setLoaded] = useState(false);
+   
    const [copiedInstancesJSON, setCopiedInstancesJSON] = useState(false);
    const [copiedContainersJSON, setCopiedContainersJSON] = useState(false);
    const [copiedImagesJSON, setCopiedImagesJSON] = useState(false);

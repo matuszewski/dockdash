@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // import navigation and footer components
 import Navigation from "../components/Navigation.js";
 import Footer from "../components/Footer.js";
+
+// import config file
+import config from "../config.json";
 
 // import mui icons
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -169,7 +172,31 @@ function MyPieChart() {
 }
 
 function Resources() {
+   const [loaded, setLoaded] = useState(false);
 
+   const [resources, setResources] = useState([]);
+
+   useEffect(() => {
+      const dataFetch = async () => {
+
+         const resources_response = await await fetch(
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/images`
+         );
+
+         const fetched_resources = await resources_response.json();
+
+         // SETUP RESOURCES
+         if (Array.isArray(fetched_resources)) {
+            setResources(fetched_resources);
+         } else {
+            console.error("fetching resources from API failed, array was expected but got:", fetched_resources);
+            setResources([]); // preventing rendering issues, setting empty array
+         }
+
+         setLoaded(true);
+      };
+      dataFetch();
+   }, []);
   
    return (
       <div className="Resources bg-secondary">
