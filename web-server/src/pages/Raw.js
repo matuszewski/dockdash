@@ -208,6 +208,10 @@ function Raw() {
                         <tr>
                            <th scope="col">ID</th>
                            <th scope="col">Nazwa</th>
+                           <th scope="col">Obraz</th>
+                           <th scope="col">Porty</th>
+                           <th scope="col">Utworzony</th>
+                           <th scope="col">Stan</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -215,6 +219,10 @@ function Raw() {
                            <tr key={index}>
                               <td>{image.id}</td>
                               <td>{image.name}</td>
+                              <td>{image.image}</td>
+                              <td className="text-success">{image.ports}</td>
+                              <td>{image.created}</td>
+                              <td>{image.status}</td>
                            </tr>
                         ))}
                      </tbody>

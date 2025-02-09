@@ -180,17 +180,48 @@ app.get("/api/:instance/containers", async (req, res) => {
 
          containers.forEach(container => { // TODO: finish this part up
 
-            const conatiner_id = container.Id;
-            const container_name = 'testName';
+            const container_id = container.Id;
 
-            // prepare the parsed data
+            const container_name = container.Names;
+            
+            const container_status = container.State ? container.State : 'Unknown'; // Status of the container (e.g., running, exited)
+            
+            // Get container's creation date in a friendly Polish format (DD.MM.YYYY, 24-hour format)
+            const createdDate = container.Created
+                ? new Date(container.Created * 1000).toLocaleString('pl-PL', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false // 24-hour format
+                })
+                : 'Unknown date';
+        
+            // Extract exposed ports (if any)
+            const exposedPorts = container.Ports ? container.Ports.map(port => port.PublicPort).join(', ') : 'No exposed ports';
+        
+            // Get the image used to create the container
+            const container_image = container.Image || 'No image';
+        
+            // Get the size of the container (if available)
+            const container_size = container.SizeRootFs ? formatBytesToMB(container.SizeRootFs) : 'Unknown size';
+        
+            // Prepare the parsed data
             const container_data = {
-               "id": conatiner_id,
-               "name": container_name
+                "id": container_id,
+                "name": container_name,
+                "status": container_status,
+                "created": createdDate,
+                "ports": exposedPorts,
+                "image": container_image,
+                "size": container_size
             };
-      
-            // append the parsed data to the return structure
+        
+            // Append the parsed data to the return structure
             return_structure.push(container_data);
+
          });
 
          // print return structure
