@@ -4,10 +4,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 // import config file
 import config from "../config.json";
 
-// import custom components
-import Navigation from "../components/Navigation.js";
-import Footer from "../components/Footer.js";
-
 // import icons
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
@@ -113,12 +109,8 @@ function Raw() {
 
    return (
       <section className="Raw">
-         <Navigation />
          
-         <div className="row m-5 p-5" /> {/* empty row just for margin */}
-
          <div className="row m-5">
-
 
             {/* images */}
             <div className="col-lg-8 col-md-7 col-12">
@@ -283,8 +275,6 @@ function Raw() {
             </div>
 
          </div>
-
-         <Footer />
 
       </section>
    );

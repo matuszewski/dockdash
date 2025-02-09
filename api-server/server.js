@@ -43,28 +43,27 @@ const instance_configuration = {
 };
 
 function loadInstancesConfig(config_file_path = "./config/instances.json") {
-   let instances = {}
-   let available_instances = {}
+   let instances = {};
+   let available_instances = {};
    // TODO: add loading instances from separate json file
-   return 0
+   return 0;
 }
 
 function saveInstancesConfig(config_file_path = "./config/instances.json") {
    // TODO: add saving instances into the same json file
-   return 0
+   return 0;
 }
 
 // TODO: get from config and make global
-const VERBOSE_MODE = true
-const RAW_MODE = false
+const VERBOSE_MODE = true;
+const RAW_MODE = false;
 
 //const config = ?
 function loadServerConfig(config_file_path = "./config/settings.json") {
    // TODO: add loading server config from separate json file
-   
-   return 0
-}
 
+   return 0;
+}
 
 function formatBytesToMB(bytes) {
    const sizeInMB = bytes / (1024 * 1024); // converting
@@ -83,36 +82,36 @@ async function checkInstanceAvailablity(instance_id) {
    const url = `http://${ip}:${port}/v${api_version}/info`; // TODO: check default docker url for checking if the api works / status
 
    // TODO: add running that only in debug/verbose mode
-   console.debug(`${debug} checking ${instance_id} instance availabilty via URL: ${url.cyan}`);
+   console.debug(
+      `${debug} checking ${instance_id} instance availabilty via URL: ${url.cyan}`
+   );
 
    try {
       const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout // TODO: pick timeout from config/settings.json
       console.success(`${success} instance ${instance_id} is available`);
-      return true
-
+      return true;
    } catch (error) {
       console.error(`${failure} instance ${instance_id} is not available`);
-      return false
+      return false;
    }
 }
-
 
 function checkInstancesAvaiabilty(instance_ids) {
    /* Function for checking many Docker instances availabilty based on provided instances ID's */
-   let availability_array = []
+   let availability_array = [];
    try {
-      instances_ids.forEach(instance_id => {
-         availability_array.append(checkInstanceAvailablity(instance_id))
+      instances_ids.forEach((instance_id) => {
+         availability_array.append(checkInstanceAvailablity(instance_id));
       });
-      
-      return availability_array
 
+      return availability_array;
    } catch (error) {
-      console.error(`${failure} a problem occured in checkInstancesAvaiabilty() function. error: ${error}`);
-      return 1
+      console.error(
+         `${failure} a problem occured in checkInstancesAvaiabilty() function. error: ${error}`
+      );
+      return 1;
    }
 }
-
 
 // handle GET /
 app.get("/", (req, res) => {
@@ -121,23 +120,11 @@ app.get("/", (req, res) => {
    );
 });
 
-
-
 // handle GET request /api/instances
 app.get("/api/instances", (req, res) => {
-   let k = checkInstanceAvailablity('wyse')
+   let k = checkInstanceAvailablity("wyse");
    return res.send(instance_configuration);
 });
-
-
-
-
-
-
-
-
-
-
 
 // handle GET /api/:instance/containers
 app.get("/api/:instance/containers", async (req, res) => {
@@ -171,65 +158,75 @@ app.get("/api/:instance/containers", async (req, res) => {
          // return recevied data in unchanged JSON format
          console.info(`${info}returning response in unchanged format`);
          return res.json(response.data);
-
       } else {
          // parse and prepare data to return in desired JSON format
          console.info(`${info}parsing response`);
 
          const return_structure = [];
 
-         containers.forEach(container => { // TODO: finish this part up
+         containers.forEach((container) => {
+            // TODO: finish this part up
 
             const container_id = container.Id;
 
             const container_name = container.Names;
-            
-            const container_status = container.State ? container.State : 'Unknown'; // Status of the container (e.g., running, exited)
-            
+
+            const container_status = container.State
+               ? container.State
+               : "Unknown"; // Status of the container (e.g., running, exited)
+
             // Get container's creation date in a friendly Polish format (DD.MM.YYYY, 24-hour format)
             const createdDate = container.Created
-                ? new Date(container.Created * 1000).toLocaleString('pl-PL', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false // 24-hour format
-                })
-                : 'Unknown date';
-        
+               ? new Date(container.Created * 1000).toLocaleString("pl-PL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false, // 24-hour format
+                 })
+               : "Unknown date";
+
             // Extract exposed ports (if any)
-            const exposedPorts = container.Ports ? container.Ports.map(port => port.PublicPort).join(', ') : 'No exposed ports';
-        
+            const exposedPorts = container.Ports
+               ? container.Ports.map((port) => port.PublicPort).join(", ")
+               : "No exposed ports";
+
             // Get the image used to create the container
-            const container_image = container.Image || 'No image';
-        
+            const container_image = container.Image || "No image";
+
             // Get the size of the container (if available)
-            const container_size = container.SizeRootFs ? formatBytesToMB(container.SizeRootFs) : 'Unknown size';
-        
+            const container_size = container.SizeRootFs
+               ? formatBytesToMB(container.SizeRootFs)
+               : "Unknown size";
+
             // Prepare the parsed data
             const container_data = {
-                "id": container_id,
-                "name": container_name,
-                "status": container_status,
-                "created": createdDate,
-                "ports": exposedPorts,
-                "image": container_image,
-                "size": container_size
+               id: container_id,
+               name: container_name,
+               status: container_status,
+               created: createdDate,
+               ports: exposedPorts,
+               image: container_image,
+               size: container_size,
             };
-        
+
             // Append the parsed data to the return structure
             return_structure.push(container_data);
-
          });
 
          // print return structure
-         console.debug(`${debug}prepared return structure:\n${JSON.stringify(return_structure, null, 2)}`);
+         console.debug(
+            `${debug}prepared return structure:\n${JSON.stringify(
+               return_structure,
+               null,
+               2
+            )}`
+         );
 
          return res.json(return_structure);
       }
-
    } catch (error) {
       if (error.response) {
          // server responded with a status code other than 2xx
@@ -253,15 +250,6 @@ app.get("/api/:instance/containers", async (req, res) => {
       }
    }
 });
-
-
-
-
-
-
-
-
-
 
 // handle GET /api/:instance/images
 app.get("/api/:instance/images", async (req, res) => {
@@ -280,11 +268,11 @@ app.get("/api/:instance/images", async (req, res) => {
       console.error(`${error}instance '${instance}' not found`.red);
       return res.status(404).send("Instance not found");
    }
-   
+
    // prepare endpoint url
    const { ip, port, api_version } = instanceConfig;
    const url = `http://${ip}:${port}/v${api_version}/images/json`;
-   
+
    try {
       // call docker instance
       console.info(`${info}fetching images from ${url.cyan}`);
@@ -297,85 +285,90 @@ app.get("/api/:instance/images", async (req, res) => {
          // return recevied data in unchanged JSON format
          console.info(`${info}returning response in unchanged format`);
          return res.json(response.data);
-
       } else {
          // parse and prepare data to return in desired JSON format
          console.info(`${info}parsing response`);
 
          const return_structure = [];
 
-         images.forEach(image => {
+         images.forEach((image) => {
             const repoTags = image.RepoTags || []; // default to an empty array if RepoTags is undefined
-      
+
             // extract the image name safely
-            const imageName = repoTags[0] ? repoTags[0].split(':')[0] : 'No name';
-      
+            const imageName = repoTags[0]
+               ? repoTags[0].split(":")[0]
+               : "No name";
+
             // extract the first tag or default to 'latest' if no tag is available
-            const firstTag = repoTags[0] ? repoTags[0].split(':')[1] || 'latest' : 'latest';
-      
+            const firstTag = repoTags[0]
+               ? repoTags[0].split(":")[1] || "latest"
+               : "latest";
+
             // get the number of tags
             const numTags = repoTags.length;
-      
+
             // get the image size in MB
             const imageSize = formatBytesToMB(image.Size); // convert image size to MB
-      
+
             // get image ID
-            const imageId = image.Id || 'Unknown ID';
-            const imageShortId = imageId.startsWith("sha256:") ? imageId.substring(7, 19) : imageId.substring(0, 12);
+            const imageId = image.Id || "Unknown ID";
+            const imageShortId = imageId.startsWith("sha256:")
+               ? imageId.substring(7, 19)
+               : imageId.substring(0, 12);
 
             // get created date in a global, friendly format
-            const createdDate = image.Created ? new Date(image.Created * 1000).toLocaleString() : 'unknown date';
-            
+            const createdDate = image.Created
+               ? new Date(image.Created * 1000).toLocaleString()
+               : "unknown date";
+
             // get created date in local, friendly format
-            const formatedCreatedDate = image.Created 
-            ? new Date(image.Created * 1000).toLocaleString('pl-PL', {
-               day: '2-digit',
-               month: '2-digit',
-               year: 'numeric',
-               hour: '2-digit',
-               minute: '2-digit',
-               second: '2-digit',
-               hour12: false // 24-hour format
-            })
-            : 'nieznana data';
+            const formatedCreatedDate = image.Created
+               ? new Date(image.Created * 1000).toLocaleString("pl-PL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false, // 24-hour format
+                 })
+               : "nieznana data";
 
             // prepare the parsed data
             const imageData = {
-               "id": imageId,          // image ID
-               "id_short": imageShortId,          // image ID
-               "name": imageName,      // image name
-               "tag": firstTag,        // first tag
-               "tags": repoTags.map(tag => tag.split(':')[1] || 'latest'), // extract all tags
-               "tags_number": numTags, // number of tags
-               "size": imageSize,      // image size in MB
-               "created": formatedCreatedDate  // human-readable created date
+               id: imageId, // image ID
+               id_short: imageShortId, // image ID
+               name: imageName, // image name
+               tag: firstTag, // first tag
+               tags: repoTags.map((tag) => tag.split(":")[1] || "latest"), // extract all tags
+               tags_number: numTags, // number of tags
+               size: imageSize, // image size in MB
+               created: formatedCreatedDate, // human-readable created date
             };
-      
+
             // append the parsed data to the return structure
             return_structure.push(imageData);
-      
+
             // print parsed data (for debugging)
             console.log(`image ID: ${imageId}`);
             console.log(`image short ID: ${imageShortId}`);
 
             console.log(`image name: ${imageName.blue}`);
-            repoTags.forEach(tag => {
-               const imageTag = tag.split(':')[1] || 'latest'; // get only the tag (second part)
+            repoTags.forEach((tag) => {
+               const imageTag = tag.split(":")[1] || "latest"; // get only the tag (second part)
                console.log(`tag: ${imageTag.blue}`);
             });
             console.log(`tags: ${numTags}`);
             console.log(`size: ${imageSize.red} MB`);
             console.log(`created: ${formatedCreatedDate}`);
-            console.log('----'.blue);
+            console.log("----".blue);
          });
-
 
          // print return structure
          //console.debug(`${debug}prepared return structure:\n${JSON.stringify(return_structure, null, 2)}`);
 
          return res.json(return_structure);
       }
-
    } catch (error) {
       if (error.response) {
          // server responded with a status code other than 2xx
@@ -400,9 +393,8 @@ app.get("/api/:instance/images", async (req, res) => {
    }
 });
 
-
 // handle GET /api/:instance/resources
-app.get("/api/:instance/resources", async (req, res) => {
+app.get("/api/:instance/to_be_removed", async (req, res) => {
    const instance = req.params.instance;
 
    // print info about a new request
@@ -413,11 +405,104 @@ app.get("/api/:instance/resources", async (req, res) => {
    );
 
    // TODO: implement functionalities
-   return res.json({"total": {"cpu": 0, "ram": 0, "disk": 0}});
-
+   return res.json({ total: { cpu: 0, ram: 0, disk: 0 } });
 });
 
+app.get("/api/:instance/resources", async (req, res) => {
+   const instance = req.params.instance;
 
+   console.info(
+      `${info}received /api/${instance}/resources/ HTTP GET request from ${
+         req.socket.remoteAddress.replace(/^.*:/, "").cyan
+      }`
+   );
+
+   // resolve instance configuration
+   const instanceConfig = instance_configuration[instance];
+   if (!instanceConfig) {
+      console.error(`${error}instance '${instance}' not found`.red);
+      return res.status(404).send("Instance not found");
+   }
+
+   const { ip, port, api_version } = instanceConfig;
+   const url = `http://${ip}:${port}/v${api_version}/containers/json?all=false`;     // only running containers (they have resource data)
+   //const url = `http://${ip}:${port}/v${api_version}/containers/json?all=true`;   // all containers (they do not have resource data)
+
+   try {
+      console.info(`${info}fetching container resources from ${url.cyan}`);
+      const response = await axios.get(url, { timeout: 5000 });
+      const containers = response.data;
+      console.info(`${success}Docker API responded successfully`);
+
+      const return_structure = [];
+
+      for (const container of containers) {
+         const statsUrl = `http://${ip}:${port}/v${api_version}/containers/${container.Id}/stats?stream=false`;
+         try {
+            const statsResponse = await axios.get(statsUrl, { timeout: 5000 });
+            const stats = statsResponse.data;
+
+            const container_data = {
+               id: container.Id,
+               name: container.Names.join(", "),
+               cpu_usage: stats.cpu_stats.cpu_usage.total_usage || "Unknown",
+               memory_usage: stats.memory_stats.usage
+                  ? formatBytesToMB(stats.memory_stats.usage)
+                  : "Unknown",
+               memory_limit: stats.memory_stats.limit
+                  ? formatBytesToMB(stats.memory_stats.limit)
+                  : "Unknown",
+               network_io: stats.networks
+                  ? Object.values(stats.networks).reduce(
+                       (acc, net) => acc + net.rx_bytes + net.tx_bytes,
+                       0
+                    )
+                  : "Unknown",
+               block_io: stats.blkio_stats.io_service_bytes_recursive
+                  ? stats.blkio_stats.io_service_bytes_recursive.reduce(
+                       (acc, io) => acc + io.value,
+                       0
+                    )
+                  : "Unknown",
+            };
+
+            return_structure.push(container_data);
+         } catch (statsError) {
+            console.error(
+               `${failure}Failed to fetch stats for container ${container.Id}: ${statsError.message}`
+                  .red
+            );
+         }
+      }
+
+      console.debug(
+         `${debug}prepared return structure: ${JSON.stringify(
+            return_structure,
+            null,
+            2
+         )}`
+      );
+      return res.json(return_structure);
+   } catch (error) {
+      if (error.response) {
+         console.error(
+            `${failure}Docker API returned error: ${error.response.status} ${error.response.statusText}`
+               .red
+         );
+         return res
+            .status(error.response.status)
+            .send(error.response.statusText || "Error from Docker API");
+      } else if (error.request) {
+         console.error(`${failure}no response from Docker API`.red);
+         return res.status(503).send("No response from Docker API");
+      } else {
+         console.error(
+            `${failure}could not connect to Docker API: ${error.message}`.red
+         );
+         return res.status(500).send("Error connecting to Docker API");
+      }
+   }
+});
 
 // start the api server
 app.listen(api_server_port, () => {
