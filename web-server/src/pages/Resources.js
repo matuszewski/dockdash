@@ -134,9 +134,18 @@ const data2 = [
    { name: "C4", value: 100 },
 ];
 
-const COLORS = ["#0088FE", "#00C49F", "darkcyan", "slateblue"]; // colors of segments
 
-function MyPieChart( { test_array }) {
+const ramram = [
+   { name: 'container1', value: 953.44 },
+   { name: 'container2', value: 176.36 },
+   { name: 'container3', value: 21.52 },
+   { name: 'container4', value: 1389.44 },
+   { name: 'container5', value: 4.94 }
+]
+
+const COLORS = ["darkorange", "#00C49F", "darkcyan", "slateblue", "red"]; // colors of segments
+
+function MyPieChart() {
    return (
       <ResponsiveContainer width="100%" height={600}>
          <PieChart>
@@ -162,6 +171,43 @@ function MyPieChart( { test_array }) {
             </Pie>
             <Tooltip />
             <Legend />
+         </PieChart>
+      </ResponsiveContainer>
+   );
+}
+
+function RamPieChart( { arr }) {
+   return (
+      <ResponsiveContainer width="100%" height={600}>
+         <PieChart>
+            <Pie
+               data={arr}
+               cx="50%"
+               cy="50%"
+               outerRadius={200}
+               innerRadius={130}
+               paddingAngle={3}
+
+               fill="#8884d8"
+               dataKey="value"
+               label={{ fontSize: 20 }} // set size of 
+               //               label={({ value }) => `${value} MB`} // Dodanie MB do etykiet
+
+            >
+               {arr.map((entry, index) => (
+
+                  <Cell
+                     key={`cell-${index}`}
+                     fill={COLORS[index % COLORS.length]}
+                     value={entry.value}
+                     
+
+                  />
+               ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+            
          </PieChart>
       </ResponsiveContainer>
    );
@@ -195,7 +241,7 @@ function Resources() {
    }, []);
   
    return (
-      <div className="Resources bg-secondary">
+      <div className="Resources">
 
          {/* navigation bar*/}
          <Navigation />
@@ -206,35 +252,29 @@ function Resources() {
 
          {/* first row */}
          <div className="row m-5">
-            <div className="col-lg-3 col-md-3 col-12">
-               <div className="p-5 rounded-3 bg-light text-dark">
-                  <h1>RAM</h1>
-                  <MyPieChart />
-               </div>
-            </div>
 
-            <div className="col-lg-3 col-md-3 col-12">
+            <div className="col-lg-4 col-md-3 col-12">
                <div className="p-5 rounded-3 bg-light text-dark">
                   <h1>CPU</h1>
                   <MyPieChart />
                </div>
             </div>
 
-            <div className="col-lg-3 col-md-3 col-12">
+            <div className="col-lg-4 col-md-3 col-12">
                <div className="p-5 rounded-3 bg-light text-dark">
                   <h1>Dysk</h1>
                   <MyPieChart />
                </div>
             </div>
 
-            <div className="col-lg-3 col-md-3 col-12">
+            <div className="col-lg-4 col-md-3 col-12">
                <div className="p-5 rounded-3 bg-light text-dark">
-                  <h1>Sieć</h1>
-                  <MyPieChart />
+                  <h1>RAM</h1>
+                  <RamPieChart arr={ramram}/>
 
                   {resources.map((container, index) => (     
-            <p>{container.memory_usage}</p>
-         ))}   
+                     <p>{container.memory_usage}</p>
+                  ))}   
 
                </div>
             </div>
@@ -244,7 +284,7 @@ function Resources() {
          {/* second row */}
          <div className="row mx-5">
 
-            <div className="col-lg-8 col-md-7 col-12">
+            <div className="col-lg-6 col-md-7 col-12">
 
                <div className="p-5 my-3 rounded-3 bg-light text-dark">
                   <h1>RAM</h1>
@@ -264,7 +304,7 @@ function Resources() {
             </div>
 
 
-            <div className="col-lg-4 col-md-7 col-12">
+            <div className="col-lg-6 col-md-7 col-12">
 
               <div className="p-5 my-3 rounded-3 bg-light text-dark">
                 <h1>Dysk</h1>
