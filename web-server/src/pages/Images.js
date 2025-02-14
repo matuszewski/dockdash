@@ -39,7 +39,10 @@ function Images() {
       dataFetch();
    }, []);
 
-   if (!loaded) return <Loading />;
+   if (!loaded)
+      return (
+         <Loading />
+      );
 
    return (
       <div className="Images">
