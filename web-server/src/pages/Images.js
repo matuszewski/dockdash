@@ -8,7 +8,6 @@ import Navigation from "../components/Navigation.js";
 import Footer from "../components/Footer.js";
 import Loading from "../components/Loading.js";
 
-
 // import icons
 import GridViewIcon from "@mui/icons-material/GridView";
 
@@ -40,10 +39,7 @@ function Images() {
       dataFetch();
    }, []);
 
-   if (!loaded)
-      return (
-         <Loading/>
-      );
+   if (!loaded) return <Loading />;
 
    return (
       <div className="Images">
