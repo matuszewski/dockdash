@@ -80,6 +80,7 @@ const rdat = {
 function MyChart({ resource, color }) {
    const chartData = rdat[resource] || []; // if resource is unknow, this will put empty array
 
+   
    return (
       <ResponsiveContainer width="100%" height={300}>
          <AreaChart data={chartData}>
@@ -176,7 +177,43 @@ function MyPieChart() {
    );
 }
 
-function RamPieChart( { arr }) {
+function RamPieChart( { resources } ) {
+   
+   let arr = []
+
+   try {
+
+      // creating ram resource data set for percentage relation (what containers use how much of available ram)
+      resources.forEach(container => {
+         arr.push({ name: container.name, value: container.memory_usage / container.memory_limit * 100 })
+         arr.push({ name: container.name, value: container.memory_usage / container.memory_limit * 100 })
+         arr.push({ name: container.name, value: 24 / container.memory_limit * 100 }) // TODO: remove examples
+         arr.push({ name: container.name, value: 11 / container.memory_limit * 100 })
+         arr.push({ name: container.name, value: container.memory_usage / container.memory_limit * 100 })
+
+      });
+
+      // for con in resources:
+      //    name = 
+      //    memory_usage = 
+      //    memory_limit =
+
+      // [
+      //    {
+      //      "id": "0234cb5ce7c2",
+      //      "name": "docker-api-proxy",
+      //      "cpu_usage": "0.16",
+      //      "memory_usage": "1.64",
+      //      "memory_limit": "5925.89",
+      //      "network_io": 478956,
+      //      "block_io": 294912
+      //    }
+      //  ]
+
+   } catch (error) {
+      arr = ramram
+   }
+   
    return (
       <ResponsiveContainer width="100%" height={600}>
          <PieChart>
@@ -190,9 +227,7 @@ function RamPieChart( { arr }) {
 
                fill="#8884d8"
                dataKey="value"
-               label={{ fontSize: 20 }} // set size of 
-               //               label={({ value }) => `${value} MB`} // Dodanie MB do etykiet
-
+               label={{ fontSize: 20 }}
             >
                {arr.map((entry, index) => (
 
@@ -215,7 +250,6 @@ function RamPieChart( { arr }) {
 
 function Resources() {
    const [loaded, setLoaded] = useState(false);
-
    const [resources, setResources] = useState([]);
 
    useEffect(() => {
@@ -270,7 +304,7 @@ function Resources() {
             <div className="col-lg-4 col-md-3 col-12">
                <div className="p-5 rounded-3 bg-light text-dark">
                   <h1>RAM</h1>
-                  <RamPieChart arr={ramram}/>
+                  <RamPieChart resources={resources}/>
 
                   {resources.map((container, index) => (     
                      <p>{container.memory_usage}</p>
