@@ -1,12 +1,11 @@
 # dockdash
 
-
-
 ## Components
 
 ### dockdash-api-server
 
 ### dockdash-web-server
+
 Single-site HTML 5 website serving dozen of Docker instances, containers and images data monitoring GUI made with Bootstrap5
 
 ```bash
@@ -15,51 +14,53 @@ npm install @mui/icons-material
 ```
 
 ```bash
-export NODE_OPTIONS=--openssl-legacy-provider 
+export NODE_OPTIONS=--openssl-legacy-provider
 npm start
 ```
 
-
-
 ## Configuration
+
 Currently, the whole project is designed to run out-of-the-box without any need of configuration by default.
 
 ## Running
+
 ```bash
 cd api-server/
 npm run
 ```
+
 ## Using
 
 ### API server
 
 Getting list of Docker instances available in the API configuration
+
 ```bash
 curl 127.0.0.1:4000/api/instances | jq
 ```
 
 Getting list of images on a given docker instance
+
 ```bash
 curl 127.0.0.1:4000/api/<instance>/images | jq
 ```
 
-
 Getting list of containers on a given docker instance
+
 ```bash
 curl 127.0.0.1:4000/api/<instance>/containers | jq
 ```
 
-**Note!** *jq* is used here only for JSON formatting in the console
+**Note!** _jq_ is used here only for JSON formatting in the console
 
 ## Troubleshooting
+
 In case of any problems not described or linked in this readme please contact project author: krzysiekmatuszewski@outlook.com
-
-
 
 ## Notes
 
 - when to use let/const/var
-  
+
 **Functionalities / Features**
 
 - checking single instance availabilty
@@ -77,12 +78,29 @@ In case of any problems not described or linked in this readme please contact pr
 - using Axios as a new, secure and better alternative to popular Request module using in REST API
 
 ## TODO
+
 - [ ] make it work with Docker instance hosted on macOS
 - [ ] split the api-server to many files, OOP or single scope of responsibilty per file
-- [ ] add prettierrc and format all
+- [ ] add .prettierrc config files and format all files in web-server/ and api-server/
+- [ ] update readme
 
+## Dependencies
 
+### web-server
 
+Installing web-server dependencies manually (for troubleshooting mainly)
 
+```bash
+cd web-server/
 npm install react-copy-to-clipboard
 npm install recharts
+```
+
+### api-server
+
+Installing api-server dependencies manually (for troubleshooting mainly)
+
+```bash
+cd api-server/
+# TODO: add manual dependencies installation commands
+```
