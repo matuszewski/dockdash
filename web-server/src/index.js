@@ -1,19 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-// load custom CSS
-//TODO: check if needed: import './styles/main.css';
-
-// load Bootstrap CSS
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "./custom.css"
+import App from "./App";
 
 // load Bootstrap JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// load Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// load custom CSS files
+import "./custom.css";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 // render main application
 root.render(<App />);
