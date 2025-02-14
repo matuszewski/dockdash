@@ -18,7 +18,7 @@ function Containers() {
    useEffect(() => {
       const dataFetch = async () => {
          const containers_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers`
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers` // TODO: extract
          );
 
          const fetched_containers = await containers_response.json();
@@ -51,7 +51,7 @@ function Containers() {
          <div className="row m-5">
             {/* containers */}
             <div className="col-lg-12 col-md-7 col-12">
-               <div className="p-5  my-3 bg-dark rounded-3 text-light">
+               <div className="p-5 my-3 bg-primary rounded-3 text-light">
                   <h1 className="d-flex align-items-center">
                      <ViewInArIcon />
                      &nbsp;Kontenery

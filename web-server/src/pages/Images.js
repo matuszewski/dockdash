@@ -51,7 +51,7 @@ function Images() {
          <div className="row m-5">
             {/* images */}
             <div className="col-lg-12 col-md-12 col-12">
-               <div className="p-5 my-3 bg-dark rounded-3 text-light">
+               <div className="p-5 my-3 bg-danger rounded-3 text-light">
                   <h1 className="d-flex align-items-center">
                      <GridViewIcon />
                      &nbsp;Obrazy

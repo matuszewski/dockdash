@@ -222,7 +222,7 @@ function Resources() {
       const dataFetch = async () => {
 
          const resources_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/resources` // TODO: multi-instance ?
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/resources` // TODO: extract
          );
 
          const fetched_resources = await resources_response.json();
