@@ -51,14 +51,6 @@ function Raw() {
          console.log("fetched images data:", fetched_images);
          console.log("fetched containers data:", fetched_containers);
 
-         // TODO: flow:
-         // for instance
-         // check if is accessible
-         // if yes
-         // get instace data and append to object array
-         // if not
-         // continue
-
          // SETUP INSTANCES
          setInstances(instances_response);
 
