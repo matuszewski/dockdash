@@ -79,7 +79,7 @@ In case of any problems not described or linked in this readme please contact pr
 
 ## TODO
 
-- [X] make it work with Docker instance hosted on macOS
+- [x] make it work with Docker instance hosted on macOS
 - [ ] split the api-server to many files, OOP or single scope of responsibilty per file
 - [ ] add .prettierrc config files and format all files in web-server/ and api-server/
 - [ ] update readme
@@ -103,4 +103,42 @@ Installing api-server dependencies manually (for troubleshooting mainly)
 ```bash
 cd api-server/
 # TODO: add manual dependencies installation commands
+```
+
+## Docker API commands
+
+Geting containers details
+
+```bash
+curl -X GET http://127.0.0.1:2375/v1.41/containers/json | jq
+```
+
+Geting images details
+
+```bash
+curl -X GET http://127.0.0.1:2375/v1.41/images/json | jq
+```
+
+Getting information about docker instance
+
+```bash
+curl -X GET http://127.0.0.1:2375/v1.41/info | jq
+# jq is optional (only for pretty-printing JSON formatted data)
+```
+
+In case of using docker on macos, enabling connection on port 2375 (as Docker Desktop on macOs runs inside a VM)
+
+```bash
+docker run -d \
+  --name docker-api-proxy \
+  -p 2375:2375 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  alpine/socat \
+  TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
+```
+
+And checking if it works fine
+
+```bash
+curl http://localhost:2375/version
 ```
