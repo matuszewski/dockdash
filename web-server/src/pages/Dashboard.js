@@ -38,7 +38,7 @@ function Dashboard() {
          ).json();
 
          const containers_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers`  // TODO: extract
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers` // TODO: extract
          );
 
          const images_response = await await fetch(
@@ -48,8 +48,8 @@ function Dashboard() {
          const fetched_images = await images_response.json();
          const fetched_containers = await containers_response.json();
 
-         console.log("fetched images data:", fetched_images);
-         console.log("fetched containers data:", fetched_containers);
+         //console.debug("fetched images data:", fetched_images);
+         //console.debug("fetched containers data:", fetched_containers);
 
          // SETUP INSTANCES
          setInstances(instances_response);
@@ -100,7 +100,7 @@ function Dashboard() {
                </div>
 
                <div className="p-5 bg-dark rounded-3 text-light">
-                  <table class="table table-dark table-hover">
+                  <table className="table table-dark table-hover">
                      <thead>
                         <tr>
                            <th scope="col">ID</th>
@@ -146,7 +146,7 @@ function Dashboard() {
                   </h1>
                </div>
                <div className="p-5 bg-dark rounded-3 text-light">
-                  <table class="table table-dark table-hover">
+                  <table className="table table-dark table-hover">
                      <thead>
                         <tr>
                            <th scope="col">Nazwa</th>
@@ -193,7 +193,7 @@ function Dashboard() {
                </div>
 
                <div className="p-5 bg-dark rounded-3 text-light">
-                  <table class="table table-dark table-hover">
+                  <table className="table table-dark table-hover">
                      <thead>
                         <tr>
                            <th scope="col">ID</th>
