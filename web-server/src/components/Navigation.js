@@ -99,15 +99,6 @@ function Navigation() {
                            Autor
                         </NavLink>
                      </li>
-                     <li className="nav-item">
-                        <NavLink
-                           className="nav-link text-light"
-                           to="/raw"
-                           activeClassName="active"
-                        >
-                           Podsumowanie
-                        </NavLink>
-                     </li>
                   </ul>
                </div>
 

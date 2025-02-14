@@ -18,7 +18,7 @@ import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel"; // TODO: implement changing CheckCircleIcon <=> CancelIcon based on instance availabilty
 
-function Raw() {
+function Dashboard() {
    const [loaded, setLoaded] = useState(false);
 
    const [copiedInstancesJSON, setCopiedInstancesJSON] = useState(false);
@@ -38,11 +38,11 @@ function Raw() {
          ).json();
 
          const containers_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers`
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers`  // TODO: extract
          );
 
          const images_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/images`
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/images` // TODO: extract
          );
 
          const fetched_images = await images_response.json();
@@ -86,7 +86,7 @@ function Raw() {
    if (!loaded) return <Loading />;
 
    return (
-      <div className="Raw">
+      <div className="Dashboard">
          <Navigation />
          <div className="row m-5 p-5" /> {/* empty row just for margin */}
          <div className="row m-5">
@@ -309,4 +309,4 @@ function Raw() {
    );
 }
 
-export default Raw;
+export default Dashboard;
