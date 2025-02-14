@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
 // import config file
 import config from "../config.json";
@@ -14,7 +13,6 @@ import ViewInArIcon from "@mui/icons-material/ViewInAr";
 
 function Containers() {
    const [loaded, setLoaded] = useState(false);
-   const [copiedContainersJSON, setCopiedContainersJSON] = useState(false);
    const [containers, setContainers] = useState([]); // TODO: change as now only single instace of docker data is added here
 
    useEffect(() => {

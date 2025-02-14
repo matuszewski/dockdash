@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 // import MUI icons
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -8,7 +8,6 @@ import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotion
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 function Navigation() {
-   const location = useLocation(); // getting current path
 
    return (
       <section id="navigation" className='Navigation'>

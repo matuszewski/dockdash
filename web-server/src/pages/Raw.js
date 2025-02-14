@@ -16,7 +16,7 @@ import ViewInArIcon from "@mui/icons-material/ViewInAr";
 import GridViewIcon from "@mui/icons-material/GridView";
 import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
+import CancelIcon from "@mui/icons-material/Cancel"; // TODO: implement changing CheckCircleIcon <=> CancelIcon based on instance availabilty
 
 function Raw() {
    const [loaded, setLoaded] = useState(false);
@@ -83,10 +83,7 @@ function Raw() {
       dataFetch();
    }, []);
 
-   if (!loaded)
-      return (
-         <Loading/>
-      );
+   if (!loaded) return <Loading />;
 
    return (
       <div className="Raw">

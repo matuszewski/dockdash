@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from "react";
 
 // importing pages
-import Raw from "../pages/Raw.js"
-
-// import config file for getting API server settings // TODO: check if this is needed
-import config from "../config.json";
+import Raw from "../pages/Raw.js";
 
 export default function Main() {
-    return (
+   return (
       <section className="Dashboard">
-
          {/* inserting desired page here */}
-         <Raw/>
-
+         <Raw />
       </section>
    );
 }

@@ -18,7 +18,7 @@ function Images() {
    useEffect(() => {
       const dataFetch = async () => {
          const images_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/images`
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/images`
          );
 
          const fetched_images = await images_response.json();

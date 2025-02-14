@@ -26,7 +26,7 @@ const debug =
 // instances configuration
 const instance_configuration = {
    local: {
-      ip: "10.20.0.104",
+      ip: "127.0.0.1",
       port: "2375",
       api_version: "1.47",
    },
@@ -122,7 +122,7 @@ app.get("/", (req, res) => {
 
 // handle GET request /api/instances
 app.get("/api/instances", (req, res) => {
-   let k = checkInstanceAvailablity("wyse");
+   let k = checkInstanceAvailablity("wyse"); // TODO: remove to not be hardwritten
    return res.send(instance_configuration);
 });
 
