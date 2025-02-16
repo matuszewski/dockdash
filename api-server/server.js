@@ -29,17 +29,20 @@ const instance_configuration = {
       ip: "127.0.0.1",
       port: "2375",
       api_version: "1.47",
+      status: "",
    },
    wyse: {
       ip: "10.20.0.102",
       port: "2375",
       api_version: "1.47",
+      status: "",
    },
    rpi: {
       ip: "10.20.0.105",
       port: "2375",
       api_version: "1.47",
-   },
+      status: "",
+   }
 };
 
 function loadInstancesConfig(config_file_path = "./config/instances.json") {
@@ -72,11 +75,12 @@ function formatBytesToMB(bytes) {
 
 async function checkInstanceAvailablity(instance_id) {
    // get instance config based on instance_id
-   const instance_config = instance_configuration[instance_id];
-   if (!instance_config) {
-      console.error(`${failure}Instance '${instance_id}' not found`);
-      return 1; // TODO: check return codes
-   }
+   // const instance_config = instance_configuration[instance_id];
+
+   // if (!instance_config) {
+   //    console.error(`${failure}Instance '${instance_id}' not found`);
+   //    return 1; // TODO: check return codes
+   // }
 
    const { ip, port, api_version } = instance_configuration[instance_id];
    const url = `http://${ip}:${port}/v${api_version}/info`; // TODO: check default docker url for checking if the api works / status
@@ -87,7 +91,8 @@ async function checkInstanceAvailablity(instance_id) {
    );
 
    try {
-      const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout // TODO: pick timeout from config/settings.json
+      // TODO: fix that
+      const response =  await axios.get(url, { timeout: 5000 }); // 5 seconds timeout // TODO: pick timeout from config/settings.json
       console.success(`${success} instance ${instance_id} is available`);
       return true;
    } catch (error) {
@@ -96,15 +101,19 @@ async function checkInstanceAvailablity(instance_id) {
    }
 }
 
-function checkInstancesAvaiabilty(instance_ids) {
+function checkInstancesAvaiabilty(instances) {
    /* Function for checking many Docker instances availabilty based on provided instances ID's */
-   let availability_array = [];
+
    try {
-      instances_ids.forEach((instance_id) => {
-         availability_array.append(checkInstanceAvailablity(instance_id));
+      // when is dict:
+
+      Object.entries(instances).forEach(([key, instance]) => {
+         console.warn(`instance: ${key},\t\tip: ${instance.ip},\t\tport: ${instance.port},\t\tstatus: ${checkInstanceAvailablity(key)}`         );
+         instance_configuration[key].status = checkInstanceAvailablity(key)
+
       });
 
-      return availability_array;
+      return 0;
    } catch (error) {
       console.error(
          `${failure} a problem occured in checkInstancesAvaiabilty() function. error: ${error}`
@@ -121,8 +130,14 @@ app.get("/", (req, res) => {
 });
 
 // handle GET request /api/instances
-app.get("/api/instances", (req, res) => {
-   let k = checkInstanceAvailablity("wyse"); // TODO: remove to not be hardwritten
+app.get("/api/instances", async (req, res) => {
+   // return instances array aleardy checked
+   
+   //let c = checkInstancesAvaiabilty(instance_configuration);
+
+   // return just instances array
+   let k = await checkInstanceAvailablity("wyse"); // TODO: remove to not be hardwritten
+   console.debug(k)
    return res.send(instance_configuration);
 });
 
