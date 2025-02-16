@@ -118,6 +118,15 @@ function ResourcePieChart({ resources, resource }) {
                   name: container.name,
                   value: (container.cpu_usage / 100) * 100,
                });
+               // TODO: remove
+               chart_data.push({
+                  name: container.name,
+                  value: (container.cpu_usage / 100) * 100,
+               });
+               chart_data.push({
+                  name: container.name,
+                  value: (container.cpu_usage / 100) * 100,
+               });
                break;
 
             case "ram":
@@ -138,7 +147,21 @@ function ResourcePieChart({ resources, resource }) {
                   value: container.block_io,
                });
                break;
-
+            case "network":
+               chart_data.push({
+                  name: container.name,
+                  value: container.network_io,
+               });
+               // TODO: remove
+               chart_data.push({
+                  name: container.name,
+                  value: container.network_io,
+               });
+               chart_data.push({
+                  name: container.name,
+                  value: container.network_io,
+               });
+               break;
             default:
                break;
          }

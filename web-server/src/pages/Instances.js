@@ -56,7 +56,7 @@ function Instances() {
                            <th scope="col" className="text-end">
                               Wersja API
                            </th>
-                           <th scope="col" className="text-end">
+                           <th scope="col" className="text-end" >
                               Status
                            </th>
                         </tr>
@@ -73,8 +73,7 @@ function Instances() {
                                     {instance.api_version}
                                  </td>
                                  <td className="text-end">
-                                    OK{" "}
-                                    <CheckCircleIcon className="text-success" />
+                                    {instance.status ? <CheckCircleIcon className='text-success' /> : <CancelIcon  className='text-danger' />}
                                  </td>
                               </tr>
                            );

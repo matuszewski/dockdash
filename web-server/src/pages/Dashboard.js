@@ -172,8 +172,7 @@ function Dashboard() {
                                     {instance.api_version}
                                  </td>
                                  <td className="text-end">
-                                    OK{" "}
-                                    <CheckCircleIcon className="text-success" />
+                                    {instance.status ? <CheckCircleIcon className='text-success' /> : <CancelIcon  className='text-danger' />}
                                  </td>
                               </tr>
                            );

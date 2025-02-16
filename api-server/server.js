@@ -60,6 +60,7 @@ function saveInstancesConfig(config_file_path = "./config/instances.json") {
 // TODO: get from config and make global
 const VERBOSE_MODE = true;
 const RAW_MODE = false;
+const INSTANCE_COMEUP_TIMEOUT = 5000; // 5 seconds
 
 //const config = ?
 function loadServerConfig(config_file_path = "./config/settings.json") {
@@ -73,44 +74,39 @@ function formatBytesToMB(bytes) {
    return sizeInMB.toFixed(2);
 }
 
-async function checkInstanceAvailablity(instance_id) {
-   // get instance config based on instance_id
-   // const instance_config = instance_configuration[instance_id];
+async function checkInstanceAvailablity(instance_name) {
 
-   // if (!instance_config) {
-   //    console.error(`${failure}Instance '${instance_id}' not found`);
-   //    return 1; // TODO: check return codes
-   // }
-
-   const { ip, port, api_version } = instance_configuration[instance_id];
+   const { ip, port, api_version } = instance_configuration[instance_name];
    const url = `http://${ip}:${port}/v${api_version}/info`; // TODO: check default docker url for checking if the api works / status
-
+   console.log(`${success}URL composed: ${url}`);
    // TODO: add running that only in debug/verbose mode
+
    console.debug(
-      `${debug} checking ${instance_id} instance availabilty via URL: ${url.cyan}`
+      `${debug} checking ${instance_name} instance availabilty via URL: ${url.cyan}`
    );
 
    try {
       // TODO: fix that
-      const response =  await axios.get(url, { timeout: 5000 }); // 5 seconds timeout // TODO: pick timeout from config/settings.json
-      console.success(`${success} instance ${instance_id} is available`);
+      const response =  await axios.get(url, { timeout: INSTANCE_COMEUP_TIMEOUT }); // 5 seconds timeout // TODO: pick timeout from config/settings.json
+      console.log(`${success} instance ${instance_name} is available`);
       return true;
    } catch (error) {
-      console.error(`${failure} instance ${instance_id} is not available`);
+      console.error(`${failure} instance ${instance_name} is not available`);
       return false;
    }
 }
 
-function checkInstancesAvaiabilty(instances) {
+function checkInstancesAvaiabilty() {
    /* Function for checking many Docker instances availabilty based on provided instances ID's */
 
    try {
       // when is dict:
 
-      Object.entries(instances).forEach(([key, instance]) => {
-         console.warn(`instance: ${key},\t\tip: ${instance.ip},\t\tport: ${instance.port},\t\tstatus: ${checkInstanceAvailablity(key)}`         );
-         instance_configuration[key].status = checkInstanceAvailablity(key)
+      Object.entries(instance_configuration).forEach(async ([key, instance]) => {
+         let instance_status = await checkInstanceAvailablity(key)
 
+         console.warn(`${success}instance: ${key},\t ip: ${instance.ip},\t port: ${instance.port},\t status: ${instance_status}`);
+         instance_configuration[key].status = instance_status
       });
 
       return 0;
@@ -133,12 +129,18 @@ app.get("/", (req, res) => {
 app.get("/api/instances", async (req, res) => {
    // return instances array aleardy checked
    
-   //let c = checkInstancesAvaiabilty(instance_configuration);
+   let c = checkInstancesAvaiabilty();
 
    // return just instances array
-   let k = await checkInstanceAvailablity("wyse"); // TODO: remove to not be hardwritten
-   console.debug(k)
+   ///////let k = await checkInstanceAvailablity("local"); // TODO: remove to not be hardwritten
+   //console.debug(k) // TODO: remove as is working fine
+
+   // TODO: finish the logic for checking all instances availability
+   let updated_instance_configuration = {}
+
    return res.send(instance_configuration);
+   return res.send(updated_instance_configuration);
+
 });
 
 // handle GET /api/:instance/containers
@@ -530,8 +532,11 @@ app.get("/api/:instance/resources", async (req, res) => {
 
 // start the api server
 app.listen(api_server_port, () => {
+   // print banner
    console.info(
       `${success}DockDash API server is running on port ${api_server_port}`.blue
          .bold
    );
+   // first time check instances availabilty (and save to instances_configuration their statuses)
+   checkInstancesAvaiabilty()
 });
