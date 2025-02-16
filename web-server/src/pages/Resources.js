@@ -23,6 +23,7 @@ import {
 
 // import config file
 import config from "../config.json";
+import { toUnitless } from "@mui/material/styles/cssUtils.js";
 
 // example data
 const rdat = {
@@ -126,16 +127,16 @@ function ResourcePieChart({ resources, resource }) {
             case "disk":
                chart_data.push({
                   name: container.name,
-                  value: container.block_io
+                  value: container.block_io,
                });
                // TODO: remove
                chart_data.push({
                   name: container.name,
-                  value: 243001.0
+                  value: container.block_io,
                });
                chart_data.push({
                   name: container.name,
-                  value: 111402.0213213.toFixed(2)
+                  value: container.block_io,
                });
                break;
 
@@ -156,9 +157,11 @@ function ResourcePieChart({ resources, resource }) {
                cx="50%"
                cy="50%"
                outerRadius={200}
+               innerRadius={130}
+               paddingAngle={3}
                fill="#8884d8"
                dataKey="value"
-               label={{ fontSize: 20 }} // set size of
+               label={{ fontSize: 20 }}
             >
                {chart_data.map((entry, index) => (
                   <Cell
@@ -282,7 +285,7 @@ function Resources() {
             <div className="col-lg-4 col-md-3 col-12">
                <div className="p-5 rounded-3 bg-light text-dark">
                   <h1>Dysk</h1>
-                  <ResourcePieChart resources={resources} resource={"disk"}/>
+                  <ResourcePieChart resources={resources} resource={"disk"} />
                </div>
             </div>
 
