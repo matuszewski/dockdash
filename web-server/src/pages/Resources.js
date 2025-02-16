@@ -24,6 +24,7 @@ import {
 // import config file
 import config from "../config.json";
 
+// example data
 const rdat = {
    cpu: [
       { name: "01", cpu: 50 },
@@ -78,6 +79,8 @@ const rdat = {
    ],
 };
 
+const COLORS = ["darkorange", "#00C49F", "darkcyan", "slateblue", "red"];
+
 function ResourceAreaChart({ resource, color }) {
    const chartData = rdat[resource] || []; // if resource is unknow, this will put empty array
 
@@ -102,34 +105,54 @@ function ResourceAreaChart({ resource, color }) {
    );
 }
 
-const data2 = [
-   { name: "C1", value: 400 },
-   { name: "C2", value: 320 },
-   { name: "C3", value: 210 },
-   { name: "C4", value: 100 },
-];
-
-const ramram = [
-   { name: "container1", value: 953.44 },
-   { name: "container2", value: 176.36 },
-   { name: "container3", value: 21.52 },
-   { name: "container4", value: 1389.44 },
-   { name: "container5", value: 4.94 },
-];
-
-const COLORS = ["darkorange", "#00C49F", "darkcyan", "slateblue", "red"]; // colors of segments
-
 function ResourcePieChart({ resources, resource }) {
    // prepare chart data
-   chart_subject = resource;
-   chart_data = resources;
+   let chart_subject = resource;
+   let chart_data = [];
+
+   try {
+      resources.forEach((container) => {
+         switch (chart_subject) {
+            case "cpu":
+               chart_data.push({
+                  name: container.name,
+                  value: (container.cpu_usage / 100) * 100,
+               });
+               break;
+
+            case "ram":
+               break;
+
+            case "disk":
+               chart_data.push({
+                  name: container.name,
+                  value: container.block_io
+               });
+               // TODO: remove
+               chart_data.push({
+                  name: container.name,
+                  value: 243001.0
+               });
+               chart_data.push({
+                  name: container.name,
+                  value: 111402.0213213.toFixed(2)
+               });
+               break;
+
+            default:
+               break;
+         }
+      });
+   } catch (error) {
+      console.error("could not render resource pie chart");
+   }
 
    // return configured PieChart component
    return (
       <ResponsiveContainer width="100%" height={600}>
          <PieChart>
             <Pie
-               data={data2}
+               data={chart_data}
                cx="50%"
                cy="50%"
                outerRadius={200}
@@ -137,11 +160,11 @@ function ResourcePieChart({ resources, resource }) {
                dataKey="value"
                label={{ fontSize: 20 }} // set size of
             >
-               {data2.map((entry, index) => (
+               {chart_data.map((entry, index) => (
                   <Cell
                      key={`cell-${index}`}
                      fill={COLORS[index % COLORS.length]}
-                     value={entry.value + (Math.random() * 600 - 300)}
+                     value={entry.value}
                   />
                ))}
             </Pie>
@@ -179,25 +202,8 @@ function RamPieChart({ resources }) {
             value: (container.memory_usage / container.memory_limit) * 100,
          });
       });
-
-      // for con in resources:
-      //    name =
-      //    memory_usage =
-      //    memory_limit =
-
-      // [
-      //    {
-      //      "id": "0234cb5ce7c2",
-      //      "name": "docker-api-proxy",
-      //      "cpu_usage": "0.16",
-      //      "memory_usage": "1.64",
-      //      "memory_limit": "5925.89",
-      //      "network_io": 478956,
-      //      "block_io": 294912
-      //    }
-      //  ]
    } catch (error) {
-      arr = ramram;
+      arr = [];
    }
 
    return (
@@ -270,14 +276,13 @@ function Resources() {
                <div className="p-5 rounded-3 bg-light text-dark">
                   <h1>CPU</h1>
                   <ResourcePieChart resources={resources} resource={"cpu"} />
-                  <p>dasd</p>
                </div>
             </div>
 
             <div className="col-lg-4 col-md-3 col-12">
                <div className="p-5 rounded-3 bg-light text-dark">
                   <h1>Dysk</h1>
-                  <ResourcePieChart />
+                  <ResourcePieChart resources={resources} resource={"disk"}/>
                </div>
             </div>
 
