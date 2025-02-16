@@ -4,9 +4,7 @@ import React, { useEffect, useState } from "react";
 import Navigation from "../components/Navigation.js";
 import Footer from "../components/Footer.js";
 
-// import config file
-import config from "../config.json";
-
+// import components from recharts library
 import {
    LineChart,
    Line,
@@ -22,6 +20,9 @@ import {
    Area,
    ResponsiveContainer,
 } from "recharts";
+
+// import config file
+import config from "../config.json";
 
 const rdat = {
    cpu: [
@@ -77,7 +78,7 @@ const rdat = {
    ],
 };
 
-function MyChart({ resource, color }) {
+function ResourceAreaChart({ resource, color }) {
    const chartData = rdat[resource] || []; // if resource is unknow, this will put empty array
 
    return (
@@ -98,32 +99,6 @@ function MyChart({ resource, color }) {
             />
          </AreaChart>
       </ResponsiveContainer>
-
-      // <ResponsiveContainer width="100%" height={300}>
-      //   <LineChart data={chartData}>
-      //     <CartesianGrid strokeDasharray="3 3" />
-      //     <XAxis dataKey="name" />
-      //     <YAxis />
-      //     <Tooltip />
-      //     <Legend />
-      //     <Area
-      //       type="monotone"
-      //       dataKey={resource}
-      //       stroke={color || "#ff7300"}
-      //       fill={color ? `${color}4D` : "#ff73004D"}
-      //       strokeWidth={3}
-      //     />
-
-      //     {/* Linia wykresu */}
-      //     <Line
-      //       type="monotone"
-      //       dataKey={resource}
-      //       stroke={color}
-      //       strokeWidth={3}
-      //     />
-
-      //   </LineChart>
-      // </ResponsiveContainer>
    );
 }
 
@@ -144,7 +119,12 @@ const ramram = [
 
 const COLORS = ["darkorange", "#00C49F", "darkcyan", "slateblue", "red"]; // colors of segments
 
-function ResourcePieChart( {resources, resource} ) {
+function ResourcePieChart({ resources, resource }) {
+   // prepare chart data
+   chart_subject = resource;
+   chart_data = resources;
+
+   // return configured PieChart component
    return (
       <ResponsiveContainer width="100%" height={600}>
          <PieChart>
@@ -169,7 +149,6 @@ function ResourcePieChart( {resources, resource} ) {
             <Legend />
          </PieChart>
       </ResponsiveContainer>
-
    );
 }
 
@@ -319,34 +298,34 @@ function Resources() {
             <div className="col-lg-6 col-md-7 col-12">
                <div className="p-5 my-3 rounded-3 bg-light text-dark">
                   <h1>RAM</h1>
-                  <MyChart resource="ram" color="red" />
+                  <ResourceAreaChart resource="ram" color="red" />
                </div>
 
                <div className="p-5 my-3 rounded-3 bg-light text-dark">
                   <h1>CPU</h1>
-                  <MyChart resource="cpu" color="darkcyan" />
+                  <ResourceAreaChart resource="cpu" color="darkcyan" />
                </div>
 
                <div className="p-5 my-3 rounded-3 bg-light text-dark">
                   <h1>Dysk</h1>
-                  <MyChart resource="disk" color="blue" />
+                  <ResourceAreaChart resource="disk" color="blue" />
                </div>
             </div>
 
             <div className="col-lg-6 col-md-7 col-12">
                <div className="p-5 my-3 rounded-3 bg-light text-dark">
                   <h1>Dysk</h1>
-                  <MyChart resource="disk" color="orange" />
+                  <ResourceAreaChart resource="disk" color="orange" />
                </div>
 
                <div className="p-5 my-3 rounded-3 bg-light text-dark">
                   <h1>RAM</h1>
-                  <MyChart resource="ram" color="purple" />
+                  <ResourceAreaChart resource="ram" color="purple" />
                </div>
 
                <div className="p-5 my-3 rounded-3 bg-light text-dark">
                   <h1>CPU</h1>
-                  <MyChart resource="cpu" color="green" />
+                  <ResourceAreaChart resource="cpu" color="green" />
                </div>
             </div>
          </div>
