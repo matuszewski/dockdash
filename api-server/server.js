@@ -23,19 +23,19 @@ let instances = {}
 
 
 function loadInstancesConfig(config_file_path = "./config/instances.json") {
-   let instances = {}
+   let instances_config = {}
    try {
       if (fs.existsSync(config_file_path)) {
          const data = fs.readFileSync(config_file_path, "utf8");
          const parsedData = JSON.parse(data);
-         instances = parsedData || {};
+         instances_config = parsedData || {};
       } else {
          console.error("Config file not found:", config_file_path);
       }
    } catch (error) {
       console.error("Error loading config file:", error);
    }
-   return instances
+   return instances_config
 }
 
 
@@ -525,9 +525,8 @@ app.get("/api/:instance/resources", async (req, res) => {
 // start the api server
 app.listen(api_server_port, () => {
    // print banner
-   // TODO: unify styles
    console.info(banner)
-   console.info('====================== api-server 1.0 ==\n      autor: Krzysztof Matuszewski, nr. 160802')
+   console.info('====================== api-server 1.0 ==\nautor: ','Krzysztof Matuszewski'.blue,', nr. ','160802'.blue, '\n')
    console.info(
       `${success} DockDash API server is running on port ${api_server_port}`.blue
          .bold
@@ -541,8 +540,5 @@ app.listen(api_server_port, () => {
 
    // save instances
    saveInstancesConfig(checked_instances)
-
-   // load instances once more (just as a test)
-   //let instances2 = loadInstancesConfig()
 
 });
