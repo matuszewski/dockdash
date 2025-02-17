@@ -17,33 +17,8 @@ app.use(cors());
 // api server port
 const api_server_port = 4000;
 
-
-// instances configuration // TODO: remove as will be taken from file
-const instance_configuration = {
-   local: {
-      ip: "127.0.0.1",
-      port: "2375",
-      api_version: "1.47",
-      status: "",
-   },
-   wyse: {
-      ip: "10.20.0.102",
-      port: "2375",
-      api_version: "1.47",
-      status: "",
-   },
-   rpi: {
-      ip: "10.20.0.105",
-      port: "2375",
-      api_version: "1.47",
-      status: "",
-   }
-};
-
 // initialize instances var
 let instances = {}
-
-
 
 
 
@@ -97,7 +72,7 @@ function formatBytesToMB(bytes) {
 
 async function checkInstanceAvailablity(instance_name) {
 
-   const { ip, port, api_version } = instance_configuration[instance_name];
+   const { ip, port, api_version } = instances[instance_name];
    const url = `http://${ip}:${port}/v${api_version}/info`; // TODO: check default docker url for checking if the api works / status
    console.log(`${success} URL composed: ${url}`);
    // TODO: add running that only in debug/verbose mode
@@ -117,13 +92,13 @@ async function checkInstanceAvailablity(instance_name) {
    }
 }
 
-function updateInstancesAvailabilty(instances) {
+function updateInstancesAvailabilty(inst) {
    /* Function for checking many Docker instances availabilty based on provided instances ID's */
 
-   let return_instances = instances
+   let return_instances = inst
 
    try {
-      Object.entries(instance_configuration).forEach(async ([key, instance]) => {
+      Object.entries(inst).forEach(async ([key, instance]) => {
          let instance_status = await checkInstanceAvailablity(key)
 
          console.debug(`${debug} instance: ${key},\t ip: ${instance.ip},\t port: ${instance.port},\t status: ${instance_status}`);
@@ -171,14 +146,14 @@ app.get("/api/:instance/containers", async (req, res) => {
    );
 
    // resolve instance configuration
-   const instanceConfig = instance_configuration[instance];
+   const instanceConfig = instances[instance];
    if (!instanceConfig) {
       console.error(`${failure} instance '${instance}' not found`.red);
       return res.status(404).send("Instance not found");
    }
 
    const { ip, port, api_version } = instanceConfig;
-   const url = `http://${ip}:${port}/v${api_version}/containers/json`;
+   const url = `http://${ip}:${port}/v${api_version}/containers/json?all=true`; // TODO: remove todo if its correct
 
    try {
       // call docker instance
@@ -297,7 +272,7 @@ app.get("/api/:instance/images", async (req, res) => {
    );
 
    // resolve instance configuration
-   const instanceConfig = instance_configuration[instance];
+   const instanceConfig = instances[instance];
    if (!instanceConfig) {
       console.error(`${failure} instance '${instance}' not found`.red);
       return res.status(404).send("Instance not found");
@@ -452,14 +427,14 @@ app.get("/api/:instance/resources", async (req, res) => {
    );
 
    // resolve instance configuration
-   const instanceConfig = instance_configuration[instance];
+   const instanceConfig = instances[instance];
    if (!instanceConfig) {
       console.error(`${failure} instance '${instance}' not found`.red);
       return res.status(404).send("Instance not found");
    }
 
    const { ip, port, api_version } = instanceConfig;
-   const url = `http://${ip}:${port}/v${api_version}/containers/json?all=false`; // only running containers (they have resource data)
+   const url = `http://${ip}:${port}/v${api_version}/containers/json?all=true`; // only running containers (they have resource data)
    //const url = `http://${ip}:${port}/v${api_version}/containers/json?all=true`;   // all containers (they do not have resource data)
 
    try {

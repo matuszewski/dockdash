@@ -18,7 +18,7 @@ function Containers() {
    useEffect(() => {
       const dataFetch = async () => {
          const containers_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers` // TODO: extract
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers` // TODO: extract
          );
 
          const fetched_containers = await containers_response.json();

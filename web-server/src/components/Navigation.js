@@ -23,7 +23,7 @@ function Navigation() {
                      role="group"
                      aria-label="First group"
                   >
-                     <button
+                     {/* <button
                         type="button"
                         className="btn btn-secondary"
                         alt="List"
@@ -38,7 +38,7 @@ function Navigation() {
                      </button>
                      <button type="button" className="btn btn-secondary">
                         <SettingsOutlinedIcon />
-                     </button>
+                     </button> */}
                   </div>
                </div>
 
