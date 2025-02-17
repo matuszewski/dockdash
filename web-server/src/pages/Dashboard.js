@@ -16,7 +16,7 @@ import ViewInArIcon from "@mui/icons-material/ViewInAr";
 import GridViewIcon from "@mui/icons-material/GridView";
 import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel"; // TODO: implement changing CheckCircleIcon <=> CancelIcon based on instance availabilty
+import CancelIcon from "@mui/icons-material/Cancel";
 
 function Dashboard() {
    const [loaded, setLoaded] = useState(false);
@@ -27,7 +27,7 @@ function Dashboard() {
 
    const [instances, setInstances] = useState([]);
    const [images, setImages] = useState([]);
-   const [containers, setContainers] = useState([]); // TODO: change as now only single instace of docker data is added here
+   const [containers, setContainers] = useState([]);
 
    useEffect(() => {
       const dataFetch = async () => {
@@ -38,11 +38,11 @@ function Dashboard() {
          ).json();
 
          const containers_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers` // TODO: extract
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers` // TODO: extract
          );
 
          const images_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/images` // TODO: extract
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/images` // TODO: extract
          );
 
          const fetched_images = await images_response.json();
