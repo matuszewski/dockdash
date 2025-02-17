@@ -11,13 +11,11 @@ const failure =
 const debug =
    `${logging_name} `.gray + "[".white + " DEBUG ".yellow + "]".white + ":";
 
-
 const banner = String.raw`
-    ||         ||       ||         ||   
+    ||         ||       ||         ||
 ,---|,---.,---.|__/ ,---|,---.,---.|,--.
 |[ ]||[ ]||[   | \\ |[ ]|,---|'---.|| ||
 '---''---''---''   ''---''---^'---''' ''
 `.blue.bold;
 
-
-export default { success, info, failure, debug, banner};
+export default { success, info, failure, debug, banner };
