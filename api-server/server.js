@@ -45,9 +45,9 @@ function saveInstancesConfig(instances, config_file_path = "./config/instances.j
    try {
        const data = JSON.stringify(instances, null, 4);
        fs.writeFileSync(config_file_path, data, "utf8");
-       console.log(`${success} instances config successfully saved to ${config_file_path.green}`);
+       console.log(`${success()} instances config successfully saved to ${config_file_path.green}`);
    } catch (error) {
-       console.error(`${failure} error occured while saving instances file: ${error.red}`);
+       console.error(`${failure()} error occured while saving instances file: ${error.red}`);
    }
 }
 
@@ -74,20 +74,20 @@ async function checkInstanceAvailablity(instance_name) {
 
    const { ip, port, api_version } = instances[instance_name];
    const url = `http://${ip}:${port}/v${api_version}/info`; // TODO: check default docker url for checking if the api works / status
-   console.log(`${success} URL composed: ${url}`);
-   // TODO: add running that only in debug/verbose mode
+   console.info(`${info()} composed URL: ${url.blue}`);
 
-   console.debug(
-      `${debug} checking ${instance_name} instance availabilty via URL: ${url.cyan}`
-   );
+   // print debug
+   // console.debug(
+   //    `${debug()} checking ${instance_name} instance availabilty via URL: ${url.cyan}`
+   // );
 
    try {
       // TODO: fix that
       const response =  await axios.get(url, { timeout: INSTANCE_COMEUP_TIMEOUT }); // 5 seconds timeout // TODO: pick timeout from config/settings.json
-      console.log(`${success} instance ${instance_name} is available`);
+      console.debug(`${debug()} instance ${instance_name.blue} is available`);
       return true;
    } catch (error) {
-      console.error(`${failure} instance ${instance_name} is not available`);
+      console.debug(`${debug()} instance ${instance_name.blue} is not available`);
       return false;
    }
 }
@@ -101,14 +101,14 @@ function updateInstancesAvailabilty(inst) {
       Object.entries(inst).forEach(async ([key, instance]) => {
          let instance_status = await checkInstanceAvailablity(key)
 
-         console.debug(`${debug} instance: ${key},\t ip: ${instance.ip},\t port: ${instance.port},\t status: ${instance_status}`);
+         //console.debug(`${debug()} instance: ${key},\t ip: ${instance.ip},\t port: ${instance.port},\t status: ${instance_status}`);
          return_instances[key].status = instance_status
       });
 
       return return_instances;
    } catch (error) {
       console.error(
-         `${failure} a problem occured in updateInstancesAvailabilty(instances) function. error: ${error.red}`
+         `${failure()} a problem occured in updateInstancesAvailabilty(instances) function. error: ${error.red}`
       );
       return 1;
    }
@@ -140,7 +140,7 @@ app.get("/api/:instance/containers", async (req, res) => {
    const instance = req.params.instance;
 
    console.info(
-      `${info} received /api/${instance}/containers/ HTTP GET request from ${
+      `${info()} received /api/${instance}/containers/ HTTP GET request from ${
          req.socket.remoteAddress.replace(/^.*:/, "").cyan
       }`
    );
@@ -148,7 +148,7 @@ app.get("/api/:instance/containers", async (req, res) => {
    // resolve instance configuration
    const instanceConfig = instances[instance];
    if (!instanceConfig) {
-      console.error(`${failure} instance '${instance}' not found`.red);
+      console.error(`${failure()} instance '${instance}' not found`.red);
       return res.status(404).send("Instance not found");
    }
 
@@ -157,24 +157,23 @@ app.get("/api/:instance/containers", async (req, res) => {
 
    try {
       // call docker instance
-      console.info(`${info} fetching containers from ${url.cyan}`);
+      console.info(`${info()} fetching containers from ${url.cyan}`);
       const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
       const containers = response.data;
-      console.info(`${success} Docker API responded successfully`);
+      console.info(`${success()} Docker API responded successfully`);
 
       // use raw data or not
       if (RAW_MODE) {
          // return recevied data in unchanged JSON format
-         console.info(`${info} returning response in unchanged format`);
+         console.info(`${info()} returning response in unchanged format`);
          return res.json(response.data);
       } else {
          // parse and prepare data to return in desired JSON format
-         console.info(`${info} parsing response`);
+         console.info(`${info()} parsing response`);
 
          const return_structure = [];
 
          containers.forEach((container) => {
-            // TODO: finish this part up
 
             const container_id = container.Id;
 
@@ -184,7 +183,7 @@ app.get("/api/:instance/containers", async (req, res) => {
                ? container.State
                : "Unknown"; // Status of the container (e.g., running, exited)
 
-            // Get container's creation date in a friendly Polish format (DD.MM.YYYY, 24-hour format)
+            // get container's creation date in a friendly Polish format (DD.MM.YYYY, 24-hour format)
             const createdDate = container.Created
                ? new Date(container.Created * 1000).toLocaleString("pl-PL", {
                     day: "2-digit",
@@ -197,20 +196,20 @@ app.get("/api/:instance/containers", async (req, res) => {
                  })
                : "Unknown date";
 
-            // Extract exposed ports (if any)
+            // extract exposed ports (if any)
             const exposedPorts = container.Ports
                ? container.Ports.map((port) => port.PublicPort).join(", ")
                : "No exposed ports";
 
-            // Get the image used to create the container
+            // get the image used to create the container
             const container_image = container.Image || "No image";
 
-            // Get the size of the container (if available)
+            // get the size of the container (if available)
             const container_size = container.SizeRootFs
                ? formatBytesToMB(container.SizeRootFs)
                : "Unknown size";
 
-            // Prepare the parsed data
+            // prepare the parsed data
             const container_data = {
                id: container_id,
                name: container_name,
@@ -221,18 +220,18 @@ app.get("/api/:instance/containers", async (req, res) => {
                size: container_size,
             };
 
-            // Append the parsed data to the return structure
+            // append the parsed data to the return structure
             return_structure.push(container_data);
          });
 
          // print return structure
-         console.debug(
-            `${debug} prepared return structure:\n${JSON.stringify(
-               return_structure,
-               null,
-               2
-            )}`
-         );
+         // console.debug(
+         //    `${debug()} prepared return structure:\n${JSON.stringify(
+         //       return_structure,
+         //       null,
+         //       2
+         //    )}`
+         // );
 
          return res.json(return_structure);
       }
@@ -240,7 +239,7 @@ app.get("/api/:instance/containers", async (req, res) => {
       if (error.response) {
          // server responded with a status code other than 2xx
          console.error(
-            `${failure} Docker API returned error: ${error.response.status} ${error.response.statusText}`
+            `${failure()} Docker API returned error: ${error.response.status} ${error.response.statusText}`
                .red
          );
          return res
@@ -248,12 +247,12 @@ app.get("/api/:instance/containers", async (req, res) => {
             .send(error.response.statusText || "Error from Docker API");
       } else if (error.request) {
          // no response received
-         console.error(`${failure} no response from Docker API`.red);
+         console.error(`${failure()} no response from Docker API`.red);
          return res.status(503).send("No response from Docker API");
       } else {
          // other errors
          console.error(
-            `${failure} could not connect to Docker API: ${error.message}`.red
+            `${failure()} could not connect to Docker API: ${error.message}`.red
          );
          return res.status(500).send("Error connecting to Docker API");
       }
@@ -266,7 +265,7 @@ app.get("/api/:instance/images", async (req, res) => {
 
    // print info about a new request
    console.info(
-      `${info} received /api/${instance}/images/ HTTP GET request from ${
+      `${info()} received /api/${instance}/images/ HTTP GET request from ${
          req.socket.remoteAddress.replace(/^.*:/, "").cyan
       }`
    );
@@ -274,7 +273,7 @@ app.get("/api/:instance/images", async (req, res) => {
    // resolve instance configuration
    const instanceConfig = instances[instance];
    if (!instanceConfig) {
-      console.error(`${failure} instance '${instance}' not found`.red);
+      console.error(`${failure()} instance '${instance}' not found`.red);
       return res.status(404).send("Instance not found");
    }
 
@@ -284,19 +283,19 @@ app.get("/api/:instance/images", async (req, res) => {
 
    try {
       // call docker instance
-      console.info(`${info} fetching images from ${url.cyan}`);
+      console.info(`${info()} fetching images from ${url.cyan}`);
       const response = await axios.get(url, { timeout: 5000 }); // 5 seconds timeout
       const images = response.data;
-      console.info(`${success} Docker API responded successfully`);
+      console.info(`${success()} Docker API responded successfully`);
 
       // use raw data or not
       if (RAW_MODE) {
          // return recevied data in unchanged JSON format
-         console.info(`${info} returning response in unchanged format`);
+         console.info(`${info()} returning response in unchanged format`);
          return res.json(response.data);
       } else {
          // parse and prepare data to return in desired JSON format
-         console.info(`${info} parsing response`);
+         console.info(`${info()} parsing response`);
 
          const return_structure = [];
 
@@ -374,7 +373,7 @@ app.get("/api/:instance/images", async (req, res) => {
          });
 
          // print return structure
-         //console.debug(`${debug} prepared return structure:\n${JSON.stringify(return_structure, null, 2)}`);
+         //console.debug(`${debug()} prepared return structure:\n${JSON.stringify(return_structure, null, 2)}`);
 
          return res.json(return_structure);
       }
@@ -382,7 +381,7 @@ app.get("/api/:instance/images", async (req, res) => {
       if (error.response) {
          // server responded with a status code other than 2xx
          console.error(
-            `${failure} Docker API returned error: ${error.response.status} ${error.response.statusText}`
+            `${failure()} Docker API returned error: ${error.response.status} ${error.response.statusText}`
                .red
          );
          return res
@@ -390,12 +389,12 @@ app.get("/api/:instance/images", async (req, res) => {
             .send(error.response.statusText || "Error from Docker API");
       } else if (error.request) {
          // no response received
-         console.error(`${failure} no response from Docker API`.red);
+         console.error(`${failure()} no response from Docker API`.red);
          return res.status(503).send("No response from Docker API");
       } else {
          // other errors
          console.error(
-            `${failure} could not connect to Docker API: ${error.message}`.red
+            `${failure()} could not connect to Docker API: ${error.message}`.red
          );
          return res.status(500).send("Error connecting to Docker API");
       }
@@ -408,7 +407,7 @@ app.get("/api/:instance/to_be_removed", async (req, res) => {
 
    // print info about a new request
    console.info(
-      `${info} received /api/${instance}/resources/ HTTP GET request from ${
+      `${info()} received /api/${instance}/resources/ HTTP GET request from ${
          req.socket.remoteAddress.replace(/^.*:/, "").cyan
       }`
    );
@@ -421,7 +420,7 @@ app.get("/api/:instance/resources", async (req, res) => {
    const instance = req.params.instance;
 
    console.info(
-      `${info} received /api/${instance}/resources/ HTTP GET request from ${
+      `${info()} received /api/${instance}/resources/ HTTP GET request from ${
          req.socket.remoteAddress.replace(/^.*:/, "").cyan
       }`
    );
@@ -429,7 +428,7 @@ app.get("/api/:instance/resources", async (req, res) => {
    // resolve instance configuration
    const instanceConfig = instances[instance];
    if (!instanceConfig) {
-      console.error(`${failure} instance '${instance}' not found`.red);
+      console.error(`${failure()} instance '${instance}' not found`.red);
       return res.status(404).send("Instance not found");
    }
 
@@ -438,10 +437,10 @@ app.get("/api/:instance/resources", async (req, res) => {
    //const url = `http://${ip}:${port}/v${api_version}/containers/json?all=true`;   // all containers (they do not have resource data)
 
    try {
-      console.info(`${info} fetching container resources from ${url.cyan}`);
+      console.info(`${info()} fetching container resources from ${url.cyan}`);
       const response = await axios.get(url, { timeout: 5000 });
       const containers = response.data;
-      console.info(`${success} Docker API responded successfully`);
+      console.info(`${success()} Docker API responded successfully`);
 
       const return_structure = [];
 
@@ -487,35 +486,37 @@ app.get("/api/:instance/resources", async (req, res) => {
             return_structure.push(container_data);
          } catch (statsError) {
             console.error(
-               `${failure} Failed to fetch stats for container ${container.Id}: ${statsError.message}`
+               `${failure()} Failed to fetch stats for container ${container.Id}: ${statsError.message}`
                   .red
             );
          }
       }
 
-      console.debug(
-         `${debug} prepared return structure: ${JSON.stringify(
-            return_structure,
-            null,
-            2
-         )}`
-      );
+      // print debug
+      // console.debug(
+      //    `${debug()} prepared return structure: ${JSON.stringify(
+      //       return_structure,
+      //       null,
+      //       2
+      //    )}`
+      // );
+
       return res.json(return_structure);
    } catch (error) {
       if (error.response) {
          console.error(
-            `${failure} Docker API returned error: ${error.response.status} ${error.response.statusText}`
+            `${failure()} Docker API returned error: ${error.response.status} ${error.response.statusText}`
                .red
          );
          return res
             .status(error.response.status)
             .send(error.response.statusText || "Error from Docker API");
       } else if (error.request) {
-         console.error(`${failure} no response from Docker API`.red);
+         console.error(`${failure()} no response from Docker API`.red);
          return res.status(503).send("No response from Docker API");
       } else {
          console.error(
-            `${failure} could not connect to Docker API: ${error.message}`.red
+            `${failure()} could not connect to Docker API: ${error.message}`.red
          );
          return res.status(500).send("Error connecting to Docker API");
       }
@@ -526,19 +527,30 @@ app.get("/api/:instance/resources", async (req, res) => {
 app.listen(api_server_port, () => {
    // print banner
    console.info(banner)
-   console.info('====================== api-server 1.0 ==\nautor: ','Krzysztof Matuszewski'.blue,', nr. ','160802'.blue, '\n')
-   console.info(
-      `${success} DockDash API server is running on port ${api_server_port}`.blue
-         .bold
-   );
+   console.info('====================== api-server 1.0 ==\nauthor: ','Krzysztof Matuszewski'.blue,', nr. ','160802'.blue, '\n')
+   console.info('|______timestamp_______|__module__|___label___|______________________log_message_____________________|'.gray,'\n')
 
+   console.info(`${success()} DockDash API server is running on port ${String(api_server_port).blue}`);
+
+
+   // print info
+   console.info(`${info()} loading api-server config...`)
+
+
+   // print info
+   console.info(`${info()} loading instances config...`)
    // load instances
    instances = loadInstancesConfig()
-
    // first time check instances availabilty (and save to instances_configuration their statuses)
+   console.info(`${info()} validating instances availabilty...`)
+
    let checked_instances = updateInstancesAvailabilty(instances)
 
+   
    // save instances
+   console.info(`${info()} saving instances to instance config...`)
    saveInstancesConfig(checked_instances)
+
+
 
 });
