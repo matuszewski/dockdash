@@ -1,17 +1,20 @@
 {
-   "local": {
-      "ip": "127.0.0.1",
-      "port": "2375",
-      "api_version": "1.47"
-   },
-   "wyse": {
-      "ip": "10.20.0.102",
-      "port": "2375",
-      "api_version": "1.47"
-   },
-   "rpi": {
-      "ip": "10.20.0.105",
-      "port": "2375",
-      "api_version": "1.47"
-   }
+    "local": {
+        "ip": "127.0.0.1",
+        "port": "2375",
+        "api_version": "1.47",
+        "status": true
+    },
+    "wyse": {
+        "ip": "10.20.0.102",
+        "port": "2375",
+        "api_version": "1.47",
+        "status": true
+    },
+    "rpi": {
+        "ip": "10.20.0.105",
+        "port": "2375",
+        "api_version": "1.47",
+        "status": false
+    }
 }
