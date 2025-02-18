@@ -75,10 +75,24 @@ const CONTAINER_RESPONSE_TIMEOUT = 5000; // 5 seconds
 const IMAGE_RESPONSE_TIMEOUT = 5000; // 5 seconds
 const RESOURCE_RESPONSE_TIMEOUT = 5000; // 5 seconds
 
-function loadServerConfig(config_file_path = "./config/settings.json") {
-   // TODO: add loading server config from separate json file
-   return 0;
+
+
+function loadServerConfig(config_file_path = "./config/instances.json") {
+   let instances_config = {};
+   try {
+      if (fs.existsSync(config_file_path)) {
+         const data = fs.readFileSync(config_file_path, "utf8");
+         const parsedData = JSON.parse(data);
+         instances_config = parsedData || {};
+      } else {
+         console.error("Config file not found:", config_file_path);
+      }
+   } catch (error) {
+      console.error("Error loading config file:", error);
+   }
+   return instances_config;
 }
+
 
 /**
  * Converts size from bytes to megabytes
