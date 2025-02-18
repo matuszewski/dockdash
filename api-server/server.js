@@ -68,11 +68,6 @@ function saveInstancesConfig(
    }
 }
 
-const RAW_MODE = false;
-const INSTANCE_RESPONSE_TIMEOUT = 5000; // 5 seconds
-const CONTAINER_RESPONSE_TIMEOUT = 5000; // 5 seconds
-const IMAGE_RESPONSE_TIMEOUT = 5000; // 5 seconds
-const RESOURCE_RESPONSE_TIMEOUT = 5000; // 5 seconds
 
 function loadServerConfig(config_path = "./config/config.json") {
    let config = {};
@@ -82,7 +77,7 @@ function loadServerConfig(config_path = "./config/config.json") {
          const parsedData = JSON.parse(data);
          config = parsedData || {};
       } else {
-         console.error("api-server config file not found:", config_path);
+         console.error(`api-server config file not found:", config_path`);
       }
    } catch (error) {
       console.error("error loading api-server config file:", error);
@@ -117,7 +112,7 @@ async function checkInstanceAvailablity(instance_name) {
 
    try {
       const response = await axios.get(url, {
-         timeout: INSTANCE_RESPONSE_TIMEOUT,
+         timeout: config.INSTANCE_RESPONSE_TIMEOUT,
       });
       console.debug(`${debug()} instance ${instance_name.blue} is available`);
       return true;
@@ -192,13 +187,13 @@ app.get("/api/:instance/containers", async (req, res) => {
       // call docker instance
       console.info(`${info()} fetching containers from ${url.cyan}`);
       const response = await axios.get(url, {
-         timeout: CONTAINER_RESPONSE_TIMEOUT,
+         timeout: config.CONTAINER_RESPONSE_TIMEOUT,
       });
       const containers = response.data;
       console.info(`${success()} Docker API responded successfully`);
 
       // use raw data or not
-      if (RAW_MODE) {
+      if (config.RAW_MODE) {
          // return recevied data in unchanged JSON format
          console.info(`${info()} returning response in unchanged format`);
          return res.json(response.data);
@@ -308,13 +303,13 @@ app.get("/api/:instance/images", async (req, res) => {
       // call docker instance
       console.info(`${info()} fetching images from ${url.cyan}`);
       const response = await axios.get(url, {
-         timeout: IMAGE_RESPONSE_TIMEOUT,
+         timeout: config.IMAGE_RESPONSE_TIMEOUT,
       });
       const images = response.data;
       console.info(`${success()} Docker API responded successfully`);
 
       // use raw data or not
-      if (RAW_MODE) {
+      if (config.RAW_MODE) {
          // return recevied data in unchanged JSON format
          console.info(`${info()} returning response in unchanged format`);
          return res.json(response.data);
@@ -465,7 +460,7 @@ app.get("/api/:instance/resources", async (req, res) => {
    try {
       console.info(`${info()} fetching container resources from ${url.cyan}`);
       const response = await axios.get(url, {
-         timeout: CONTAINER_RESPONSE_TIMEOUT,
+         timeout: config.CONTAINER_RESPONSE_TIMEOUT,
       });
       const containers = response.data;
       console.info(`${success()} Docker API responded successfully`);
@@ -476,7 +471,7 @@ app.get("/api/:instance/resources", async (req, res) => {
          const statsUrl = `http://${ip}:${port}/v${api_version}/containers/${container.Id}/stats?stream=false`;
          try {
             const statsResponse = await axios.get(statsUrl, {
-               timeout: RESOURCE_RESPONSE_TIMEOUT,
+               timeout: config.RESOURCE_RESPONSE_TIMEOUT,
             });
             const stats = statsResponse.data;
 
