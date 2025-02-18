@@ -18,23 +18,23 @@ app.use(cors());
 const config = loadServerConfig("./config/config.json");
 
 // initialize instances var
-let instances = {};
+let instances = loadInstancesConfig("./config/instances.json");
 
 /**
  * Loads instances configuration file
- * @param {string} [config_file_path="./config/instances.json"] Path to instances config file
+ * @param {string} [config_path="./config/instances.json"] Path to instances config file
  * @returns {Object} JSON object of instances configuration
  * @throws {Error} Throws error when file is not found or file could not be opened
  */
-function loadInstancesConfig(config_file_path = "./config/instances.json") {
+function loadInstancesConfig(config_path = "./config/instances.json") {
    let instances_config = {};
    try {
-      if (fs.existsSync(config_file_path)) {
-         const data = fs.readFileSync(config_file_path, "utf8");
+      if (fs.existsSync(config_path)) {
+         const data = fs.readFileSync(config_path, "utf8");
          const parsedData = JSON.parse(data);
          instances_config = parsedData || {};
       } else {
-         console.error("Config file not found:", config_file_path);
+         console.error("Config file not found:", config_path);
       }
    } catch (error) {
       console.error("Error loading config file:", error);
@@ -45,20 +45,20 @@ function loadInstancesConfig(config_file_path = "./config/instances.json") {
 /**
  * Saves instances configuration to file
  * @param {*} instances Instance configuration JSON object to save to JSON file
- * @param {string} [config_file_path="./config/instances.json"] Path to JSON file to save the instances config
+ * @param {string} [config_path="./config/instances.json"] Path to JSON file to save the instances config
  * @returns {void} Returns nothing
  * @throws {Error} Throws error when file is not found or file could not be opened
  */
 function saveInstancesConfig(
    instances,
-   config_file_path = "./config/instances.json"
+   config_path = "./config/instances.json"
 ) {
    try {
       const data = JSON.stringify(instances, null, 4);
-      fs.writeFileSync(config_file_path, data, "utf8");
+      fs.writeFileSync(config_path, data, "utf8");
       console.log(
          `${success()} instances config successfully saved to ${
-            config_file_path.green
+            config_path.green
          }`
       );
    } catch (error) {
@@ -68,7 +68,12 @@ function saveInstancesConfig(
    }
 }
 
-
+/**
+ * Loads api-server main configuration file
+ * @param {string} [config_path="./config/config.json"] Path to api-server config file
+ * @returns {Object} JSON object of main api-server configuration
+ * @throws {Error} Throws error when file is not found or file could not be opened
+ */
 function loadServerConfig(config_path = "./config/config.json") {
    let config = {};
    try {
@@ -77,10 +82,10 @@ function loadServerConfig(config_path = "./config/config.json") {
          const parsedData = JSON.parse(data);
          config = parsedData || {};
       } else {
-         console.error(`api-server config file not found:", config_path`);
+         console.error(`${failure} api-server config file not found in ${config_path}`);
       }
    } catch (error) {
-      console.error("error loading api-server config file:", error);
+      console.error(`${failure} error loading api-server config file: ${error}`);
    }
    return config;
 }
