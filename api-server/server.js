@@ -4,6 +4,7 @@ import axios from "axios"; // for handling HTTP requests
 import colors from "colors"; // for colored logs
 import fs from "fs"; // for loading and saving to files
 
+// import custom logging module
 import logging from "./logging.js";
 const { debug, success, failure, info, banner } = logging;
 
@@ -13,8 +14,8 @@ const app = express();
 // use the CORS middleware
 app.use(cors());
 
-// api server port
-const api_server_port = 4000;
+// load api-server config file
+const config = loadServerConfig("./config/config.json");
 
 // initialize instances var
 let instances = {};
@@ -67,32 +68,27 @@ function saveInstancesConfig(
    }
 }
 
-// TODO: get from config and make global
-const VERBOSE_MODE = true;
 const RAW_MODE = false;
 const INSTANCE_RESPONSE_TIMEOUT = 5000; // 5 seconds
 const CONTAINER_RESPONSE_TIMEOUT = 5000; // 5 seconds
 const IMAGE_RESPONSE_TIMEOUT = 5000; // 5 seconds
 const RESOURCE_RESPONSE_TIMEOUT = 5000; // 5 seconds
 
-
-
-function loadServerConfig(config_file_path = "./config/instances.json") {
-   let instances_config = {};
+function loadServerConfig(config_path = "./config/config.json") {
+   let config = {};
    try {
-      if (fs.existsSync(config_file_path)) {
-         const data = fs.readFileSync(config_file_path, "utf8");
+      if (fs.existsSync(config_path)) {
+         const data = fs.readFileSync(config_path, "utf8");
          const parsedData = JSON.parse(data);
-         instances_config = parsedData || {};
+         config = parsedData || {};
       } else {
-         console.error("Config file not found:", config_file_path);
+         console.error("api-server config file not found:", config_path);
       }
    } catch (error) {
-      console.error("Error loading config file:", error);
+      console.error("error loading api-server config file:", error);
    }
-   return instances_config;
+   return config;
 }
-
 
 /**
  * Converts size from bytes to megabytes
@@ -166,15 +162,9 @@ app.get("/", (req, res) => {
 
 // handle GET request /api/instances
 app.get("/api/instances", async (req, res) => {
-   // return instances array aleardy checked
-
    // get availabilty of instances
    let updated_instances = updateInstancesAvailabilty(instances);
-
-   // save
-   // TODO
    saveInstancesConfig(updated_instances);
-
    return res.send(loadInstancesConfig());
 });
 
@@ -566,7 +556,7 @@ app.get("/api/:instance/resources", async (req, res) => {
 });
 
 // start the api server
-app.listen(api_server_port, () => {
+app.listen(config.API_SERVER_PORT, () => {
    // print banner
    console.info(banner);
    console.info(
@@ -576,15 +566,18 @@ app.listen(api_server_port, () => {
       "160802".blue,
       "\n"
    );
+
+   // print logs header
    console.info(
       "|______timestamp_______|__module__|___label___|______________________log_message_____________________|"
          .gray,
       "\n"
    );
 
+   // print info about started api-server
    console.info(
       `${success()} DockDash API server is running on port ${
-         String(api_server_port).blue
+         String(config.API_SERVER_PORT).blue
       }`
    );
 
