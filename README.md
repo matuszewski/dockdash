@@ -65,18 +65,23 @@ In case of any problems not described or linked in this readme please contact pr
 
 - checking single instance availabilty
 - checking multi instance availabilty
-- debug/verbose mode
-- colored and labeled API server logging divied to types of messages (info/debug/success/failure) + left place for future improvements as it contains as well logging entity name, currently set to'api-server'
+- colored and labeled API server logging divied to types of messages (info/debug/success/failure)
+- logging with timestamp in 24h time format and friendly PL date format
+- logging with place for future improvements as it contains as well logging entity name, currently set to 'api-server'
 - loading instances configuration from JSON file
 - saving instances configuration in JSON file
 - loading api-server configuration from JSON file
+- debug mode, and being able to change it from the config file
+- verbosity mode, and being able to change it from the config file
 - whole code in english language
 - whole code with many comments
+- functions commented in JSDoc format
 - whole code formatted using Prettier (3 spaces as separator + all default and most up to date coding rules applied)
 - timeouts settings picked individualy for each docker api action to take, taken from settings JSON config file
 - API created in REST type
 - using Axios as a new, secure and better alternative to popular Request module using in REST API
-
+- printing ASCII art banner with dockdash logo
+  
 ## TODO
 
 - [x] make it work with Docker instance hosted on macOS
