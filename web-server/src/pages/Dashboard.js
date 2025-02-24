@@ -88,7 +88,7 @@ function Dashboard() {
    return (
       <div className="Dashboard">
          <Navigation />
-         <div className="row m-5 p-5" /> {/* empty row just for margin */}
+         <div className="row m-0 p-5" /> {/* empty row just for margin */}
          <div className="row m-5">
             {/* images */}
             <div className="col-lg-8 col-md-7 col-12">

@@ -13,8 +13,8 @@ function Author() {
    return (
       <div className="Author">
          <Navigation />
-         <div className="row m-4 p-5" /> {/* empty row just for margin */}
-         <div className="row m-4">
+         <div className="row m-0 p-5" /> {/* empty row just for margin */}
+         <div className="row m-5">
             <div className="col-lg-12 col-md-7 col-12 bg-light rounded">
                <div className="row">
                   <div className="col-5 p-5 bg-warning rounded-3">

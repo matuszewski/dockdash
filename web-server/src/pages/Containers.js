@@ -47,7 +47,7 @@ function Containers() {
    return (
       <div className="Containers">
          <Navigation />
-         <div className="row m-5 p-5" /> {/* empty row just for margin */}
+         <div className="row m-0 p-5" /> {/* empty row just for margin */}
          <div className="row m-5">
             {/* containers */}
             <div className="col-lg-12 col-md-7 col-12">

@@ -36,7 +36,7 @@ function Instances() {
    return (
       <div className="Instances">
          <Navigation />
-         <div className="row m-5 p-5" /> {/* empty row just for margin */}
+         <div className="row m-0 p-5" /> {/* empty row just for margin */}
          <div className="row m-5">
             {/* instances */}
             <div className="col-lg-6 col-md-7 col-12">

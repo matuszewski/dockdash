@@ -47,7 +47,7 @@ function Images() {
    return (
       <div className="Images">
          <Navigation />
-         <div className="row m-5 p-5" /> {/* empty row just for margin */}
+         <div className="row m-0 p-5" /> {/* empty row just for margin */}
          <div className="row m-5">
             {/* images */}
             <div className="col-lg-12 col-md-12 col-12">
