@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 
+// import custom components
+import Loading from "../components/Loading.js";
+
+
 // import config file
 import config from "../config.json";
 
@@ -23,25 +27,7 @@ function Banner() {
 
    if (!loaded)
       return (
-         <div className="BANNER" class="row m-0 m-sm-5">
-            <div class="col-12 col-xl-4">
-               <div class="card card-body shadow text-start border-0 p-4 mb-4">
-                  <h5 class="h5 mb-2">
-                     <strong>Ładowanie</strong>
-                  </h5>
-                  <table class="table">
-                     <tbody>
-                        <tr class="p-0 m-0">
-                           <td class="border-0 p-0 m-0">
-                              Jeśli ładowanie trwa zbyt długo sprawdź ustawienia
-                              adresu serwera API oraz czy jest włączony.
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-               </div>
-            </div>
-         </div>
+        <Loading />
       );
 
    return (
