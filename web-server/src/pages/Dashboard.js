@@ -92,7 +92,7 @@ function Dashboard() {
          <div className="row m-5">
             {/* images */}
             <div className="col-lg-8 col-md-7 col-12">
-               <div className="p-4 my-3 bg-danger rounded-3 text-light">
+               <div className="p-4 my-3 bg-primary rounded-3 text-light">
                   <h3 className="d-flex align-items-center">
                      <GridViewIcon />
                      &nbsp;Obrazy
@@ -100,7 +100,7 @@ function Dashboard() {
                </div>
 
                <div className="p-4 bg-dark rounded-3 text-light">
-                  <table className="table table-dark table-hover">
+                  <table className="table table-dark table-hover small">
                      <thead>
                         <tr>
                            <th scope="col">ID</th>
@@ -139,21 +139,21 @@ function Dashboard() {
 
             {/* instances */}
             <div className="col-lg-4 col-md-7 col-12">
-               <div className="p-4 my-3 bg-success rounded-3 text-light">
+               <div className="p-4 my-3 bg-primary rounded-3 text-light">
                   <h3 className="d-flex align-items-center">
                      <DnsOutlinedIcon />
                      &nbsp;Instancje
                   </h3>
                </div>
                <div className="p-4 bg-dark rounded-3 text-light">
-                  <table className="table table-dark table-hover">
+                  <table className="table table-dark table-hover small">
                      <thead>
                         <tr>
                            <th scope="col">Nazwa</th>
                            <th scope="col">IP</th>
                            <th scope="col">Port</th>
                            <th scope="col" className="text-end">
-                              Wersja API
+                              API
                            </th>
                            <th scope="col" className="text-end">
                               Status
@@ -192,7 +192,9 @@ function Dashboard() {
                </div>
 
                <div className="p-4 bg-dark rounded-3 text-light">
-                  <table className="table table-dark table-hover">
+               <div style={{ overflowX: "auto", maxWidth: "100%", whiteSpace: "nowrap" }}>
+
+                  <table className="table table-dark table-hover small">
                      <thead>
                         <tr>
                            <th scope="col">ID</th>
@@ -216,6 +218,7 @@ function Dashboard() {
                         ))}
                      </tbody>
                   </table>
+                  </div>
                </div>
             </div>
          </div>
