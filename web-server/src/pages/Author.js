@@ -13,17 +13,17 @@ function Author() {
    return (
       <div className="Author">
          <Navigation />
-         <div className="row m-5 p-5" /> {/* empty row just for margin */}
-         <div className="row m-5">
-            <div className="col-lg-12 col-md-7 col-12">
+         <div className="row m-4 p-5" /> {/* empty row just for margin */}
+         <div className="row m-4">
+            <div className="col-lg-12 col-md-7 col-12 bg-light rounded">
                <div className="row">
-                  <div className="col-3 p-5 bg-light rounded-3">
-                     <h1 className="d-flex align-items-center">
+                  <div className="col-5 p-5 bg-warning rounded-3">
+                     <h3 className="d-flex align-items-center">
                         <AccountBoxIcon />
                         &nbsp;Autor
-                     </h1>
+                     </h3>
 
-                     <p class="h1 fw-bold">
+                     <p class="h3 fw-bold">
                         Krzysztof <text class="text-muted">Matuszewski</text>
                      </p>
 
@@ -33,56 +33,64 @@ function Author() {
                            &nbsp;&nbsp; Email
                         </button>
                         <button type="button" class="btn btn-dark me-2">
-                           <GitHubIcon /> &nbsp;&nbsp; GitHub{" "}
+                           <GitHubIcon /> &nbsp;&nbsp; GitHub
                            {/* TODO: add link here and above */}
                         </button>
                      </div>
 
                      <p class="text-dark mb-2">AHE Łódź 2024/2025</p>
                      <p class="text-dark mb-2">
-                        Część projektowa pracy magisterskiej.
+                        Część projektowa pracy magisterskiej
                      </p>
                   </div>
 
-                  <div className="col-3 p-5 bg-light rounded-3">
+                  <div className="col-4 p-5 rounded-3">
                      <table class="table table-light table-hover">
                         <tbody>
                            <tr>
-                              <th className="p-3" scope="row">
+                              <th className="p-2 small" scope="row">
                                  stopień
                               </th>
-                              <td className="p-3">II</td>
+                              <td className="p-2 small">II</td>
                            </tr>
                            <tr>
-                              <th className="p-3" scope="row">
-                                 kierunek
+                           <th className="p-2 small" scope="row">
+                           kierunek
                               </th>
-                              <td className="p-3">informatyka</td>
+                              <td className="p-2 small">informatyka</td>
                            </tr>
                            <tr>
-                              <th className="p-3" scope="row">
-                                 specializacja
+                           <th className="p-2 small" scope="row">
+                           specializacja
                               </th>
-                              <td className="p-3">sieci teleinformatyczne</td>
+                              <td className="p-2 small">sieci teleinformatyczne</td>
                            </tr>
                            <tr>
-                              <th className="p-3" scope="row">
-                                 rok
+                           <th className="p-2 small" scope="row">
+                           rok
                               </th>
-                              <td className="p-3">II</td>
+                              <td className="p-2 small">II</td>
                            </tr>
                            <tr>
-                              <th className="p-3" scope="row">
-                                 semestr
+                           <th className="p-2 small" scope="row">
+                           semestr
                               </th>
-                              <td className="p-3">3</td>
+                              <td className="p-2 small">3</td>
                            </tr>
                            <tr>
-                              <th className="p-3" scope="row">
-                                 numer indeksu
+                           <th className="p-2 small" scope="row">
+                           numer indeksu
                               </th>
-                              <td className="p-3">160802</td>
+                              <td className="p-2 small">160802</td>
                            </tr>
+
+                           <tr>
+                           <th className="p-2 small" scope="row">
+                           promotor
+                              </th>
+                              <td className="p-2 small">dr inż. Mateusz Zieliński</td>
+                           </tr>
+                           
                         </tbody>
                      </table>
                   </div>
