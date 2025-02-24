@@ -2,21 +2,20 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 // import MUI icons
-import GridOnIcon from "@mui/icons-material/GridOn";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import AutoAwesomeMotionOutlinedIcon from "@mui/icons-material/AutoAwesomeMotionOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import ViewInArIcon from "@mui/icons-material/ViewInAr";
 import GridViewIcon from "@mui/icons-material/GridView";
+import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
+import SpeedRoundedIcon from "@mui/icons-material/SpeedRounded";
 
 function Navigation() {
    return (
       <section id="navigation" className="Navigation">
          <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top m-3 rounded">
-            <div className="container-fluid py-2">             
-
+            <div className="container-fluid py-2">
                {/* navigation */}
                <div className="collapse navbar-collapse" id="navbarResponsive">
-          
                   <ul className="navbar-nav ml-auto">
                      <li className="nav-item active">
                         <NavLink
@@ -24,8 +23,12 @@ function Navigation() {
                            to="/"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-dark d-flex align-items-center">
-                              <ListAltIcon />&nbsp;Kokpit
+                           <button
+                              type="button"
+                              className="btn btn-dark d-flex align-items-center"
+                           >
+                              <ListAltIcon />
+                              &nbsp;Kokpit
                            </button>
                         </NavLink>
                      </li>
@@ -35,8 +38,12 @@ function Navigation() {
                            to="/instances"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-dark d-flex align-items-center">
-                              <AutoAwesomeMotionOutlinedIcon />&nbsp;Instancje
+                           <button
+                              type="button"
+                              className="btn btn-dark d-flex align-items-center"
+                           >
+                              <DnsOutlinedIcon />
+                              &nbsp;Instancje
                            </button>
                         </NavLink>
                      </li>
@@ -46,8 +53,12 @@ function Navigation() {
                            to="/images"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-dark d-flex align-items-center">
-                              <GridViewIcon />&nbsp;Obrazy
+                           <button
+                              type="button"
+                              className="btn btn-dark d-flex align-items-center"
+                           >
+                              <GridViewIcon />
+                              &nbsp;Obrazy
                            </button>
                         </NavLink>
                      </li>
@@ -57,8 +68,12 @@ function Navigation() {
                            to="/containers"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-dark d-flex align-items-center">
-                              <GridViewIcon />&nbsp;Kontenery
+                           <button
+                              type="button"
+                              className="btn btn-dark d-flex align-items-center"
+                           >
+                              <ViewInArIcon />
+                              &nbsp;Kontenery
                            </button>
                         </NavLink>
                      </li>
@@ -68,8 +83,12 @@ function Navigation() {
                            to="/resources"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-dark d-flex align-items-center">
-                              <GridViewIcon />&nbsp;Zasoby
+                           <button
+                              type="button"
+                              className="btn btn-dark d-flex align-items-center"
+                           >
+                              <SpeedRoundedIcon />
+                              &nbsp;Zasoby
                            </button>
                         </NavLink>
                      </li>
@@ -79,8 +98,12 @@ function Navigation() {
                            to="/author"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-dark d-flex align-items-center">
-                              <GridViewIcon />&nbsp;Autor
+                           <button
+                              type="button"
+                              className="btn btn-dark d-flex align-items-center"
+                           >
+                              <AccountBoxIcon />
+                              &nbsp;Autor
                            </button>
                         </NavLink>
                      </li>
