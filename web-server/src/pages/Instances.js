@@ -40,13 +40,13 @@ function Instances() {
          <div className="row m-5">
             {/* instances */}
             <div className="col-lg-6 col-md-7 col-12">
-               <div className="p-3 my-3 bg-dark rounded-3 text-light">
+               <div className="p-4 my-3 bg-dark rounded-3 text-light">
                   <h3 className="d-flex align-items-center">
                      <DnsOutlinedIcon />
                      &nbsp;Instancje
                   </h3>
                </div>
-               <div className="p-5 bg-dark rounded-3 text-light">
+               <div className="p-4 bg-dark rounded-3 text-light">
                   <table className="table table-dark table-hover">
                      <thead>
                         <tr>

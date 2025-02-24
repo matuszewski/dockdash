@@ -92,14 +92,14 @@ function Dashboard() {
          <div className="row m-5">
             {/* images */}
             <div className="col-lg-8 col-md-7 col-12">
-               <div className="p-5 my-3 bg-danger rounded-3 text-light">
-                  <h1 className="d-flex align-items-center">
+               <div className="p-4 my-3 bg-danger rounded-3 text-light">
+                  <h3 className="d-flex align-items-center">
                      <GridViewIcon />
                      &nbsp;Obrazy
-                  </h1>
+                  </h3>
                </div>
 
-               <div className="p-5 bg-dark rounded-3 text-light">
+               <div className="p-4 bg-dark rounded-3 text-light">
                   <table className="table table-dark table-hover">
                      <thead>
                         <tr>
@@ -139,13 +139,13 @@ function Dashboard() {
 
             {/* instances */}
             <div className="col-lg-4 col-md-7 col-12">
-               <div className="p-5 my-3 bg-success rounded-3 text-light">
-                  <h1 className="d-flex align-items-center">
+               <div className="p-4 my-3 bg-success rounded-3 text-light">
+                  <h3 className="d-flex align-items-center">
                      <DnsOutlinedIcon />
                      &nbsp;Instancje
-                  </h1>
+                  </h3>
                </div>
-               <div className="p-5 bg-dark rounded-3 text-light">
+               <div className="p-4 bg-dark rounded-3 text-light">
                   <table className="table table-dark table-hover">
                      <thead>
                         <tr>
@@ -184,14 +184,14 @@ function Dashboard() {
 
             {/* containers */}
             <div className="col-lg-12 col-md-7 col-12">
-               <div className="p-5  my-3 bg-primary rounded-3 text-light">
-                  <h1 className="d-flex align-items-center">
+               <div className="p-4 my-3 bg-primary rounded-3 text-light">
+                  <h3 className="d-flex align-items-center">
                      <ViewInArIcon />
                      &nbsp;Kontenery
-                  </h1>
+                  </h3>
                </div>
 
-               <div className="p-5 bg-dark rounded-3 text-light">
+               <div className="p-4 bg-dark rounded-3 text-light">
                   <table className="table table-dark table-hover">
                      <thead>
                         <tr>
@@ -222,8 +222,8 @@ function Dashboard() {
          <div className="row m-5">
             {/* instances JSON */}
             <div className="col-lg-4 col-md-6 col-12">
-               <div className="p-5 bg-dark rounded-3 text-light">
-                  <h1 className="d-flex justify-content-between align-items-center">
+               <div className="p-4 bg-dark rounded-3 text-light">
+                  <h3 className="d-flex justify-content-between align-items-center">
                      Instancje&nbsp;
                      <span className="badge bg-success">JSON</span>
                      <CopyToClipboard
@@ -241,7 +241,7 @@ function Dashboard() {
                            )}
                         </button>
                      </CopyToClipboard>
-                  </h1>
+                  </h3>
                   <pre>
                      <code>{JSON.stringify(instances, null, 2)}</code>
                   </pre>
@@ -250,8 +250,8 @@ function Dashboard() {
 
             {/* instances JSON */}
             <div className="col-lg-4 col-md-6 col-12">
-               <div className="p-5 bg-dark rounded-3 text-light">
-                  <h1 className="d-flex justify-content-between align-items-center">
+               <div className="p-4 bg-dark rounded-3 text-light">
+                  <h3 className="d-flex justify-content-between align-items-center">
                      Kontenery&nbsp;
                      <span className="badge bg-success">JSON</span>
                      <CopyToClipboard
@@ -269,7 +269,7 @@ function Dashboard() {
                            )}
                         </button>
                      </CopyToClipboard>
-                  </h1>
+                  </h3>
                   <pre>
                      <code>{JSON.stringify(containers, null, 2)}</code>
                   </pre>
@@ -278,8 +278,8 @@ function Dashboard() {
 
             {/* images JSON */}
             <div className="col-lg-4 col-md-6 col-12">
-               <div className="p-5 bg-dark rounded-3 text-light">
-                  <h1 className="d-flex justify-content-between align-items-center">
+               <div className="p-4 bg-dark rounded-3 text-light">
+                  <h3 className="d-flex justify-content-between align-items-center">
                      Obrazy&nbsp;<span className="badge bg-success">JSON</span>
                      <CopyToClipboard
                         text={JSON.stringify(images, null, 2)}
@@ -296,7 +296,7 @@ function Dashboard() {
                            )}
                         </button>
                      </CopyToClipboard>
-                  </h1>
+                  </h3>
                   <pre>
                      <code>{JSON.stringify(images, null, 2)}</code>
                   </pre>

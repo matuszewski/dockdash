@@ -58,7 +58,7 @@ function Images() {
                   </h3>
                </div>
 
-               <div className="p-5 bg-dark rounded-3 text-light">
+               <div className="p-4 bg-dark rounded-3 text-light">
                   <table class="table table-dark table-hover">
                      <thead>
                         <tr>

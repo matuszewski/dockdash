@@ -298,22 +298,22 @@ function Resources() {
          {/* first row */}
          <div className="row m-5">
             <div className="col-lg-4 col-md-3 col-12">
-               <div className="p-5 rounded-3 bg-light text-dark">
-                  <h1>CPU</h1>
+               <div className="p-4 rounded-3 bg-light text-dark">
+                  <h4>CPU</h4>
                   <ResourcePieChart resources={resources} resource={"cpu"} />
                </div>
             </div>
 
             <div className="col-lg-4 col-md-3 col-12">
-               <div className="p-5 rounded-3 bg-light text-dark">
-                  <h1>Dysk</h1>
+               <div className="p-4 rounded-3 bg-light text-dark">
+                  <h4>Dysk</h4>
                   <ResourcePieChart resources={resources} resource={"disk"} />
                </div>
             </div>
 
             <div className="col-lg-4 col-md-3 col-12">
-               <div className="p-5 rounded-3 bg-light text-dark">
-                  <h1>RAM</h1>
+               <div className="p-4 rounded-3 bg-light text-dark">
+                  <h4>RAM</h4>
                   <RamPieChart resources={resources} />
 
                   {resources.map((container, index) => (
@@ -326,35 +326,35 @@ function Resources() {
          {/* second row */}
          <div className="row mx-5">
             <div className="col-lg-6 col-md-7 col-12">
-               <div className="p-5 my-3 rounded-3 bg-light text-dark">
-                  <h1>RAM</h1>
+               <div className="p-4 my-3 rounded-3 bg-light text-dark">
+                  <h4>RAM</h4>
                   <ResourceAreaChart resource="ram" color="red" />
                </div>
 
-               <div className="p-5 my-3 rounded-3 bg-light text-dark">
-                  <h1>CPU</h1>
+               <div className="p-4 my-3 rounded-3 bg-light text-dark">
+                  <h4>CPU</h4>
                   <ResourceAreaChart resource="cpu" color="darkcyan" />
                </div>
 
-               <div className="p-5 my-3 rounded-3 bg-light text-dark">
-                  <h1>Dysk</h1>
+               <div className="p-4 my-3 rounded-3 bg-light text-dark">
+                  <h4>Dysk</h4>
                   <ResourceAreaChart resource="disk" color="blue" />
                </div>
             </div>
 
             <div className="col-lg-6 col-md-7 col-12">
-               <div className="p-5 my-3 rounded-3 bg-light text-dark">
-                  <h1>Dysk</h1>
+               <div className="p-4 my-3 rounded-3 bg-light text-dark">
+                  <h4>Dysk</h4>
                   <ResourceAreaChart resource="disk" color="orange" />
                </div>
 
-               <div className="p-5 my-3 rounded-3 bg-light text-dark">
-                  <h1>RAM</h1>
+               <div className="p-4 my-3 rounded-3 bg-light text-dark">
+                  <h4>RAM</h4>
                   <ResourceAreaChart resource="ram" color="purple" />
                </div>
 
-               <div className="p-5 my-3 rounded-3 bg-light text-dark">
-                  <h1>CPU</h1>
+               <div className="p-4 my-3 rounded-3 bg-light text-dark">
+                  <h4>CPU</h4>
                   <ResourceAreaChart resource="cpu" color="green" />
                </div>
             </div>
@@ -363,8 +363,8 @@ function Resources() {
          {/* third row */}
          <div className="row mx-5">
             <div className="col-lg-8 col-md-7 col-12">
-               <div className="p-5 my-3 rounded-3 bg-light text-dark">
-                  <h1>Tabela zasobów</h1>
+               <div className="p-4 my-3 rounded-3 bg-light text-dark">
+                  <h4>Tabela zasobów</h4>
 
                   <table class="table table-light table-hover">
                      <thead>
@@ -404,8 +404,8 @@ function Resources() {
             </div>
 
             <div className="col-lg-4 col-md-7 col-12">
-               <div className="p-5 my-3 rounded-3 bg-light text-dark">
-                  <h1>Odpowiedź serwera API</h1>
+               <div className="p-4 my-3 rounded-3 bg-light text-dark">
+                  <h4>Odpowiedź serwera API</h4>
 
                   <code>
                      <pre>{JSON.stringify(resources, null, 2)}</pre>

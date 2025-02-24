@@ -51,14 +51,14 @@ function Containers() {
          <div className="row m-5">
             {/* containers */}
             <div className="col-lg-12 col-md-7 col-12">
-               <div className="p-3 my-3 bg-dark rounded-3 text-light">
+               <div className="p-4 my-3 bg-dark rounded-3 text-light">
                   <h3 className="d-flex align-items-center">
                      <ViewInArIcon />
                      &nbsp;Kontenery
                   </h3>
                </div>
 
-               <div className="p-5 bg-dark table-wrapper rounded-3 text-light text-sm">
+               <div className="p-4 bg-dark rounded-3 text-light text-sm">
                <div style={{ overflowX: "auto", maxWidth: "100%", whiteSpace: "nowrap" }}>
 
                   <table class="table table-dark table-hover">
