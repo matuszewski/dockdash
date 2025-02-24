@@ -291,10 +291,7 @@ function Resources() {
       <div className="Resources">
          {/* navigation bar*/}
          <Navigation />
-
-         {/* empty row just for margin */}
-         <div className="row m-5 p-5" />
-
+         <div className="row m-0 p-5" /> {/* empty row just for margin */}
          {/* first row */}
          <div className="row m-5">
             <div className="col-lg-4 col-md-3 col-12">
@@ -322,7 +319,6 @@ function Resources() {
                </div>
             </div>
          </div>
-
          {/* second row */}
          <div className="row mx-5">
             <div className="col-lg-6 col-md-7 col-12">
@@ -359,14 +355,13 @@ function Resources() {
                </div>
             </div>
          </div>
-
          {/* third row */}
          <div className="row mx-5">
             <div className="col-lg-8 col-md-7 col-12">
                <div className="p-4 my-3 rounded-3 bg-light text-dark">
                   <h4>Tabela zasobów</h4>
 
-                  <table class="table table-light table-hover">
+                  <table class="table table-light table-hover small">
                      <thead>
                         <tr>
                            <th scope="col">ID kontenera</th>
@@ -413,7 +408,6 @@ function Resources() {
                </div>
             </div>
          </div>
-
          {/* footer bar */}
          <Footer />
       </div>
