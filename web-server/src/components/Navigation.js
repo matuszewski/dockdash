@@ -24,7 +24,7 @@ function Navigation() {
                            to="/"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-secondary d-flex align-items-center">
+                           <button type="button" className="btn btn-dark d-flex align-items-center">
                               <ListAltIcon />&nbsp;Kokpit
                            </button>
                         </NavLink>
@@ -35,7 +35,7 @@ function Navigation() {
                            to="/instances"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-secondary d-flex align-items-center">
+                           <button type="button" className="btn btn-dark d-flex align-items-center">
                               <AutoAwesomeMotionOutlinedIcon />&nbsp;Instancje
                            </button>
                         </NavLink>
@@ -46,7 +46,7 @@ function Navigation() {
                            to="/images"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-secondary d-flex align-items-center">
+                           <button type="button" className="btn btn-dark d-flex align-items-center">
                               <GridViewIcon />&nbsp;Obrazy
                            </button>
                         </NavLink>
@@ -57,7 +57,7 @@ function Navigation() {
                            to="/containers"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-secondary d-flex align-items-center">
+                           <button type="button" className="btn btn-dark d-flex align-items-center">
                               <GridViewIcon />&nbsp;Kontenery
                            </button>
                         </NavLink>
@@ -68,7 +68,7 @@ function Navigation() {
                            to="/resources"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-secondary d-flex align-items-center">
+                           <button type="button" className="btn btn-dark d-flex align-items-center">
                               <GridViewIcon />&nbsp;Zasoby
                            </button>
                         </NavLink>
@@ -79,7 +79,7 @@ function Navigation() {
                            to="/author"
                            activeClassName="active"
                         >
-                           <button type="button" className="btn btn-secondary d-flex align-items-center">
+                           <button type="button" className="btn btn-dark d-flex align-items-center">
                               <GridViewIcon />&nbsp;Autor
                            </button>
                         </NavLink>
