@@ -39,10 +39,7 @@ function Containers() {
       dataFetch();
    }, []);
 
-   if (!loaded)
-      return (
-      <Loading/>
-   );
+   if (!loaded) return <Loading />;
 
    return (
       <div className="Containers">
@@ -59,32 +56,38 @@ function Containers() {
                </div>
 
                <div className="p-4 bg-dark rounded-3 text-light text-sm">
-               <div style={{ overflowX: "auto", maxWidth: "100%", whiteSpace: "nowrap" }}>
-
-                  <table class="table table-dark table-hover">
-                     <thead>
-                        <tr>
-                           <th scope="col">ID</th>
-                           <th scope="col">Nazwa</th>
-                           <th scope="col">Obraz</th>
-                           <th scope="col">Porty</th>
-                           <th scope="col">Utworzony</th>
-                           <th scope="col">Stan</th>
-                        </tr>
-                     </thead>
-                     <tbody className="small">
-                        {containers.map((image, index) => (
-                           <tr key={index}>
-                              <td>{image.id}</td>
-                              <td>{image.name}</td>
-                              <td>{image.image}</td>
-                              <td className="text-success">{image.ports}</td>
-                              <td>{image.created}</td>
-                              <td>{image.status}</td>
+                  <div
+                     style={{
+                        overflowX: "auto",
+                        maxWidth: "100%",
+                        whiteSpace: "nowrap",
+                     }}
+                  >
+                     <table class="table table-dark table-hover">
+                        <thead>
+                           <tr>
+                              <th scope="col">ID</th>
+                              <th scope="col">Nazwa</th>
+                              <th scope="col">Obraz</th>
+                              <th scope="col">Porty</th>
+                              <th scope="col">Utworzony</th>
+                              <th scope="col">Stan</th>
                            </tr>
-                        ))}
-                     </tbody>
-                  </table></div>
+                        </thead>
+                        <tbody className="small">
+                           {containers.map((image, index) => (
+                              <tr key={index}>
+                                 <td>{image.id}</td>
+                                 <td>{image.name}</td>
+                                 <td>{image.image}</td>
+                                 <td className="text-success">{image.ports}</td>
+                                 <td>{image.created}</td>
+                                 <td>{image.status}</td>
+                              </tr>
+                           ))}
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
          </div>
