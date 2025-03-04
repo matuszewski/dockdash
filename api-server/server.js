@@ -428,20 +428,6 @@ app.get("/api/:instance/images", async (req, res) => {
 });
 
 // handle GET /api/:instance/resources
-app.get("/api/:instance/to_be_removed", async (req, res) => {
-   const instance = req.params.instance;
-
-   // print info about a new request
-   console.info(
-      `${info()} received /api/${instance}/resources/ HTTP GET request from ${
-         req.socket.remoteAddress.replace(/^.*:/, "").cyan
-      }`
-   );
-
-   // TODO: implement functionalities
-   return res.json({ total: { cpu: 0, ram: 0, disk: 0 } });
-});
-
 app.get("/api/:instance/resources", async (req, res) => {
    const instance = req.params.instance;
 
