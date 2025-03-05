@@ -82,10 +82,14 @@ function loadServerConfig(config_path = "./config/config.json") {
          const parsedData = JSON.parse(data);
          config = parsedData || {};
       } else {
-         console.error(`${failure} api-server config file not found in ${config_path}`);
+         console.error(
+            `${failure} api-server config file not found in ${config_path}`
+         );
       }
    } catch (error) {
-      console.error(`${failure} error loading api-server config file: ${error}`);
+      console.error(
+         `${failure} error loading api-server config file: ${error}`
+      );
    }
    return config;
 }
@@ -538,6 +542,35 @@ app.get("/api/:instance/resources", async (req, res) => {
          );
          return res.status(500).send("Error connecting to Docker API");
       }
+   }
+});
+
+// handle stopping and starting container
+app.post("/api/:instance/container/:containerId/:action", async (req, res) => {
+   const { instance, containerId, action } = req.params;
+   const instanceConfig = instances[instance];
+
+   if (!instanceConfig) {
+      console.error(`${failure()} instance '${instance.cyan}' not found`);
+      return res.status(404).send("Instance not found");
+   }
+
+   const { ip, port, api_version } = instanceConfig;
+   const url = `http://${ip}:${port}/v${api_version}/containers/${containerId}/${action}`;
+
+   try {
+      const response = await axios.post(url);
+      console.log(
+         `${success()} successfully performed ${action} action on container with id ${containerId}`
+      );
+      return res.json(response.data);
+   } catch (error) {
+      console.error(
+         `${failure()} failed to ${action} container with id ${
+            containerId.cyan
+         }: ${error.message}`
+      );
+      return res.status(500).send(`Failed to ${action} container`);
    }
 });
 

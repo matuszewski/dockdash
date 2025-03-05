@@ -142,6 +142,11 @@ docker run -d \
   TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 ```
 
+If stopped then run by:
+```bash
+docker start docker-api-proxy
+```
+
 And checking if it works fine
 
 ```bash
