@@ -18,7 +18,7 @@ function Containers() {
    useEffect(() => {
       const dataFetch = async () => {
          const containers_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/wyse/containers` // TODO: extract
+            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers` // TODO: extract
          );
 
          const fetched_containers = await containers_response.json();
@@ -66,6 +66,7 @@ function Containers() {
                      <table class="table table-dark table-hover">
                         <thead>
                            <tr>
+                              <th scope="col">Akcja</th>
                               <th scope="col">ID</th>
                               <th scope="col">Nazwa</th>
                               <th scope="col">Obraz</th>
@@ -77,10 +78,11 @@ function Containers() {
                         <tbody className="small">
                            {containers.map((image, index) => (
                               <tr key={index}>
-                                 <td>{image.id}</td>
+                                 <td>A B C D</td>
+                                 <td>{image.id.substring(0, 16)}...</td>
                                  <td>{image.name}</td>
                                  <td>{image.image}</td>
-                                 <td className="text-success">{image.ports}</td>
+                                 <td className="text-success">{image.ports || "-"}</td>
                                  <td>{image.created}</td>
                                  <td>{image.status}</td>
                               </tr>
