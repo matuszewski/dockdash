@@ -11,6 +11,7 @@ Single-site HTML 5 website serving dozen of Docker instances, containers and ima
 ```bash
 npm install @mui/material @emotion/react @emotion/styled
 npm install @mui/icons-material
+pm install react-tooltip
 ```
 
 ```bash

@@ -10,6 +10,11 @@ import Loading from "../components/Loading.js";
 
 // import icons
 import ViewInArIcon from "@mui/icons-material/ViewInAr";
+import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded"; // remove icon
+import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineRounded"; // start icon
+import PauseCircleOutlineRoundedIcon from "@mui/icons-material/PauseCircleOutlineRounded"; // pause icon
+import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
+import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 
 function Containers() {
    const [loaded, setLoaded] = useState(false);
@@ -27,10 +32,7 @@ function Containers() {
             setContainers(fetched_containers); // set fetched_containers as array
             //setImages(JSON.stringify(instance_response, null, 2)); // set fetched_containers as string
          } else {
-            console.error(
-               "fetching containers from API failed, array was expected but got:",
-               fetched_containers
-            );
+            console.error("fetching containers from API failed, array was expected but got:", fetched_containers);
             setContainers([]); // preventing rendering issues, setting empty array
          }
 
@@ -66,7 +68,11 @@ function Containers() {
                      <table class="table table-dark table-hover">
                         <thead>
                            <tr>
-                              <th scope="col">Akcja</th>
+                              <th scope="col">
+                                 Akcje
+                                 <br />
+                                 <small className="text-secondary">start &nbsp;pause &nbsp;stop &nbsp;restart &nbsp;kill</small>
+                              </th>
                               <th scope="col">ID</th>
                               <th scope="col">Nazwa</th>
                               <th scope="col">Obraz</th>
@@ -78,13 +84,32 @@ function Containers() {
                         <tbody className="small">
                            {containers.map((image, index) => (
                               <tr key={index}>
-                                 <td>A B C D</td>
+                                 <td>
+                                    <button type="button" className="btn btn-success align-items-center mx-1 p-1">
+                                       <PlayCircleOutlineRoundedIcon className="text-light" />
+                                    </button>
+
+                                    <button type="button" className="btn btn-warning align-items-center mx-1 p-1">
+                                       <PauseCircleOutlineRoundedIcon className="text-light" />
+                                    </button>
+                                    <button type="button" className="btn btn-danger align-items-center mx-1 p-1">
+                                       <RemoveCircleOutlineRoundedIcon className="text-light" />
+                                    </button>
+                                    <button type="button" className="btn btn-primary align-items-center mx-1 p-1">
+                                       <HistoryRoundedIcon className="text-white" />
+                                    </button>
+                                    <button type="button" className="btn btn-danger align-items-center mx-1 p-1">
+                                       <HighlightOffRoundedIcon />
+                                    </button>
+                                 </td>
                                  <td>{image.id.substring(0, 16)}...</td>
                                  <td>{image.name}</td>
                                  <td>{image.image}</td>
                                  <td className="text-success">{image.ports || "-"}</td>
                                  <td>{image.created}</td>
-                                 <td>{image.status}</td>
+                                 <td>
+                                    <span className="badge bg-secondary">{image.status}</span>
+                                 </td>
                               </tr>
                            ))}
                         </tbody>
@@ -99,4 +124,3 @@ function Containers() {
 }
 
 export default Containers;
-
