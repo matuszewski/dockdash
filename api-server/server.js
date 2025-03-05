@@ -49,22 +49,13 @@ function loadInstancesConfig(config_path = "./config/instances.json") {
  * @returns {void} Returns nothing
  * @throws {Error} Throws error when file is not found or file could not be opened
  */
-function saveInstancesConfig(
-   instances,
-   config_path = "./config/instances.json"
-) {
+function saveInstancesConfig(instances, config_path = "./config/instances.json") {
    try {
       const data = JSON.stringify(instances, null, 4);
       fs.writeFileSync(config_path, data, "utf8");
-      console.log(
-         `${success()} instances config successfully saved to ${
-            config_path.green
-         }`
-      );
+      console.log(`${success()} instances config successfully saved to ${config_path.green}`);
    } catch (error) {
-      console.error(
-         `${failure()} error occured while saving instances file: ${error.red}`
-      );
+      console.error(`${failure()} error occured while saving instances file: ${error.red}`);
    }
 }
 
@@ -82,14 +73,10 @@ function loadServerConfig(config_path = "./config/config.json") {
          const parsedData = JSON.parse(data);
          config = parsedData || {};
       } else {
-         console.error(
-            `${failure} api-server config file not found in ${config_path}`
-         );
+         console.error(`${failure} api-server config file not found in ${config_path}`);
       }
    } catch (error) {
-      console.error(
-         `${failure} error loading api-server config file: ${error}`
-      );
+      console.error(`${failure} error loading api-server config file: ${error}`);
    }
    return config;
 }
@@ -126,9 +113,7 @@ async function checkInstanceAvailablity(instance_name) {
       console.debug(`${debug()} instance ${instance_name.blue} is available`);
       return true;
    } catch (error) {
-      console.debug(
-         `${debug()} instance ${instance_name.blue} is not available`
-      );
+      console.debug(`${debug()} instance ${instance_name.blue} is not available`);
       return false;
    }
 }
@@ -148,20 +133,14 @@ function updateInstancesAvailabilty(inst) {
 
       return return_instances;
    } catch (error) {
-      console.error(
-         `${failure()} a problem occured in updateInstancesAvailabilty(instances) function. error: ${
-            error.red
-         }`
-      );
+      console.error(`${failure()} a problem occured in updateInstancesAvailabilty(instances) function. error: ${error.red}`);
       return 1;
    }
 }
 
 // handle GET /
 app.get("/", (req, res) => {
-   return res.send(
-      `<pre><b>dockdash api server</b><br>status: working<br>received a GET HTTP request</pre>`
-   );
+   return res.send(`<pre><b>dockdash api server</b><br>status: working<br>received a GET HTTP request</pre>`);
 });
 
 // handle GET request /api/instances
@@ -176,11 +155,7 @@ app.get("/api/instances", async (req, res) => {
 app.get("/api/:instance/containers", async (req, res) => {
    const instance = req.params.instance;
 
-   console.info(
-      `${info()} received /api/${instance}/containers/ HTTP GET request from ${
-         req.socket.remoteAddress.replace(/^.*:/, "").cyan
-      }`
-   );
+   console.info(`${info()} received /api/${instance}/containers/ HTTP GET request from ${req.socket.remoteAddress.replace(/^.*:/, "").cyan}`);
 
    // resolve instance configuration
    const instanceConfig = instances[instance];
@@ -220,9 +195,7 @@ app.get("/api/:instance/containers", async (req, res) => {
             const container_name = container.Names;
 
             // get container's status
-            const container_status = container.State
-               ? container.State
-               : "Unknown"; // Status of the container (e.g., running, exited)
+            const container_status = container.State ? container.State : "Unknown"; // Status of the container (e.g., running, exited)
 
             // get container's creation time in a friendly format (DD.MM.YYYY, 24-hour format)
             const createdDate = container.Created
@@ -238,9 +211,7 @@ app.get("/api/:instance/containers", async (req, res) => {
                : "Unknown date";
 
             // get container's exposed ports (if any)
-            const exposedPorts = container.Ports
-               ? container.Ports.map((port) => port.PublicPort).join(", ")
-               : "No exposed ports";
+            const exposedPorts = container.Ports ? container.Ports.map((port) => port.PublicPort).join(", ") : "No exposed ports";
 
             // get container's image
             const container_image = container.Image || "No image";
@@ -264,23 +235,15 @@ app.get("/api/:instance/containers", async (req, res) => {
    } catch (error) {
       if (error.response) {
          // server responded with a status code other than 2xx
-         console.error(
-            `${failure()} Docker API returned error: ${error.response.status} ${
-               error.response.statusText
-            }`.red
-         );
-         return res
-            .status(error.response.status)
-            .send(error.response.statusText || "Error from Docker API");
+         console.error(`${failure()} Docker API returned error: ${error.response.status} ${error.response.statusText}`.red);
+         return res.status(error.response.status).send(error.response.statusText || "Error from Docker API");
       } else if (error.request) {
          // no response received
          console.error(`${failure()} no response from Docker API`.red);
          return res.status(503).send("No response from Docker API");
       } else {
          // other errors
-         console.error(
-            `${failure()} could not connect to Docker API: ${error.message}`.red
-         );
+         console.error(`${failure()} could not connect to Docker API: ${error.message}`.red);
          return res.status(500).send("Error connecting to Docker API");
       }
    }
@@ -291,11 +254,7 @@ app.get("/api/:instance/images", async (req, res) => {
    const instance = req.params.instance;
 
    // print info about a new request
-   console.info(
-      `${info()} received /api/${instance}/images/ HTTP GET request from ${
-         req.socket.remoteAddress.replace(/^.*:/, "").cyan
-      }`
-   );
+   console.info(`${info()} received /api/${instance}/images/ HTTP GET request from ${req.socket.remoteAddress.replace(/^.*:/, "").cyan}`);
 
    // resolve instance configuration
    const instanceConfig = instances[instance];
@@ -332,14 +291,10 @@ app.get("/api/:instance/images", async (req, res) => {
             const repoTags = image.RepoTags || []; // default to an empty array if RepoTags is undefined
 
             // extract the image name safely
-            const imageName = repoTags[0]
-               ? repoTags[0].split(":")[0]
-               : "No name";
+            const imageName = repoTags[0] ? repoTags[0].split(":")[0] : "No name";
 
             // extract the first tag or default to 'latest' if no tag is available
-            const firstTag = repoTags[0]
-               ? repoTags[0].split(":")[1] || "latest"
-               : "latest";
+            const firstTag = repoTags[0] ? repoTags[0].split(":")[1] || "latest" : "latest";
 
             // get the number of tags
             const numTags = repoTags.length;
@@ -349,14 +304,10 @@ app.get("/api/:instance/images", async (req, res) => {
 
             // get image ID
             const imageId = image.Id || "Unknown ID";
-            const imageShortId = imageId.startsWith("sha256:")
-               ? imageId.substring(7, 19)
-               : imageId.substring(0, 12);
+            const imageShortId = imageId.startsWith("sha256:") ? imageId.substring(7, 19) : imageId.substring(0, 12);
 
             // get created date in a global, friendly format
-            const createdDate = image.Created
-               ? new Date(image.Created * 1000).toLocaleString()
-               : "unknown date";
+            const createdDate = image.Created ? new Date(image.Created * 1000).toLocaleString() : "unknown date";
 
             // get created date in local, friendly format
             const formatedCreatedDate = image.Created
@@ -409,23 +360,15 @@ app.get("/api/:instance/images", async (req, res) => {
    } catch (error) {
       if (error.response) {
          // server responded with a status code other than 2xx
-         console.error(
-            `${failure()} Docker API returned error: ${error.response.status} ${
-               error.response.statusText
-            }`.red
-         );
-         return res
-            .status(error.response.status)
-            .send(error.response.statusText || "Error from Docker API");
+         console.error(`${failure()} Docker API returned error: ${error.response.status} ${error.response.statusText}`.red);
+         return res.status(error.response.status).send(error.response.statusText || "Error from Docker API");
       } else if (error.request) {
          // no response received
          console.error(`${failure()} no response from Docker API`.red);
          return res.status(503).send("No response from Docker API");
       } else {
          // other errors
-         console.error(
-            `${failure()} could not connect to Docker API: ${error.message}`.red
-         );
+         console.error(`${failure()} could not connect to Docker API: ${error.message}`.red);
          return res.status(500).send("Error connecting to Docker API");
       }
    }
@@ -435,11 +378,7 @@ app.get("/api/:instance/images", async (req, res) => {
 app.get("/api/:instance/resources", async (req, res) => {
    const instance = req.params.instance;
 
-   console.info(
-      `${info()} received /api/${instance}/resources/ HTTP GET request from ${
-         req.socket.remoteAddress.replace(/^.*:/, "").cyan
-      }`
-   );
+   console.info(`${info()} received /api/${instance}/resources/ HTTP GET request from ${req.socket.remoteAddress.replace(/^.*:/, "").cyan}`);
 
    // resolve instance configuration
    const instanceConfig = instances[instance];
@@ -478,38 +417,17 @@ app.get("/api/:instance/resources", async (req, res) => {
                name: container.Names.join(", ").substring(1),
 
                //cpu_usage: stats.cpu_stats.cpu_usage.total_usage || "Unknown",
-               cpu_usage:
-                  (
-                     stats.cpu_stats.cpu_usage.total_usage / 1_000_000_000
-                  ).toFixed(2) || "Unknown",
+               cpu_usage: (stats.cpu_stats.cpu_usage.total_usage / 1_000_000_000).toFixed(2) || "Unknown",
 
-               memory_usage: stats.memory_stats.usage
-                  ? formatBytesToMB(stats.memory_stats.usage)
-                  : "Unknown",
-               memory_limit: stats.memory_stats.limit
-                  ? formatBytesToMB(stats.memory_stats.limit)
-                  : "Unknown",
-               network_io: stats.networks
-                  ? Object.values(stats.networks).reduce(
-                       (acc, net) => acc + net.rx_bytes + net.tx_bytes,
-                       0
-                    )
-                  : "Unknown",
-               block_io: stats.blkio_stats.io_service_bytes_recursive
-                  ? stats.blkio_stats.io_service_bytes_recursive.reduce(
-                       (acc, io) => acc + io.value,
-                       0
-                    )
-                  : "Unknown",
+               memory_usage: stats.memory_stats.usage ? formatBytesToMB(stats.memory_stats.usage) : "Unknown",
+               memory_limit: stats.memory_stats.limit ? formatBytesToMB(stats.memory_stats.limit) : "Unknown",
+               network_io: stats.networks ? Object.values(stats.networks).reduce((acc, net) => acc + net.rx_bytes + net.tx_bytes, 0) : "Unknown",
+               block_io: stats.blkio_stats.io_service_bytes_recursive ? stats.blkio_stats.io_service_bytes_recursive.reduce((acc, io) => acc + io.value, 0) : "Unknown",
             };
 
             return_structure.push(container_data);
          } catch (statsError) {
-            console.error(
-               `${failure()} Failed to fetch stats for container ${
-                  container.Id
-               }: ${statsError.message}`.red
-            );
+            console.error(`${failure()} Failed to fetch stats for container ${container.Id}: ${statsError.message}`.red);
          }
       }
 
@@ -525,29 +443,28 @@ app.get("/api/:instance/resources", async (req, res) => {
       return res.json(return_structure);
    } catch (error) {
       if (error.response) {
-         console.error(
-            `${failure()} Docker API returned error: ${error.response.status} ${
-               error.response.statusText
-            }`.red
-         );
-         return res
-            .status(error.response.status)
-            .send(error.response.statusText || "Error from Docker API");
+         console.error(`${failure()} Docker API returned error: ${error.response.status} ${error.response.statusText}`.red);
+         return res.status(error.response.status).send(error.response.statusText || "Error from Docker API");
       } else if (error.request) {
          console.error(`${failure()} no response from Docker API`.red);
          return res.status(503).send("No response from Docker API");
       } else {
-         console.error(
-            `${failure()} could not connect to Docker API: ${error.message}`.red
-         );
+         console.error(`${failure()} could not connect to Docker API: ${error.message}`.red);
          return res.status(500).send("Error connecting to Docker API");
       }
    }
 });
 
 // handle stopping and starting container
+// handle POST /api/:instance/container/:container/:action (action = start/stop/restart/pause/unpause/kill)
 app.post("/api/:instance/container/:containerId/:action", async (req, res) => {
    const { instance, containerId, action } = req.params;
+
+   const allowedActions = ["start", "stop", "restart", "pause", "unpause", "kill"];
+   if (!allowedActions.includes(action)) {
+      console.error(`${failure()} wrong action provided when calling API`);
+      return res.status(400).send("Invalid action provided");
+   }
    const instanceConfig = instances[instance];
 
    if (!instanceConfig) {
@@ -560,17 +477,35 @@ app.post("/api/:instance/container/:containerId/:action", async (req, res) => {
 
    try {
       const response = await axios.post(url);
-      console.log(
-         `${success()} successfully performed ${action} action on container with id ${containerId}`
-      );
+      console.log(`${success()} successfully performed ${action} action on container with id ${containerId}`);
       return res.json(response.data);
    } catch (error) {
-      console.error(
-         `${failure()} failed to ${action} container with id ${
-            containerId.cyan
-         }: ${error.message}`
-      );
+      console.error(`${failure()} failed to ${action} container with id ${containerId.cyan}: ${error.message}`);
       return res.status(500).send(`Failed to ${action} container`);
+   }
+});
+
+// handle removing containers
+// handle DELETE /api/:instance/container/:container/delete
+app.delete("/api/:instance/container/:containerId", async (req, res) => {
+   const { instance, containerId } = req.params;
+   const instanceConfig = instances[instance];
+
+   if (!instanceConfig) {
+      console.error(`${failure()} instance '${instance}' not found`);
+      return res.status(404).send("Instance not found");
+   }
+
+   const { ip, port, api_version } = instanceConfig;
+   const url = `http://${ip}:${port}/v${api_version}/containers/${containerId}?force=true`;
+
+   try {
+      const response = await axios.delete(url);
+      console.log(`${success()} successfully removed container ${containerId}`);
+      return res.json({ message: "Container removed successfully" });
+   } catch (error) {
+      console.error(`${failure()} failed to remove container ${containerId.cyan}: ${error.message}`);
+      return res.status(500).send("Failed to remove container");
    }
 });
 
@@ -578,27 +513,13 @@ app.post("/api/:instance/container/:containerId/:action", async (req, res) => {
 app.listen(config.API_SERVER_PORT, () => {
    // print banner
    console.info(banner);
-   console.info(
-      "====================== api-server 1.0 ==\nauthor: ",
-      "Krzysztof Matuszewski".blue,
-      ", nr. ",
-      "160802".blue,
-      "\n"
-   );
+   console.info("====================== api-server 1.0 ==\nauthor: ", "Krzysztof Matuszewski".blue, ", nr. ", "160802".blue, "\n");
 
    // print logs header
-   console.info(
-      "|______timestamp_______|__module__|___label___|______________________log_message_____________________|"
-         .gray,
-      "\n"
-   );
+   console.info("|______timestamp_______|__module__|___label___|______________________log_message_____________________|".gray, "\n");
 
    // print info about started api-server
-   console.info(
-      `${success()} DockDash API server is running on port ${
-         String(config.API_SERVER_PORT).blue
-      }`
-   );
+   console.info(`${success()} DockDash API server is running on port ${String(config.API_SERVER_PORT).blue}`);
 
    // print info
    console.info(`${info()} loading api-server config...`);
