@@ -82,7 +82,7 @@ In case of any problems not described or linked in this readme please contact pr
 - API created in REST type
 - using Axios as a new, secure and better alternative to popular Request module using in REST API
 - printing ASCII art banner with dockdash logo
-  
+
 ## TODO
 
 - [x] make it work with Docker instance hosted on macOS
@@ -144,6 +144,7 @@ docker run -d \
 ```
 
 If stopped then run by:
+
 ```bash
 docker start docker-api-proxy
 ```
@@ -152,4 +153,12 @@ And checking if it works fine
 
 ```bash
 curl http://localhost:2375/version
+```
+
+Running test containers
+
+```bash
+docker run -it -d --name test-alpine-2 alpine:3.21.3
+docker run -it -d --name test-alpine-3 alpine:3.21.3
+docker run -it -d --name test-node-2 node:current
 ```
