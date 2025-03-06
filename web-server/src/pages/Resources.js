@@ -5,21 +5,7 @@ import Navigation from "../components/Navigation.js";
 import Footer from "../components/Footer.js";
 
 // import components from recharts library
-import {
-   LineChart,
-   Line,
-   XAxis,
-   YAxis,
-   CartesianGrid,
-   Tooltip,
-   Legend,
-   AreaChart,
-   PieChart,
-   Pie,
-   Cell,
-   Area,
-   ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, PieChart, Pie, Cell, Area, ResponsiveContainer } from "recharts";
 
 // import config file
 import config from "../config.json";
@@ -93,13 +79,7 @@ function ResourceAreaChart({ resource, color }) {
             <Tooltip />
             <Legend />
 
-            <Area
-               type="monotone"
-               dataKey={resource}
-               stroke={color || "#ff7300"}
-               fill={color}
-               strokeWidth={3}
-            />
+            <Area type="monotone" dataKey={resource} stroke={color || "#ff7300"} fill={color} strokeWidth={3} />
          </AreaChart>
       </ResponsiveContainer>
    );
@@ -174,23 +154,9 @@ function ResourcePieChart({ resources, resource }) {
    return (
       <ResponsiveContainer width="100%" height={600}>
          <PieChart>
-            <Pie
-               data={chart_data}
-               cx="50%"
-               cy="50%"
-               outerRadius={200}
-               innerRadius={130}
-               paddingAngle={3}
-               fill="#8884d8"
-               dataKey="value"
-               label={{ fontSize: 20 }}
-            >
+            <Pie data={chart_data} cx="50%" cy="50%" outerRadius={200} innerRadius={130} paddingAngle={3} fill="#8884d8" dataKey="value" label={{ fontSize: 20 }}>
                {chart_data.map((entry, index) => (
-                  <Cell
-                     key={`cell-${index}`}
-                     fill={COLORS[index % COLORS.length]}
-                     value={entry.value}
-                  />
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} value={entry.value} />
                ))}
             </Pie>
             <Tooltip />
@@ -234,23 +200,9 @@ function RamPieChart({ resources }) {
    return (
       <ResponsiveContainer width="100%" height={600}>
          <PieChart>
-            <Pie
-               data={arr}
-               cx="50%"
-               cy="50%"
-               outerRadius={200}
-               innerRadius={130}
-               paddingAngle={3}
-               fill="#8884d8"
-               dataKey="value"
-               label={{ fontSize: 20 }}
-            >
+            <Pie data={arr} cx="50%" cy="50%" outerRadius={200} innerRadius={130} paddingAngle={3} fill="#8884d8" dataKey="value" label={{ fontSize: 20 }}>
                {arr.map((entry, index) => (
-                  <Cell
-                     key={`cell-${index}`}
-                     fill={COLORS[index % COLORS.length]}
-                     value={entry.value}
-                  />
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} value={entry.value} />
                ))}
             </Pie>
             <Tooltip />
@@ -275,10 +227,7 @@ function Resources() {
          if (Array.isArray(fetched_resources)) {
             setResources(fetched_resources);
          } else {
-            console.error(
-               "fetching resources from API failed, array was expected but got:",
-               fetched_resources
-            );
+            console.error("fetching resources from API failed, array was expected but got:", fetched_resources);
             setResources([]); // preventing rendering issues, setting empty array
          }
 
@@ -389,12 +338,7 @@ function Resources() {
                   </table>
 
                   <h3>Uwaga</h3>
-                  <p>
-                     Zasoby sieciowe i dyskowe oznaczają ilość bajtów wysłaną i
-                     odebraną / zapisaną i odczytaną od momentu ostatniego
-                     uruchomienia kontenera. CPU oznacza ilośc sekund przez ile
-                     dany kontener korzysta z zasobów procesora od uruchomienia.
-                  </p>
+                  <p>Zasoby sieciowe i dyskowe oznaczają ilość bajtów wysłaną i odebraną / zapisaną i odczytaną od momentu ostatniego uruchomienia kontenera. CPU oznacza ilośc sekund przez ile dany kontener korzysta z zasobów procesora od uruchomienia.</p>
                </div>
             </div>
 
