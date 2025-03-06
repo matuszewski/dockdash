@@ -460,10 +460,15 @@ app.get("/api/:instance/resources", async (req, res) => {
 app.post("/api/:instance/container/:containerId/:action", async (req, res) => {
    const { instance, containerId, action } = req.params;
 
+   console.info(`${info()} received /api/${instance}/container/${containerId.slice(0,6)}.../${action} HTTP POST request from ${req.socket.remoteAddress.replace(/^.*:/, "").cyan}`);
+
    const allowedActions = ["start", "stop", "restart", "pause", "unpause", "kill"];
    if (!allowedActions.includes(action)) {
-      console.error(`${failure()} wrong action provided when calling API`);
+      console.error(`${failure()} wrong action was requested for container ${containerId.cyan}`);
       return res.status(400).send("Invalid action provided");
+   } else {
+      console.info(`${info()} ${action.cyan} action was requested for container ${containerId.cyan}`);
+
    }
    const instanceConfig = instances[instance];
 
@@ -477,10 +482,10 @@ app.post("/api/:instance/container/:containerId/:action", async (req, res) => {
 
    try {
       const response = await axios.post(url);
-      console.log(`${success()} successfully performed ${action} action on container with id ${containerId}`);
+      console.log(`${success()} performed ${action.cyan} action on container ${containerId.cyan}`);
       return res.json(response.data);
    } catch (error) {
-      console.error(`${failure()} failed to ${action} container with id ${containerId.cyan}: ${error.message}`);
+      console.error(`${failure()} failed to perform ${action} action on container ${containerId.cyan}: ${error.message}`);
       return res.status(500).send(`Failed to ${action} container`);
    }
 });
