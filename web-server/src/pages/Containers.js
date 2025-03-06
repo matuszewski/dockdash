@@ -17,7 +17,9 @@ import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded"; // start icon
 
-const startContainer = async (containerId) => {
+const startContainer = async (containerId, setLoading) => {
+   setLoading(containerId);
+
    try {
       const response = await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/container/${containerId}/start`, {
          method: "POST",
@@ -31,9 +33,12 @@ const startContainer = async (containerId) => {
    } catch (error) {
       console.error("Error starting container:", error);
    }
+   setLoading(null);
 };
 
-const unpauseContainer = async (containerId) => {
+const unpauseContainer = async (containerId, setLoading) => {
+   setLoading(containerId);
+
    try {
       const response = await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/container/${containerId}/unpause`, {
          method: "POST",
@@ -46,9 +51,12 @@ const unpauseContainer = async (containerId) => {
    } catch (error) {
       console.error("Error unpausing container:", error);
    }
+   setLoading(null);
 };
 
-const pauseContainer = async (containerId) => {
+const pauseContainer = async (containerId, setLoading) => {
+   setLoading(containerId);
+
    try {
       const response = await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/container/${containerId}/pause`, {
          method: "POST",
@@ -61,9 +69,12 @@ const pauseContainer = async (containerId) => {
    } catch (error) {
       console.error("Error pausing container:", error);
    }
+   setLoading(null);
 };
 
-const stopContainer = async (containerId) => {
+const stopContainer = async (containerId, setLoading) => {
+   setLoading(containerId);
+
    try {
       const response = await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/container/${containerId}/stop`, {
          method: "POST",
@@ -76,9 +87,12 @@ const stopContainer = async (containerId) => {
    } catch (error) {
       console.error("Error stopping container:", error);
    }
+   setLoading(null);
 };
 
-const restartContainer = async (containerId) => {
+const restartContainer = async (containerId, setLoading) => {
+   setLoading(containerId);
+
    try {
       const response = await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/container/${containerId}/restart`, {
          method: "POST",
@@ -91,9 +105,12 @@ const restartContainer = async (containerId) => {
    } catch (error) {
       console.error("Error restarting container:", error);
    }
+   setLoading(null);
 };
 
-const killContainer = async (containerId) => {
+const killContainer = async (containerId, setLoading) => {
+   setLoading(containerId);
+
    try {
       const response = await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/container/${containerId}/kill`, {
          method: "POST",
@@ -106,35 +123,40 @@ const killContainer = async (containerId) => {
    } catch (error) {
       console.error("Error killing container:", error);
    }
+   setLoading(null);
 };
 
 function Containers() {
    const [loaded, setLoaded] = useState(false);
    const [containers, setContainers] = useState([]);
+   const [loadingAction, setLoadingAction] = useState(null);
+
+   const fetchContainers = async () => {
+      try {
+         const response = await fetch(`http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers`);
+         const data = await response.json();
+         if (Array.isArray(data)) {
+            setContainers(data);
+         } else {
+            console.error("Expected an array but got:", data);
+            setContainers([]);
+         }
+         setLoaded(true);
+      } catch (error) {
+         console.error("Error fetching containers:", error);
+      }
+   };
 
    useEffect(() => {
-      const dataFetch = async () => {
-         const containers_response = await await fetch(
-            `http://${config.API_SERVER_IP}:${config.API_SERVER_PORT}/api/local/containers` // TODO: extract
-         );
-
-         const fetched_containers = await containers_response.json();
-
-         if (Array.isArray(fetched_containers)) {
-            setContainers(fetched_containers); // set fetched_containers as array
-            //setImages(JSON.stringify(instance_response, null, 2)); // set fetched_containers as string
-         } else {
-            console.error("fetching containers from API failed, array was expected but got:", fetched_containers);
-            setContainers([]); // preventing rendering issues, setting empty array
-         }
-
-         setLoaded(true);
-      };
-      dataFetch();
+      fetchContainers();
+      const interval = setInterval(fetchContainers, 5000); // auto-refresh every 3 sec
+      return () => clearInterval(interval);
    }, []);
 
+   // return loading component if site is not loaded yet
    if (!loaded) return <Loading />;
 
+   // return correct content
    return (
       <div className="Containers">
          <Navigation />
@@ -183,7 +205,7 @@ function Containers() {
                                     <button
                                        type="button"
                                        className={`btn btn-success align-items-center mx-1 p-1 ${image.status === "running" ? "disabled" : ""}`}
-                                       onClick={() => image.status !== "running" && startContainer(image.id)} // triggering function works only if state is not 'running'
+                                       onClick={() => image.status !== "running" && startContainer(image.id, setLoadingAction)} // triggering function works only if state is not 'running'
                                        disabled={image.status === "running" || image.status === "paused"} // button disabled if state is 'running' or 'paused'
                                     >
                                        <PowerSettingsNewRoundedIcon className="text-light" />
@@ -193,7 +215,7 @@ function Containers() {
                                     <button
                                        type="button"
                                        className={`btn btn-info align-items-center mx-1 p-1 ${image.status !== "paused" ? "disabled" : ""}`}
-                                       onClick={() => image.status === "paused" && unpauseContainer(image.id)} // triggering function works only if state is 'paused'
+                                       onClick={() => image.status === "paused" && unpauseContainer(image.id, setLoadingAction)} // triggering function works only if state is 'paused'
                                        disabled={image.status !== "paused"} // button disabled if state is not 'paused'
                                     >
                                        <PlayCircleOutlineRoundedIcon className="text-light" />
@@ -203,7 +225,7 @@ function Containers() {
                                     <button
                                        type="button"
                                        className={`btn btn-warning align-items-center mx-1 p-1 ${image.status !== "running" ? "disabled" : ""}`}
-                                       onClick={() => image.status === "running" && pauseContainer(image.id)} // triggering function works only if state is 'running'
+                                       onClick={() => image.status === "running" && pauseContainer(image.id, setLoadingAction)} // triggering function works only if state is 'running'
                                        disabled={image.status !== "running"} // button disabled if state is not 'running'
                                     >
                                        <PauseCircleOutlineRoundedIcon className="text-light" />
@@ -213,19 +235,19 @@ function Containers() {
                                     <button
                                        type="button"
                                        className={`btn btn-danger align-items-center mx-1 p-1 ${image.status !== "running" ? "disabled" : ""}`}
-                                       onClick={() => image.status === "running" && stopContainer(image.id)} // triggering function works only if state is 'running'
+                                       onClick={() => image.status === "running" && stopContainer(image.id, setLoadingAction)} // triggering function works only if state is 'running'
                                        disabled={image.status !== "running"} // button disabled if state is not 'running'
                                     >
                                        <RemoveCircleOutlineRoundedIcon className="text-light" />
                                     </button>
 
                                     {/* restart button */}
-                                    <button type="button" className={`btn btn-primary align-items-center mx-1 p-1 ${image.status !== "running" ? "disabled" : ""}`} onClick={() => image.status === "running" && stopContainer(image.id)} disabled={image.status !== "running"}>
+                                    <button type="button" className={`btn btn-primary align-items-center mx-1 p-1 ${image.status !== "running" ? "disabled" : ""}`} onClick={() => image.status === "running" && restartContainer(image.id, setLoadingAction)} disabled={image.status !== "running"}>
                                        <HistoryRoundedIcon className="text-white" />
                                     </button>
 
                                     {/* kill button */}
-                                    <button type="button" className={`btn btn-danger align-items-center mx-1 p-1 ${image.status !== "running" ? "disabled" : ""}`} onClick={() => image.status === "running" && stopContainer(image.id)} disabled={image.status !== "running"}>
+                                    <button type="button" className={`btn btn-danger align-items-center mx-1 p-1 ${image.status !== "running" ? "disabled" : ""}`} onClick={() => image.status === "running" && killContainer(image.id, setLoadingAction)} disabled={image.status !== "running"}>
                                        <HighlightOffRoundedIcon />
                                     </button>
 
@@ -239,7 +261,9 @@ function Containers() {
                                  <td className="text-success">{image.ports || "-"}</td>
                                  <td>{image.created}</td>
                                  <td>
-                                    <span className={`badge py-2 ${image.status === "running" ? "bg-success" : image.status === "paused" ? "bg-warning" : image.status === "exited" ? "bg-danger" : "bg-secondary"}`}>{image.status}</span>
+                                    <span className={`badge py-2 ${loadingAction === image.id ? "blinking" : ""} ${image.status === "running" ? "bg-success" : image.status === "paused" ? "bg-warning" : image.status === "exited" ? "bg-danger" : "bg-secondary"}`}>
+                                       {loadingAction === image.id ? "pending" : image.status}
+                                    </span>
                                  </td>
                               </tr>
                            ))}
