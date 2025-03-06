@@ -98,15 +98,6 @@ function ResourcePieChart({ resources, resource }) {
                   name: container.name,
                   value: (container.cpu_usage / 100) * 100,
                });
-               // TODO: remove
-               chart_data.push({
-                  name: container.name,
-                  value: (container.cpu_usage / 100) * 100,
-               });
-               chart_data.push({
-                  name: container.name,
-                  value: (container.cpu_usage / 100) * 100,
-               });
                break;
 
             case "ram":
@@ -117,26 +108,8 @@ function ResourcePieChart({ resources, resource }) {
                   name: container.name,
                   value: container.block_io,
                });
-               // TODO: remove
-               chart_data.push({
-                  name: container.name,
-                  value: container.block_io,
-               });
-               chart_data.push({
-                  name: container.name,
-                  value: container.block_io,
-               });
                break;
             case "network":
-               chart_data.push({
-                  name: container.name,
-                  value: container.network_io,
-               });
-               // TODO: remove
-               chart_data.push({
-                  name: container.name,
-                  value: container.network_io,
-               });
                chart_data.push({
                   name: container.name,
                   value: container.network_io,
@@ -172,22 +145,6 @@ function RamPieChart({ resources }) {
    try {
       // creating ram resource data set for percentage relation (what containers use how much of available ram)
       resources.forEach((container) => {
-         arr.push({
-            name: container.name,
-            value: (container.memory_usage / container.memory_limit) * 100,
-         });
-         arr.push({
-            name: container.name,
-            value: (container.memory_usage / container.memory_limit) * 100,
-         });
-         arr.push({
-            name: container.name,
-            value: (24 / container.memory_limit) * 100,
-         }); // TODO: remove examples
-         arr.push({
-            name: container.name,
-            value: (11 / container.memory_limit) * 100,
-         });
          arr.push({
             name: container.name,
             value: (container.memory_usage / container.memory_limit) * 100,
