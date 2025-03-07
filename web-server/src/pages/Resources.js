@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 // import navigation and footer components
 import Navigation from "../components/Navigation.js";
 import Footer from "../components/Footer.js";
+import LoadingAlert from "../components/LoadingAlert.js";
 
 // import components from recharts library
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, PieChart, Pie, Cell, Area, ResponsiveContainer } from "recharts";
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, PieChart, Pie, Cell, Area, ResponsiveContainer } from "recharts";
 
 // import config file
 import config from "../config.json";
@@ -125,9 +126,9 @@ function ResourcePieChart({ resources, resource }) {
 
    // return configured PieChart component
    return (
-      <ResponsiveContainer width="100%" height={600}>
+      <ResponsiveContainer width="100%" height={350}>
          <PieChart>
-            <Pie data={chart_data} cx="50%" cy="50%" outerRadius={200} innerRadius={130} paddingAngle={3} fill="#8884d8" dataKey="value" label={{ fontSize: 20 }}>
+            <Pie data={chart_data} cx="50%" cy="50%" outerRadius={100} innerRadius={60} paddingAngle={3} fill="#8884d8" dataKey="value" label={{ fontSize: 12 }}>
                {chart_data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} value={entry.value} />
                ))}
@@ -141,23 +142,56 @@ function ResourcePieChart({ resources, resource }) {
 
 function RamPieChart({ resources }) {
    let arr = [];
+   let all_used_ram = 0;
+
+   // collect all ram used from containers
+   resources.forEach((container) => {
+      let r = 0;
+      try {
+         r = parseFloat(container.memory_usage)
+
+         if (isNaN(r)) {
+            r = 0; // Jeśli wynik nie jest liczbą, ustaw 0
+         }
+      } catch (error) {
+         r = 0;
+      }
+
+      all_used_ram += r
+
+   });
+
+   console.log('all used ram')
+   console.log(all_used_ram)
 
    try {
       // creating ram resource data set for percentage relation (what containers use how much of available ram)
       resources.forEach((container) => {
-         arr.push({
-            name: container.name,
-            value: (container.memory_usage / container.memory_limit) * 100,
-         });
+         let single_container_used_ram = container.memory_usage
+         // if (isNaN(single_container_used_ram)) {
+         //    single_container_used_ram = 0
+         // }
+
+         const v = (single_container_used_ram * 100 / all_used_ram).toFixed(2)
+
+         let k = parseFloat(v)
+         if (!isNaN(single_container_used_ram)) {
+            arr.push({
+               name: container.name,
+               value: k
+            });
+         }
+
       });
+      
    } catch (error) {
       arr = [];
    }
 
    return (
-      <ResponsiveContainer width="100%" height={600}>
+      <ResponsiveContainer width="100%" height={350}>
          <PieChart>
-            <Pie data={arr} cx="50%" cy="50%" outerRadius={200} innerRadius={130} paddingAngle={3} fill="#8884d8" dataKey="value" label={{ fontSize: 20 }}>
+            <Pie data={arr} cx="50%" cy="50%" outerRadius={100} innerRadius={60} paddingAngle={3} fill="#8884d8" dataKey="value" label={{ fontSize: 12 }}>
                {arr.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} value={entry.value} />
                ))}
@@ -203,25 +237,26 @@ function Resources() {
             <div className="col-lg-4 col-md-3 col-12">
                <div className="p-4 rounded-3 bg-light text-dark">
                   <h4>CPU</h4>
-                  <ResourcePieChart resources={resources} resource={"cpu"} />
+                  {!loaded ? <LoadingAlert /> : <ResourcePieChart resources={resources} resource={"cpu"} />}
                </div>
             </div>
 
             <div className="col-lg-4 col-md-3 col-12">
                <div className="p-4 rounded-3 bg-light text-dark">
                   <h4>Dysk</h4>
-                  <ResourcePieChart resources={resources} resource={"disk"} />
+                  {!loaded ? <LoadingAlert /> : <ResourcePieChart resources={resources} resource={"disk"} />}
                </div>
             </div>
 
             <div className="col-lg-4 col-md-3 col-12">
                <div className="p-4 rounded-3 bg-light text-dark">
-                  <h4>RAM</h4>
-                  <RamPieChart resources={resources} />
+                  <h4>RAM <small className='h6 text-muted'>(procentowo)</small></h4>
+                  {!loaded ? <LoadingAlert /> : <RamPieChart resources={resources} />}
+                 
 
-                  {resources.map((container, index) => (
+                  {/* {resources.map((container, index) => (
                      <p>{container.memory_usage}</p>
-                  ))}
+                  ))} */}
                </div>
             </div>
          </div>
@@ -296,6 +331,7 @@ function Resources() {
 
                   <h3>Uwaga</h3>
                   <p>Zasoby sieciowe i dyskowe oznaczają ilość bajtów wysłaną i odebraną / zapisaną i odczytaną od momentu ostatniego uruchomienia kontenera. CPU oznacza ilośc sekund przez ile dany kontener korzysta z zasobów procesora od uruchomienia.</p>
+                  <p>W przypadku Unknown, niektóre kontenery nie raportują wartości wykorzystywanych przez nie zasobów. Kontenery wyłączone nie raportują żadnych zasobów.</p>
                </div>
             </div>
 
