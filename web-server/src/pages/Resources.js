@@ -148,7 +148,7 @@ function RamPieChart({ resources }) {
    resources.forEach((container) => {
       let r = 0;
       try {
-         r = parseFloat(container.memory_usage)
+         r = parseFloat(container.memory_usage);
 
          if (isNaN(r)) {
             r = 0; // Jeśli wynik nie jest liczbą, ustaw 0
@@ -157,33 +157,30 @@ function RamPieChart({ resources }) {
          r = 0;
       }
 
-      all_used_ram += r
-
+      all_used_ram += r;
    });
 
-   console.log('all used ram')
-   console.log(all_used_ram)
+   console.log("all used ram");
+   console.log(all_used_ram);
 
    try {
       // creating ram resource data set for percentage relation (what containers use how much of available ram)
       resources.forEach((container) => {
-         let single_container_used_ram = container.memory_usage
+         let single_container_used_ram = container.memory_usage;
          // if (isNaN(single_container_used_ram)) {
          //    single_container_used_ram = 0
          // }
 
-         const v = (single_container_used_ram * 100 / all_used_ram).toFixed(2)
+         const v = ((single_container_used_ram * 100) / all_used_ram).toFixed(2);
 
-         let k = parseFloat(v)
+         let k = parseFloat(v);
          if (!isNaN(single_container_used_ram)) {
             arr.push({
                name: container.name,
-               value: k
+               value: k,
             });
          }
-
       });
-      
    } catch (error) {
       arr = [];
    }
@@ -250,9 +247,10 @@ function Resources() {
 
             <div className="col-lg-4 col-md-3 col-12">
                <div className="p-4 rounded-3 bg-light text-dark">
-                  <h4>RAM <small className='h6 text-muted'>(procentowo)</small></h4>
+                  <h4>
+                     RAM <small className="h6 text-muted">(procentowo)</small>
+                  </h4>
                   {!loaded ? <LoadingAlert /> : <RamPieChart resources={resources} />}
-                 
 
                   {/* {resources.map((container, index) => (
                      <p>{container.memory_usage}</p>
