@@ -11,80 +11,7 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, PieChart, Pie,
 // import config file
 import config from "../config.json";
 
-// example data
-const rdat = {
-   cpu: [
-      { name: "01", cpu: 50 },
-      { name: "02", cpu: 60 },
-      { name: "03", cpu: 55 },
-      { name: "04", cpu: 70 },
-      { name: "05", cpu: 65 },
-      { name: "06", cpu: 80 },
-      { name: "07", cpu: 85 },
-      { name: "08", cpu: 75 },
-      { name: "09", cpu: 72 },
-      { name: "10", cpu: 65 },
-      { name: "11", cpu: 60 },
-      { name: "12", cpu: 55 },
-      { name: "13", cpu: 50 },
-      { name: "14", cpu: 60 },
-      { name: "15", cpu: 65 },
-   ],
-   ram: [
-      { name: "01", ram: 400 },
-      { name: "02", ram: 230 },
-      { name: "03", ram: 350 },
-      { name: "04", ram: 400 },
-      { name: "05", ram: 390 },
-      { name: "06", ram: 500 },
-      { name: "07", ram: 540 },
-      { name: "08", ram: 480 },
-      { name: "09", ram: 420 },
-      { name: "10", ram: 400 },
-      { name: "11", ram: 210 },
-      { name: "12", ram: 220 },
-      { name: "13", ram: 300 },
-      { name: "14", ram: 310 },
-      { name: "15", ram: 290 },
-   ],
-   disk: [
-      { name: "01", disk: 400 },
-      { name: "02", disk: 320 },
-      { name: "03", disk: 310 },
-      { name: "04", disk: 340 },
-      { name: "05", disk: 430 },
-      { name: "06", disk: 360 },
-      { name: "07", disk: 270 },
-      { name: "08", disk: 160 },
-      { name: "09", disk: 150 },
-      { name: "10", disk: 240 },
-      { name: "11", disk: 340 },
-      { name: "12", disk: 420 },
-      { name: "13", disk: 470 },
-      { name: "14", disk: 580 },
-      { name: "15", disk: 420 },
-   ],
-};
-
-const COLORS = ["darkorange", "#00C49F", "darkcyan", "slateblue", "red"];
-
-function ResourceAreaChart({ resource, color }) {
-   const chartData = rdat[resource] || []; // if resource is unknow, this will put empty array
-
-   return (
-      <ResponsiveContainer width="100%" height={300}>
-         <AreaChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-
-            <Area type="monotone" dataKey={resource} stroke={color || "#ff7300"} fill={color} strokeWidth={3} />
-         </AreaChart>
-      </ResponsiveContainer>
-   );
-}
+const COLORS = ["#47A025", "#00C49F", "darkcyan", "slateblue", "#F2DD6E", "#FE4A49", "#2AB7CA"];
 
 function ResourcePieChart({ resources, resource }) {
    // prepare chart data
@@ -151,7 +78,7 @@ function RamPieChart({ resources }) {
          r = parseFloat(container.memory_usage);
 
          if (isNaN(r)) {
-            r = 0; // Jeśli wynik nie jest liczbą, ustaw 0
+            r = 0;
          }
       } catch (error) {
          r = 0;
@@ -167,9 +94,6 @@ function RamPieChart({ resources }) {
       // creating ram resource data set for percentage relation (what containers use how much of available ram)
       resources.forEach((container) => {
          let single_container_used_ram = container.memory_usage;
-         // if (isNaN(single_container_used_ram)) {
-         //    single_container_used_ram = 0
-         // }
 
          const v = ((single_container_used_ram * 100) / all_used_ram).toFixed(2);
 
@@ -251,50 +175,10 @@ function Resources() {
                      RAM <small className="h6 text-muted">(procentowo)</small>
                   </h4>
                   {!loaded ? <LoadingAlert /> : <RamPieChart resources={resources} />}
-
-                  {/* {resources.map((container, index) => (
-                     <p>{container.memory_usage}</p>
-                  ))} */}
                </div>
             </div>
          </div>
          {/* second row */}
-         <div className="row mx-5">
-            <div className="col-lg-6 col-md-7 col-12">
-               <div className="p-4 my-3 rounded-3 bg-light text-dark">
-                  <h4>RAM</h4>
-                  <ResourceAreaChart resource="ram" color="red" />
-               </div>
-
-               <div className="p-4 my-3 rounded-3 bg-light text-dark">
-                  <h4>CPU</h4>
-                  <ResourceAreaChart resource="cpu" color="darkcyan" />
-               </div>
-
-               <div className="p-4 my-3 rounded-3 bg-light text-dark">
-                  <h4>Dysk</h4>
-                  <ResourceAreaChart resource="disk" color="blue" />
-               </div>
-            </div>
-
-            <div className="col-lg-6 col-md-7 col-12">
-               <div className="p-4 my-3 rounded-3 bg-light text-dark">
-                  <h4>Dysk</h4>
-                  <ResourceAreaChart resource="disk" color="orange" />
-               </div>
-
-               <div className="p-4 my-3 rounded-3 bg-light text-dark">
-                  <h4>RAM</h4>
-                  <ResourceAreaChart resource="ram" color="purple" />
-               </div>
-
-               <div className="p-4 my-3 rounded-3 bg-light text-dark">
-                  <h4>CPU</h4>
-                  <ResourceAreaChart resource="cpu" color="green" />
-               </div>
-            </div>
-         </div>
-         {/* third row */}
          <div className="row mx-5">
             <div className="col-lg-8 col-md-7 col-12">
                <div className="p-4 my-3 rounded-3 bg-light text-dark">
@@ -327,7 +211,9 @@ function Resources() {
                      </tbody>
                   </table>
 
-                  <h3>Uwaga</h3>
+                  {!loaded ? <LoadingAlert /> : <span></span>}
+
+                  <h4>Uwaga</h4>
                   <p>Zasoby sieciowe i dyskowe oznaczają ilość bajtów wysłaną i odebraną / zapisaną i odczytaną od momentu ostatniego uruchomienia kontenera. CPU oznacza ilośc sekund przez ile dany kontener korzysta z zasobów procesora od uruchomienia.</p>
                   <p>W przypadku Unknown, niektóre kontenery nie raportują wartości wykorzystywanych przez nie zasobów. Kontenery wyłączone nie raportują żadnych zasobów.</p>
                </div>
@@ -336,10 +222,13 @@ function Resources() {
             <div className="col-lg-4 col-md-7 col-12">
                <div className="p-4 my-3 rounded-3 bg-light text-dark">
                   <h4>Odpowiedź serwera API</h4>
-
-                  <code>
-                     <pre>{JSON.stringify(resources, null, 2)}</pre>
-                  </code>
+                  {!loaded ? (
+                     <LoadingAlert />
+                  ) : (
+                     <code>
+                        <pre>{JSON.stringify(resources, null, 2)}</pre>
+                     </code>
+                  )}
                </div>
             </div>
          </div>
