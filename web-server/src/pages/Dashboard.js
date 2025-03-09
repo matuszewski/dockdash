@@ -230,7 +230,7 @@ function Dashboard() {
                      Instancje&nbsp;
                      <span className="badge bg-success">JSON</span>
                      <CopyToClipboard
-                        text={JSON.stringify(instances, null, 2)}
+                          text={typeof instances === "object" && instances !== null ? JSON.stringify(instances, null, 2) : "Brak danych"}
                         onCopy={() => setCopiedInstancesJSON(true)}
                      >
                         <button className="btn btn-sm btn-secondary ms-auto p-3">
@@ -258,8 +258,8 @@ function Dashboard() {
                      Kontenery&nbsp;
                      <span className="badge bg-success">JSON</span>
                      <CopyToClipboard
-                        text={JSON.stringify(containers, null, 2)}
-                        onCopy={() => setCopiedContainersJSON(true)}
+                          text={typeof containers === "object" && containers !== null ? JSON.stringify(containers, null, 2) : "Brak danych"}
+                          onCopy={() => setCopiedContainersJSON(true)}
                      >
                         <button className="btn btn-sm btn-secondary ms-auto p-3">
                            {copiedContainersJSON ? (
@@ -285,8 +285,8 @@ function Dashboard() {
                   <h3 className="d-flex justify-content-between align-items-center">
                      Obrazy&nbsp;<span className="badge bg-success">JSON</span>
                      <CopyToClipboard
-                        text={JSON.stringify(images, null, 2)}
-                        onCopy={() => setCopiedImagesJSON(true)}
+                          text={typeof images === "object" && images !== null ? JSON.stringify(images, null, 2) : "Brak danych"}
+                          onCopy={() => setCopiedImagesJSON(true)}
                      >
                         <button className="btn btn-sm btn-secondary ms-auto p-3">
                            {copiedImagesJSON ? (
