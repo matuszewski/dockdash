@@ -15,6 +15,6 @@
         "ip": "10.20.0.105",
         "port": "2375",
         "api_version": "1.47",
-        "status": false
+        "status": true
     }
 }
