@@ -1,6 +1,7 @@
 {
-  "name": "lanboard",
-  "version": "0.1.0",
+  "name": "dockdash-web-server",
+  "version": "1.0.2",
+  "description": "Dockdash Web Server - Krzysztof Matuszewski, AHE 2024/2025",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -127,17 +127,17 @@ function CPUBarChart({ resources }) {
    // mapping data to correct format
    const data = resources.map((container) => ({
       name: container.name,
-      cpu_usage: isNaN(parseFloat(container.cpu_usage)) ? 0 : parseFloat(container.cpu_usage), // safety check
+      cpu: isNaN(parseFloat(container.cpu_usage)) ? 0 : parseFloat(container.cpu_usage), // safety check
    }));
 
    return (
       <ResponsiveContainer width="100%" height={350}>
          <BarChart data={data} margin={{ top: 10, right: 5, left: 5, bottom: 70 }}>
             <CartesianGrid strokeDasharray="0.2 0.2" />
-            <XAxis dataKey="name" tick={{ fontSize: 7 }} interval={0} textAnchor="end" angle={-90} dy={10} />
+            <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} textAnchor="end" angle={-90} dy={8} />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="cpu_usage" fill={colors[3 % colors.length]} />
+            <Bar dataKey="cpu" fill={colors[3 % colors.length]} />
          </BarChart>
       </ResponsiveContainer>
    );
