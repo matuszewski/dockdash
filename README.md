@@ -1,68 +1,74 @@
 # dockdash
+**Dockdash** - Prosta platforma do zarządzania i monitorowania infrastrutkury kontenerowej.
 
-## Components
+*Element projektowy pracy dyplomowej*
 
-### dockdash-api-server
-
-### dockdash-web-server
-
-Single-site HTML 5 website serving dozen of Docker instances, containers and images data monitoring GUI made with Bootstrap5
-
-```bash
-npm install @mui/material @emotion/react @emotion/styled
-npm install @mui/icons-material
-pm install react-tooltip
+```text
+Krzysztof Matuszewski
+Informatyka, studia II st., rok 2, sem. 3
+AHE 2024-2025
 ```
 
+### Instalowanie
+W przypadku, gdy pliki z kodem źródłowym platformy nie są skopiowane z płyty CD załączonej do elementu pisemengo pracy, pobrać należy je z repozytorium na platformie GitHub i o ile
+
+```bash
+git clone git@github.com:matuszewski/dockdash.git
+  cd dockdash/
+```
+
+W przypadku braku certyfikatów SSL i działania platformy z protokołem HTTP (domyślnie) przed uruchomieniem będzie trzeba wykonać taką komendę, która pozwoli na korzystanie z niezabezpieczeonej wersji połączenia.
 ```bash
 export NODE_OPTIONS=--openssl-legacy-provider
-npm start
 ```
 
-## Configuration
-
-Currently, the whole project is designed to run out-of-the-box without any need of configuration by default.
-
-## Running
-
+### Uruchamianie serwera API
 ```bash
-cd api-server/
-npm run
+cd dockdash/api-server/
+  npm install
+  npm run
 ```
 
-## Using
+### Uruchamianie aplikacji webowej
+```bash
+cd dockdash/web-server/
+  npm install
+  npm run
+```
 
-### API server
+## Używanie
 
-Getting list of Docker instances available in the API configuration
+### Serwer API
+
+Pobranie listy instancji Dockera dostępnych na serwerze API
 
 ```bash
 curl 127.0.0.1:4000/api/instances | jq
 ```
 
-Getting list of images on a given docker instance
+Pobieranie listy z danymi obrazów dostępnych na konkretnej instancjo Dockera z serwera API
 
 ```bash
 curl 127.0.0.1:4000/api/<instance>/images | jq
 ```
 
-Getting list of containers on a given docker instance
+Pobieranie listy z danymi kontenerów dostępnych na konkretnej instancjo Dockera z serwera API
 
 ```bash
 curl 127.0.0.1:4000/api/<instance>/containers | jq
 ```
 
-**Note!** _jq_ is used here only for JSON formatting in the console
+Pobieranie listy zasobów dostępnych dla konkretnej instancji Dockera z serwera API
 
-## Troubleshooting
+```bash
+curl 127.0.0.1:4000/api/<instance>/resources | jq
+```
 
-In case of any problems not described or linked in this readme please contact project author: krzysiekmatuszewski@outlook.com
 
-## Notes
+**Uwaga!** Pakiet _jq_ jest używany do poprawnego formatowania otrzymanej odpowiedzi i wyświetlania jej w terminalu w przyjazny sposób
 
-- when to use let/const/var
 
-**Functionalities / Features**
+## Funkcjonalności
 
 - checking single instance availabilty
 - checking multi instance availabilty
@@ -83,56 +89,48 @@ In case of any problems not described or linked in this readme please contact pr
 - using Axios as a new, secure and better alternative to popular Request module using in REST API
 - printing ASCII art banner with dockdash logo
 
-## TODO
+## Znane problemy
+W przypadku napotania problemu nie opisanego w pracy bądź w tym pliku README.md można skontaktować się na adres krzysiekmatuszewski@outlook.com
 
-- [x] make it work with Docker instance hosted on macOS
-- [ ] split the api-server to many files, OOP or single scope of responsibilty per file
-- [ ] add .prettierrc config files and format all files in web-server/ and api-server/
-- [ ] update readme
 
-## Dependencies
+## Zależności
 
-### web-server
-
-Installing web-server dependencies manually (for troubleshooting mainly)
-
+Zarówno w przypadku elementu api-server jak i web-server, korzystają one z plików package.json, które powinny prawidłowo określać zależności i po uruchomieniu komendy do instalowania ich nie generować dodatkowych problemów.
+```bash
+npm install
+```
+Jednakże, w razie potrzeby ręcznego instalowania paczek, wystarczy zwykle doinstalować brakujące jak np. dla web-servera:
 ```bash
 cd web-server/
-npm install react-copy-to-clipboard
-npm install recharts
+  npm install @mui/material @emotion/react @emotion/styled
+  npm install @mui/icons-material
+  npm install react-copy-to-clipboard
+  npm install recharts
+  npm install <inne moduły>
 ```
 
-### api-server
 
-Installing api-server dependencies manually (for troubleshooting mainly)
+## Przydatne komendy Docker API
 
-```bash
-cd api-server/
-# TODO: add manual dependencies installation commands
-```
-
-## Docker API commands
-
-Geting containers details
+Pobieranie danych na temat kontenerów dostępnych na danej instancji Docker
 
 ```bash
 curl -X GET http://127.0.0.1:2375/v1.41/containers/json | jq
 ```
 
-Geting images details
-
+Pobieranie danych na temat obrazów dostępnych na danej instancji Docker
 ```bash
 curl -X GET http://127.0.0.1:2375/v1.41/images/json | jq
 ```
 
-Getting information about docker instance
+Pobieranie informacji na temat instancji Docker
 
 ```bash
 curl -X GET http://127.0.0.1:2375/v1.41/info | jq
 # jq is optional (only for pretty-printing JSON formatted data)
 ```
 
-In case of using docker on macos, enabling connection on port 2375 (as Docker Desktop on macOs runs inside a VM)
+**Uwaga!** W przypadku korzystania z Docker Desktop na systemie macOS, poniższa komenda umożliwi zestawienie połączenia TCP na porcie 2375 w celu wykonywania komend przy użyciu Docker API z zewnątrz systemu.
 
 ```bash
 docker run -d \
@@ -143,19 +141,19 @@ docker run -d \
   TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 ```
 
-If stopped then run by:
+Gdy kontener został zatrzymany, uruchamiamy go normalnie:
 
 ```bash
 docker start docker-api-proxy
 ```
 
-And checking if it works fine
+Oraz możemy sprawdzić czy zadziałało i port 2375 jest otwarty:
 
 ```bash
 curl http://localhost:2375/version
 ```
 
-Running test containers
+Przykładowe polecenia do uruchamiania testowych kontenerów
 
 ```bash
 docker run -it -d --name test-alpine-2 alpine:3.21.3
