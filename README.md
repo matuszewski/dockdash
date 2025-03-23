@@ -9,8 +9,8 @@ Informatyka, studia II st., rok 2, sem. 3
 AHE 2024-2025
 ```
 
-### Instalowanie
-W przypadku, gdy pliki z kodem źródłowym platformy nie są skopiowane z płyty CD załączonej do elementu pisemengo pracy, pobrać należy je z repozytorium na platformie GitHub i o ile
+## Instalowanie
+W przypadku, gdy pliki z kodem źródłowym platformy nie są skopiowane z płyty CD załączonej do elementu pisemengo pracy, pobrać należy je z repozytorium na platformie GitHub. Do uruchomienia obu aplikacji potrzebne jest zainstalowane środowisko uruchomieniowe Node.js w wersji 23.1.0, na której platforma była testowana. Pozostałe zależności powinny zostać zainstalowane automatycznie po wykonaniu odpowiednich, wymienionych później komend.
 
 ```bash
 git clone git@github.com:matuszewski/dockdash.git
@@ -36,9 +36,7 @@ cd dockdash/web-server/
   npm run
 ```
 
-## Używanie
-
-### Serwer API
+## Korzystanie z serwera API
 
 Pobranie listy instancji Dockera dostępnych na serwerze API
 
@@ -64,34 +62,11 @@ Pobieranie listy zasobów dostępnych dla konkretnej instancji Dockera z serwera
 curl 127.0.0.1:4000/api/<instance>/resources | jq
 ```
 
-
 **Uwaga!** Pakiet _jq_ jest używany do poprawnego formatowania otrzymanej odpowiedzi i wyświetlania jej w terminalu w przyjazny sposób
 
 
-## Funkcjonalności
-
-- checking single instance availabilty
-- checking multi instance availabilty
-- colored and labeled API server logging divied to types of messages (info/debug/success/failure)
-- logging with timestamp in 24h time format and friendly PL date format
-- logging with place for future improvements as it contains as well logging entity name, currently set to 'api-server'
-- loading instances configuration from JSON file
-- saving instances configuration in JSON file
-- loading api-server configuration from JSON file
-- debug mode, and being able to change it from the config file
-- verbosity mode, and being able to change it from the config file
-- whole code in english language
-- whole code with many comments
-- functions commented in JSDoc format
-- whole code formatted using Prettier (3 spaces as separator + all default and most up to date coding rules applied)
-- timeouts settings picked individualy for each docker api action to take, taken from settings JSON config file
-- API created in REST type
-- using Axios as a new, secure and better alternative to popular Request module using in REST API
-- printing ASCII art banner with dockdash logo
-
 ## Znane problemy
 W przypadku napotania problemu nie opisanego w pracy bądź w tym pliku README.md można skontaktować się na adres krzysiekmatuszewski@outlook.com
-
 
 ## Zależności
 
@@ -160,3 +135,26 @@ docker run -it -d --name test-alpine-2 alpine:3.21.3
 docker run -it -d --name test-alpine-3 alpine:3.21.3
 docker run -it -d --name test-node-2 node:current
 ```
+
+
+## Notatki
+
+- sprawdzanie dostępności pojedynczej instancji Dockera
+- sprawdzanie dostępności wielu instancji Dockera
+- kolorowe, opatrzone etykietami logi podzielone na typy wiadomości (info/debug/success/failure)
+- mechanizm tworzenia logów z czasem zdarzenia - timestampt w przyjaznym formacie polskiej daty i czasu
+- mechanizm tworzenia logów podatny na przyszłą rozbudowę posiadając nazwę obiektu wytwarzającego logi - obecnie domyslnie 'api-server' 
+- ładowanie konfiguracji instancji Dockerowych z pliku JSON
+- zapisywanie konfiguracji instancji Dockerowych do pliku JSON
+- ładowanie konfiguracji serwera API z pliku JSON
+- tryb debugowania możliwy do zmiany z poziomu pliku konfiguracyjnego
+- tryb verbosity możliwy do zmiany z poziomu pliku konfiguracyjnego
+- możliwość zmiany portu serwera API z poziomu pliku konfiguracyjnego
+- dobre opisanie kodu źródłowego komentarzami
+- kod źródłowy wraz z komentarzami w języku angielskim
+- funkcje posiadające opisy w komentarzach zgodne z formatem JSDoc
+- kod sformatowany przy użyciu Prettier (jako separator zostały użyte 3 spacje)
+- ustawienia czasów - timeoutów poszczególnych działań jest możliwe osobno z poziomu pliku konfiguracyjnego
+- API zgodne z zasadami REST API
+- używanie Axiosa zamiast pakietu Request
+- dodane ASCII art w postaci banera z logiem platofrmy Dockdash w serwerze API
