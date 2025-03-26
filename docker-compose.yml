@@ -1,0 +1,20 @@
+services:
+  web-server:
+    build:
+      context: ./web-server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web-server:/usr/src/app
+    environment:
+      - NODE_ENV=production
+      - NODE_OPTIONS=--openssl-legacy-provider
+
+  api-server:
+    build:
+      context: ./api-server
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - NODE_OPTIONS=--openssl-legacy-provider

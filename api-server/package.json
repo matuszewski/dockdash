@@ -4,7 +4,8 @@
   "description": "Dockdash API Server - Krzysztof Matuszewski, AHE 2024/2025",
   "main": "server.js",
   "scripts": {
-    "test": "server.js --test"
+    "test": "server.js --test",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
