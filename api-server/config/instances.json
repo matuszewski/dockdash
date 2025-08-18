@@ -3,7 +3,7 @@
         "ip": "127.0.0.1",
         "port": "2375",
         "api_version": "1.47",
-        "status": true
+        "status": false
     },
     "wyse": {
         "ip": "10.20.0.102",
