@@ -1,111 +1,111 @@
 # dockdash
-**Dockdash** - Prosta platforma do zarządzania i monitorowania infrastrutkury kontenerowej.
+**Dockdash** - Simple platform for managing and monitoring container infrastructure.
 
-*Element projektowy pracy dyplomowej*
+*Project component of master's thesis*
 
 ```text
 Krzysztof Matuszewski
-Informatyka, studia II st., rok 2, sem. 3
+Computer Science, Master's degree, 2nd year, 3rd semester
 AHE 2024-2025
 ```
 
-## Instalowanie
-W przypadku, gdy pliki z kodem źródłowym platformy nie są skopiowane z płyty CD załączonej do elementu pisemengo pracy, pobrać należy je z repozytorium na platformie GitHub. Do uruchomienia obu aplikacji potrzebne jest zainstalowane środowisko uruchomieniowe Node.js w wersji 23.1.0, na której platforma była testowana. Pozostałe zależności powinny zostać zainstalowane automatycznie po wykonaniu odpowiednich, wymienionych później komend.
+## Installation
+If the platform source code files are not copied from the CD attached to the written thesis, they should be downloaded from the repository on the GitHub platform. To run both applications, Node.js runtime environment version 23.1.0 is required, on which the platform was tested. Other dependencies should be installed automatically after executing the appropriate commands mentioned later.
 
 ```bash
 git clone git@github.com:matuszewski/dockdash.git
   cd dockdash/
 ```
 
-W przypadku braku certyfikatów SSL i działania platformy z protokołem HTTP (domyślnie) przed uruchomieniem będzie trzeba wykonać taką komendę, która pozwoli na korzystanie z niezabezpieczeonej wersji połączenia.
+In case of missing SSL certificates and running the platform with HTTP protocol (by default), the following command must be executed before running, which will allow the use of the unsecured connection version.
 ```bash
 export NODE_OPTIONS=--openssl-legacy-provider
 ```
 
-### Uruchamianie serwera API
+### Running the API server
 ```bash
 cd dockdash/api-server/
   npm install
   npm run
 ```
 
-### Uruchamianie aplikacji webowej
+### Running the web application
 ```bash
 cd dockdash/web-server/
   npm install
   npm run
 ```
 
-## Korzystanie z serwera API
+## Using the API server
 
-Pobranie listy instancji Dockera dostępnych na serwerze API
+Retrieving the list of Docker instances available on the API server
 
 ```bash
 curl 127.0.0.1:4000/api/instances | jq
 ```
 
-Pobieranie listy z danymi obrazów dostępnych na konkretnej instancjo Dockera z serwera API
+Retrieving the list with image data available on a specific Docker instance from the API server
 
 ```bash
 curl 127.0.0.1:4000/api/<instance>/images | jq
 ```
 
-Pobieranie listy z danymi kontenerów dostępnych na konkretnej instancjo Dockera z serwera API
+Retrieving the list with container data available on a specific Docker instance from the API server
 
 ```bash
 curl 127.0.0.1:4000/api/<instance>/containers | jq
 ```
 
-Pobieranie listy zasobów dostępnych dla konkretnej instancji Dockera z serwera API
+Retrieving the list of resources available for a specific Docker instance from the API server
 
 ```bash
 curl 127.0.0.1:4000/api/<instance>/resources | jq
 ```
 
-**Uwaga!** Pakiet _jq_ jest używany do poprawnego formatowania otrzymanej odpowiedzi i wyświetlania jej w terminalu w przyjazny sposób
+**Note!** The _jq_ package is used for proper formatting of the received response and displaying it in the terminal in a user-friendly way
 
 
-## Znane problemy
-W przypadku napotania problemu nie opisanego w pracy bądź w tym pliku README.md można skontaktować się na adres krzysiekmatuszewski@outlook.com
+## Known issues
+If you encounter a problem not described in the thesis or in this README.md file, you can contact krzysiekmatuszewski@outlook.com
 
-## Zależności
+## Dependencies
 
-Zarówno w przypadku elementu api-server jak i web-server, korzystają one z plików package.json, które powinny prawidłowo określać zależności i po uruchomieniu komendy do instalowania ich nie generować dodatkowych problemów.
+Both the api-server and web-server components use package.json files, which should properly define dependencies and not generate additional problems after running the installation command.
 ```bash
 npm install
 ```
-Jednakże, w razie potrzeby ręcznego instalowania paczek, wystarczy zwykle doinstalować brakujące jak np. dla web-servera:
+However, if manual package installation is needed, it is usually sufficient to install missing ones, for example for the web-server:
 ```bash
 cd web-server/
   npm install @mui/material @emotion/react @emotion/styled
   npm install @mui/icons-material
   npm install react-copy-to-clipboard
   npm install recharts
-  npm install <inne moduły>
+  npm install <other modules>
 ```
 
 
-## Przydatne komendy Docker API
+## Useful Docker API commands
 
-Pobieranie danych na temat kontenerów dostępnych na danej instancji Docker
+Retrieving data about containers available on a given Docker instance
 
 ```bash
 curl -X GET http://127.0.0.1:2375/v1.41/containers/json | jq
 ```
 
-Pobieranie danych na temat obrazów dostępnych na danej instancji Docker
+Retrieving data about images available on a given Docker instance
 ```bash
 curl -X GET http://127.0.0.1:2375/v1.41/images/json | jq
 ```
 
-Pobieranie informacji na temat instancji Docker
+Retrieving information about the Docker instance
 
 ```bash
 curl -X GET http://127.0.0.1:2375/v1.41/info | jq
 # jq is optional (only for pretty-printing JSON formatted data)
 ```
 
-**Uwaga!** W przypadku korzystania z Docker Desktop na systemie macOS, poniższa komenda umożliwi zestawienie połączenia TCP na porcie 2375 w celu wykonywania komend przy użyciu Docker API z zewnątrz systemu.
+**Note!** When using Docker Desktop on macOS, the following command will enable TCP connection on port 2375 to execute commands using Docker API from outside the system.
 
 ```bash
 docker run -d \
@@ -116,19 +116,19 @@ docker run -d \
   TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 ```
 
-Gdy kontener został zatrzymany, uruchamiamy go normalnie:
+When the container has been stopped, we start it normally:
 
 ```bash
 docker start docker-api-proxy
 ```
 
-Oraz możemy sprawdzić czy zadziałało i port 2375 jest otwarty:
+And we can check if it worked and port 2375 is open:
 
 ```bash
 curl http://localhost:2375/version
 ```
 
-Przykładowe polecenia do uruchamiania testowych kontenerów
+Example commands for running test containers
 
 ```bash
 docker run -it -d --name test-alpine-2 alpine:3.21.3
@@ -137,24 +137,24 @@ docker run -it -d --name test-node-2 node:current
 ```
 
 
-## Notatki
+## Notes
 
-- sprawdzanie dostępności pojedynczej instancji Dockera
-- sprawdzanie dostępności wielu instancji Dockera
-- kolorowe, opatrzone etykietami logi podzielone na typy wiadomości (info/debug/success/failure)
-- mechanizm tworzenia logów z czasem zdarzenia - timestampt w przyjaznym formacie polskiej daty i czasu
-- mechanizm tworzenia logów podatny na przyszłą rozbudowę posiadając nazwę obiektu wytwarzającego logi - obecnie domyslnie 'api-server' 
-- ładowanie konfiguracji instancji Dockerowych z pliku JSON
-- zapisywanie konfiguracji instancji Dockerowych do pliku JSON
-- ładowanie konfiguracji serwera API z pliku JSON
-- tryb debugowania możliwy do zmiany z poziomu pliku konfiguracyjnego
-- tryb verbosity możliwy do zmiany z poziomu pliku konfiguracyjnego
-- możliwość zmiany portu serwera API z poziomu pliku konfiguracyjnego
-- dobre opisanie kodu źródłowego komentarzami
-- kod źródłowy wraz z komentarzami w języku angielskim
-- funkcje posiadające opisy w komentarzach zgodne z formatem JSDoc
-- kod sformatowany przy użyciu Prettier (jako separator zostały użyte 3 spacje)
-- ustawienia czasów - timeoutów poszczególnych działań jest możliwe osobno z poziomu pliku konfiguracyjnego
-- API zgodne z zasadami REST API
-- używanie Axiosa zamiast pakietu Request
-- dodane ASCII art w postaci banera z logiem platofrmy Dockdash w serwerze API
+- checking availability of a single Docker instance
+- checking availability of multiple Docker instances
+- colorful, labeled logs divided by message types (info/debug/success/failure)
+- log creation mechanism with event time - timestamp in user-friendly Polish date and time format
+- log creation mechanism extendable for future development having the name of the object creating logs - currently defaulting to 'api-server'
+- loading Docker instance configuration from JSON file
+- saving Docker instance configuration to JSON file
+- loading API server configuration from JSON file
+- debug mode changeable from configuration file level
+- verbosity mode changeable from configuration file level
+- ability to change API server port from configuration file level
+- good source code documentation with comments
+- source code along with comments in English
+- functions having descriptions in comments compliant with JSDoc format
+- code formatted using Prettier (3 spaces were used as separator)
+- timeout settings for individual actions can be set separately from configuration file level
+- API compliant with REST API principles
+- using Axios instead of Request package
+- added ASCII art as a banner with the Dockdash platform logo in the API server
