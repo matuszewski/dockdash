@@ -1,0 +1,449 @@
+openapi: 3.0.3
+info:
+  title: DockDash API Server
+  description: DockDash API Server provides endpoints to manage Docker instances, containers, images, and monitor resources. This API allows you to interact with multiple Docker instances and perform various operations like starting/stopping containers, retrieving system information, and monitoring resource usage.
+  version: 1.0.2
+  contact:
+    name: Krzysztof Matuszewski
+    url: https://github.com/matuszewski/dockdeck
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:4000
+    description: Local development server
+
+paths:
+  /:
+    get:
+      summary: Health Check
+      description: Simple health check endpoint to verify the API server is running
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Server is running
+          content:
+            text/html:
+              schema:
+                type: string
+              example: "dockdash api server - status: working - received a GET HTTP request"
+
+  /api/instances:
+    get:
+      summary: Get Docker Instances
+      description: Retrieve all configured Docker instances with their availability status
+      tags:
+        - Instances
+      responses:
+        '200':
+          description: List of Docker instances
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/DockerInstance'
+
+  /api/{instance}/containers:
+    get:
+      summary: Get Containers
+      description: Retrieve all containers from a specific Docker instance
+      tags:
+        - Containers
+      parameters:
+        - name: instance
+          in: path
+          required: true
+          description: Docker instance identifier
+          schema:
+            type: string
+            example: "local"
+      responses:
+        '200':
+          description: List of containers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Container'
+        '404':
+          description: Instance not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Instance not found"
+        '503':
+          description: No response from Docker API
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "No response from Docker API"
+        '500':
+          description: Error connecting to Docker API
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error connecting to Docker API"
+
+  /api/{instance}/images:
+    get:
+      summary: Get Images
+      description: Retrieve all images from a specific Docker instance
+      tags:
+        - Images
+      parameters:
+        - name: instance
+          in: path
+          required: true
+          description: Docker instance identifier
+          schema:
+            type: string
+            example: "local"
+      responses:
+        '200':
+          description: List of images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+        '404':
+          description: Instance not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Instance not found"
+        '503':
+          description: No response from Docker API
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "No response from Docker API"
+        '500':
+          description: Error connecting to Docker API
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error connecting to Docker API"
+
+  /api/{instance}/resources:
+    get:
+      summary: Get Container Resources
+      description: Retrieve resource usage statistics for all containers in a specific Docker instance
+      tags:
+        - Resources
+      parameters:
+        - name: instance
+          in: path
+          required: true
+          description: Docker instance identifier
+          schema:
+            type: string
+            example: "local"
+      responses:
+        '200':
+          description: Container resource usage statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContainerResources'
+        '404':
+          description: Instance not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Instance not found"
+        '503':
+          description: No response from Docker API
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "No response from Docker API"
+        '500':
+          description: Error connecting to Docker API
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error connecting to Docker API"
+
+  /api/{instance}/container/{containerId}/{action}:
+    post:
+      summary: Container Actions
+      description: Perform actions on a specific container (start, stop, restart, pause, unpause, kill)
+      tags:
+        - Container Actions
+      parameters:
+        - name: instance
+          in: path
+          required: true
+          description: Docker instance identifier
+          schema:
+            type: string
+            example: "local"
+        - name: containerId
+          in: path
+          required: true
+          description: Container ID
+          schema:
+            type: string
+            example: "abc123def456"
+        - name: action
+          in: path
+          required: true
+          description: Action to perform on the container
+          schema:
+            type: string
+            enum: [start, stop, restart, pause, unpause, kill]
+            example: "start"
+      responses:
+        '200':
+          description: Action performed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response from Docker API
+        '400':
+          description: Invalid action provided
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Invalid action provided"
+        '404':
+          description: Instance not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Instance not found"
+        '500':
+          description: Failed to perform action
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Failed to start container"
+
+  /api/{instance}/container/{containerId}:
+    delete:
+      summary: Remove Container
+      description: Remove a specific container from a Docker instance
+      tags:
+        - Container Actions
+      parameters:
+        - name: instance
+          in: path
+          required: true
+          description: Docker instance identifier
+          schema:
+            type: string
+            example: "local"
+        - name: containerId
+          in: path
+          required: true
+          description: Container ID to remove
+          schema:
+            type: string
+            example: "abc123def456"
+      responses:
+        '200':
+          description: Container removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Container removed successfully"
+        '404':
+          description: Instance not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Instance not found"
+        '500':
+          description: Failed to remove container
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Failed to remove container"
+
+components:
+  schemas:
+    DockerInstance:
+      type: object
+      properties:
+        ip:
+          type: string
+          description: IP address of the Docker instance
+          example: "127.0.0.1"
+        port:
+          type: integer
+          description: Port of the Docker API
+          example: 2375
+        api_version:
+          type: string
+          description: Docker API version
+          example: "1.41"
+        available:
+          type: boolean
+          description: Whether the instance is currently available
+          example: true
+      required:
+        - ip
+        - port
+        - api_version
+
+    Container:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Container ID (truncated)
+          example: "abc123def456"
+        name:
+          type: string
+          description: Container name
+          example: "my-container"
+        status:
+          type: string
+          description: Container status
+          example: "running"
+        created:
+          type: string
+          description: Container creation date
+          example: "25.09.2025, 14:30"
+        image:
+          type: string
+          description: Container image name
+          example: "nginx:latest"
+        ports:
+          type: string
+          description: Port mappings
+          example: "80:8080/tcp"
+        networks:
+          type: string
+          description: Network configuration
+          example: "bridge"
+      required:
+        - id
+        - name
+        - status
+        - created
+        - image
+
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Image ID (truncated)
+          example: "abc123def456"
+        name:
+          type: string
+          description: Image name
+          example: "nginx"
+        tag:
+          type: string
+          description: Image tag
+          example: "latest"
+        size:
+          type: string
+          description: Image size in human-readable format
+          example: "128 MB"
+        created:
+          type: string
+          description: Image creation date
+          example: "25.09.2025, 14:30"
+        tags_count:
+          type: integer
+          description: Number of tags for this image
+          example: 1
+      required:
+        - id
+        - name
+        - tag
+        - size
+        - created
+
+    ContainerResources:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Container ID (truncated)
+          example: "abc123def456"
+        name:
+          type: string
+          description: Container name
+          example: "my-container"
+        cpu_usage:
+          type: string
+          description: CPU usage in seconds
+          example: "2.50"
+        memory_usage:
+          type: string
+          description: Memory usage in human-readable format
+          example: "256 MB"
+        memory_limit:
+          type: string
+          description: Memory limit in human-readable format
+          example: "1 GB"
+        memory_usage_percentage:
+          type: string
+          description: Memory usage as percentage
+          example: "25.6%"
+        network_rx:
+          type: string
+          description: Network bytes received in human-readable format
+          example: "1.2 MB"
+        network_tx:
+          type: string
+          description: Network bytes transmitted in human-readable format
+          example: "800 KB"
+        block_read:
+          type: string
+          description: Block I/O bytes read in human-readable format
+          example: "50 MB"
+        block_write:
+          type: string
+          description: Block I/O bytes written in human-readable format
+          example: "10 MB"
+      required:
+        - id
+        - name
+        - cpu_usage
+        - memory_usage
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Instances
+    description: Docker instance management
+  - name: Containers
+    description: Container information and listing
+  - name: Images
+    description: Docker image management
+  - name: Resources
+    description: Resource monitoring and statistics
+  - name: Container Actions
+    description: Container lifecycle operations
